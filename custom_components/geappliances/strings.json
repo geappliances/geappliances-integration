@@ -1,0 +1,15 @@
+{
+  "config": {
+    "step": {
+      "confirm": {
+        "title": "Confirm installation",
+        "description": "Do you want to install the GE Appliances integration?"
+      }
+    },
+    "abort": {
+      "already_configured": "The appliance you are attempting to set up is already connected to Home Assistant.",
+      "not_supported": "Configuration for GE Appliances is through MQTT discovery. Please connect your MQTT adapter to your appliance.",
+      "invalid_discovery_info": "A GE Appliance was found, but the configuration information was invalid. Please check your MQTT adapter and try again."
+    }
+  }
+}

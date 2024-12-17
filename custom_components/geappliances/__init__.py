@@ -50,13 +50,13 @@ async def start_discovery(hass: HomeAssistant, entry: ConfigEntry) -> GeaDiscove
     mqtt_client = GeaMQTTClient(hass)
 
     async with aiofiles.open(
-        "homeassistant/components/geappliances/appliance_api/appliance_api.json",
+        "custom_components/geappliances/appliance_api/appliance_api.json",
         encoding="utf-8",
     ) as appliance_api:
         contents_api = await appliance_api.read()
 
         async with aiofiles.open(
-            "homeassistant/components/geappliances/appliance_api/appliance_api_erd_definitions.json",
+            "custom_components/geappliances/appliance_api/appliance_api_erd_definitions.json",
             encoding="utf-8",
         ) as appliance_api_erd_definitions:
             contents_api_erd_defintions = await appliance_api_erd_definitions.read()

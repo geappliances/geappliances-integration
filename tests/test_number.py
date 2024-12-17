@@ -1,9 +1,10 @@
 """Test GE Appliances number."""
 
+from custom_components.geappliances.const import Erd
 import pytest
+from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
 from homeassistant.components import number
-from homeassistant.components.geappliances.const import Erd
 from homeassistant.components.number import NumberDeviceClass
 from homeassistant.const import ATTR_ENTITY_ID, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
@@ -16,8 +17,6 @@ from .common import (
     given_the_erd_is_set_to,
     the_mqtt_topic_value_should_be,
 )
-
-from tests.typing import MqttMockHAClient
 
 APPLIANCE_API_JSON = """
 {

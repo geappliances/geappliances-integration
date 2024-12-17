@@ -1,6 +1,7 @@
 """Test GE Appliances switch."""
 
 import pytest
+from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
 from homeassistant.components import switch
 from homeassistant.const import (
@@ -21,8 +22,6 @@ from .common import (
     the_mqtt_topic_value_should_be,
     when_the_erd_is_set_to,
 )
-
-from tests.typing import MqttMockHAClient
 
 APPLIANCE_API_JSON = """
 {

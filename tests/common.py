@@ -2,13 +2,16 @@
 
 import json
 
-from homeassistant.components.geappliances.const import DISCOVERY, DOMAIN, Erd
+from custom_components.geappliances.const import DISCOVERY, DOMAIN, Erd
+from pytest_homeassistant_custom_component.common import (
+    MockConfigEntry,
+    async_fire_mqtt_message,
+)
+from pytest_homeassistant_custom_component.typing import MqttMockHAClient
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.util.unit_system import US_CUSTOMARY_SYSTEM
-
-from tests.common import MockConfigEntry, async_fire_mqtt_message
-from tests.typing import MqttMockHAClient
 
 ERD_VALUE_TOPIC = "geappliances/test/erd/{}/value"
 ERD_WRITE_TOPIC = "geappliances/test/erd/{}/write"

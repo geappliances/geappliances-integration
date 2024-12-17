@@ -4,20 +4,16 @@ import logging
 from typing import Any
 from unittest.mock import MagicMock
 
-import pytest
-
-from homeassistant.components.geappliances.const import Erd
-from homeassistant.components.geappliances.erd_factory import ERDFactory
-from homeassistant.components.geappliances.ha_compatibility.data_source import (
-    DataSource,
-)
-from homeassistant.components.geappliances.ha_compatibility.mqtt_client import (
-    GeaMQTTClient,
-)
-from homeassistant.components.geappliances.ha_compatibility.registry_updater import (
+from custom_components.geappliances.const import Erd
+from custom_components.geappliances.erd_factory import ERDFactory
+from custom_components.geappliances.ha_compatibility.data_source import DataSource
+from custom_components.geappliances.ha_compatibility.mqtt_client import GeaMQTTClient
+from custom_components.geappliances.ha_compatibility.registry_updater import (
     RegistryUpdater,
 )
-from homeassistant.components.geappliances.models import GeaBinarySensorConfig
+from custom_components.geappliances.models import GeaBinarySensorConfig
+import pytest
+
 from homeassistant.const import Platform
 
 from .doubles import MqttClientMock, RegistryUpdaterMock
@@ -275,7 +271,7 @@ def the_error_log_should_be(msg: str, caplog: pytest.LogCaptureFixture) -> None:
     """Assert that the given message is the only logged error."""
     assert caplog.record_tuples == [
         (
-            "homeassistant.components.geappliances.erd_factory",
+            "custom_components.geappliances.erd_factory",
             logging.ERROR,
             msg,
         )

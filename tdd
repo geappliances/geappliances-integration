@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+pyenv local 3.12.1
+
+pyenv -m venv venv
+. venv/bin/activate
+
+pip install -r requirements_test.txt
+
+python3 -m pytest tests
+
+deactivate

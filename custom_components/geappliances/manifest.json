@@ -1,9 +1,7 @@
 {
   "domain": "geappliances",
   "name": "GE Appliances",
-  "codeowners": [
-    "@ben-strehl"
-  ],
+  "codeowners": [],
   "config_flow": true,
   "dependencies": [
     "mqtt"

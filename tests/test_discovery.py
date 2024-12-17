@@ -3,16 +3,14 @@
 import logging
 from unittest.mock import MagicMock
 
-import pytest
-
-from homeassistant.components.geappliances.const import Erd
-from homeassistant.components.geappliances.discovery import GeaDiscovery
-from homeassistant.components.geappliances.ha_compatibility.data_source import (
-    DataSource,
-)
-from homeassistant.components.geappliances.ha_compatibility.registry_updater import (
+from custom_components.geappliances.const import Erd
+from custom_components.geappliances.discovery import GeaDiscovery
+from custom_components.geappliances.ha_compatibility.data_source import DataSource
+from custom_components.geappliances.ha_compatibility.registry_updater import (
     RegistryUpdater,
 )
+import pytest
+
 from homeassistant.components.mqtt import ReceiveMessage
 
 from .common import ERD_VALUE_TOPIC
@@ -265,7 +263,7 @@ def the_error_log_should_be(msg: str, caplog: pytest.LogCaptureFixture) -> None:
     """Assert that the given message is the only logged error."""
     assert caplog.record_tuples == [
         (
-            "homeassistant.components.geappliances.discovery",
+            "custom_components.geappliances.discovery",
             logging.ERROR,
             msg,
         )

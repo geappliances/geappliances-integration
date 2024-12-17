@@ -1,6 +1,7 @@
 """Test GE Appliances sensor."""
 
 import pytest
+from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
 from homeassistant.components.sensor import (
     ATTR_STATE_CLASS,
@@ -18,8 +19,6 @@ from .common import (
     given_the_erd_is_set_to,
     when_the_erd_is_set_to,
 )
-
-from tests.typing import MqttMockHAClient
 
 APPLIANCE_API_JSON = """
 {

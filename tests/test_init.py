@@ -1,13 +1,13 @@
 """Test GE Appliances initialization."""
 
-from homeassistant.components.geappliances.const import DISCOVERY, DOMAIN
-from homeassistant.components.geappliances.discovery import GeaDiscovery
+from custom_components.geappliances.const import DISCOVERY, DOMAIN
+from custom_components.geappliances.discovery import GeaDiscovery
+from pytest_homeassistant_custom_component.typing import MqttMockHAClient
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
 from .common import config_entry_stub
-
-from tests.typing import MqttMockHAClient
 
 
 def given_the_entry_is_created(hass: HomeAssistant) -> ConfigEntry:
@@ -42,5 +42,8 @@ class TestInit:
     ) -> None:
         """Test integration sets up discovery singleton."""
         entry = given_the_entry_is_created(hass)
+        await hass.async_block_till_done(wait_background_tasks=True)
         await setup_should_return(True, hass, entry)
+        await hass.async_block_till_done(wait_background_tasks=True)
         discovery_should_be_created(hass)
+        await hass.async_block_till_done(wait_background_tasks=True)

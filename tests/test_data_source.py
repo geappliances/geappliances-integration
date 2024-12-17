@@ -5,16 +5,13 @@ import json
 from typing import Any
 from unittest.mock import MagicMock, patch
 
-import pytest
-
-from homeassistant.components.geappliances.const import Erd
-from homeassistant.components.geappliances.ha_compatibility.data_source import (
+from custom_components.geappliances.const import Erd
+from custom_components.geappliances.ha_compatibility.data_source import (
     UNSUPPORTED_ERDS,
     DataSource,
 )
-from homeassistant.components.geappliances.ha_compatibility.mqtt_client import (
-    GeaMQTTClient,
-)
+from custom_components.geappliances.ha_compatibility.mqtt_client import GeaMQTTClient
+import pytest
 
 from .doubles import MqttClientMock
 

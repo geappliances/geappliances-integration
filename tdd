@@ -2,6 +2,7 @@
 
 set -e
 
+pyenv install 3.12.1 -s
 pyenv local 3.12.1
 
 python -m venv venv

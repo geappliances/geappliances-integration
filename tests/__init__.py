@@ -1,1 +1,1 @@
-"""Tests for the GE Appliances integration."""
+"""Tests for Home Assistant."""

@@ -6,7 +6,8 @@ import re
 from typing import Any
 
 from homeassistant.components import number
-from homeassistant.components.number import NumberDeviceClass, NumberEntity
+from homeassistant.components.number import NumberEntity
+from homeassistant.components.number.const import NumberDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import entity_registry as er
@@ -130,7 +131,7 @@ async def async_setup_entry(
 
     async_dispatcher_connect(
         hass,
-        GEA_ENTITY_NEW.format(number.DOMAIN),
+        GEA_ENTITY_NEW.format(number.const.DOMAIN),
         async_discover,
     )
 

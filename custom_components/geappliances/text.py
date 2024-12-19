@@ -41,7 +41,7 @@ async def async_setup_entry(
 
     async_dispatcher_connect(
         hass,
-        GEA_ENTITY_NEW.format(text.DOMAIN),
+        GEA_ENTITY_NEW.format(text.const.DOMAIN),
         async_discover,
     )
 

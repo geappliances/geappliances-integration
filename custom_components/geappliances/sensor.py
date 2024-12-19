@@ -8,11 +8,8 @@ import re
 from typing import TYPE_CHECKING, Any
 
 from homeassistant.components import sensor
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorEntity,
-    SensorStateClass,
-)
+from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor.const import SensorDeviceClass, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import entity_registry as er
@@ -36,6 +33,7 @@ class SensorConfigAttributes:
         r"Humidity": SensorDeviceClass.HUMIDITY,
         r"(in Pa)": SensorDeviceClass.PRESSURE,
         r"gallons|(oz)": SensorDeviceClass.VOLUME_STORAGE,
+        r"(mL)|(L)": SensorDeviceClass.VOLUME,
         r"lbs": SensorDeviceClass.WEIGHT,
         r"mA": SensorDeviceClass.CURRENT,
         r"days|hours|minutes|seconds": SensorDeviceClass.DURATION,
@@ -120,7 +118,7 @@ async def async_setup_entry(
 
     async_dispatcher_connect(
         hass,
-        GEA_ENTITY_NEW.format(sensor.DOMAIN),
+        GEA_ENTITY_NEW.format(sensor.const.DOMAIN),
         async_discover,
     )
 

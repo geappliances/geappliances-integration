@@ -48,6 +48,8 @@ class ConfigFactory:
             r"(in Pa)": "Pa",
             r"gallons": "gal",
             r"(oz)": "fl. oz.",
+            r"(mL)": "mL",
+            r"(L)": "L",
             r" lbs|(lbs)": "lbs",
             r"mA$| mA |(mA)": "mA",
             r"seconds": "s",

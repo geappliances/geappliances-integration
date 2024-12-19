@@ -2,6 +2,7 @@
 
 from custom_components.geappliances.const import Erd
 import pytest
+from pytest_homeassistant_custom_component.common import async_fire_mqtt_message
 from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
 from homeassistant.components import text
@@ -16,8 +17,6 @@ from .common import (
     the_mqtt_topic_value_should_be,
     when_the_erd_is_set_to,
 )
-
-from pytest_homeassistant_custom_component.common import async_fire_mqtt_message
 
 APPLIANCE_API_JSON = """
 {

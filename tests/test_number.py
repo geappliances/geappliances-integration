@@ -1,6 +1,5 @@
 """Test GE Appliances number."""
 
-from custom_components.geappliances.const import Erd
 import pytest
 from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
@@ -17,6 +16,7 @@ from .common import (
     given_the_appliance_api_is,
     given_the_erd_is_set_to,
     the_mqtt_topic_value_should_be,
+    when_the_erd_is_set_to,
 )
 
 APPLIANCE_API_JSON = """
@@ -357,11 +357,6 @@ async def initialize(
     given_the_appliance_api_erd_defs_are(APPLIANCE_API_DEFINTION_JSON, hass)
     await given_the_erd_is_set_to(0x0092, "0000 0001 0000 0001", hass)
     await given_the_erd_is_set_to(0x0093, "0000 0001 0000 0000", hass)
-
-
-async def when_the_erd_is_set_to(erd: Erd, state: str, hass: HomeAssistant) -> None:
-    """Fire MQTT message."""
-    await given_the_erd_is_set_to(erd, state, hass)
 
 
 async def when_the_number_is_set_to(

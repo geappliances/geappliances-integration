@@ -389,7 +389,7 @@ async def writing_to_erd_should_raise_error(
 ) -> None:
     """Assert that writing to the given ERD raises an error."""
     try:
-        await data_source.erd_write(device_name, erd, None)
+        await data_source.erd_write(device_name, erd, b"")
     except KeyError:
         return
 
@@ -415,7 +415,7 @@ async def publishing_erd_should_raise_error(
 ) -> None:
     """Assert that publishing the given ERD raises an error."""
     try:
-        await data_source.erd_publish(device_name, erd, None)
+        await data_source.erd_publish(device_name, erd, b"")
     except KeyError:
         return
 
@@ -498,7 +498,7 @@ class TestDataSource:
         self, data_source
     ) -> None:
         """Test data source raises error when trying to add an ERD to a nonexistent device."""
-        await adding_erd_should_raise_error(0x0001, "test", data_source)
+        await adding_erd_should_raise_error("test", 0x0001, data_source)
 
     async def test_add_unsupported_erd(self, data_source) -> None:
         """Test data source adds unsupported ERD."""

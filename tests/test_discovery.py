@@ -6,12 +6,11 @@ from unittest.mock import MagicMock
 from custom_components.geappliances.const import Erd
 from custom_components.geappliances.discovery import GeaDiscovery
 from custom_components.geappliances.ha_compatibility.data_source import DataSource
+from custom_components.geappliances.ha_compatibility.mqtt_client import MQTTMessage
 from custom_components.geappliances.ha_compatibility.registry_updater import (
     RegistryUpdater,
 )
 import pytest
-
-from homeassistant.components.mqtt import ReceiveMessage
 
 from .common import ERD_VALUE_TOPIC
 from .doubles import AnyConfigWithName, MqttClientMock, RegistryUpdaterMock
@@ -176,7 +175,7 @@ async def given_the_erd_is_set_to(
 ) -> None:
     """Fake an MQTT message."""
     await discovery.handle_message(
-        ReceiveMessage(
+        MQTTMessage(
             ERD_VALUE_TOPIC.format(f"{erd:#06x}"),
             payload,
             0,
@@ -190,7 +189,7 @@ async def given_the_erd_is_set_to(
 async def when_the_device_is_discovered(discovery: GeaDiscovery) -> None:
     """Fire device discovery message."""
     await discovery.handle_message(
-        ReceiveMessage(DEVICE_TOPIC, None, 0, False, "geappliances/#", 0.0)
+        MQTTMessage(DEVICE_TOPIC, b"", 0, False, "geappliances/#", 0.0)
     )
 
 
@@ -210,7 +209,7 @@ async def when_an_mqtt_message_is_received_on_topic(
 ) -> None:
     """Fake an MQTT message."""
     await discovery.handle_message(
-        ReceiveMessage(
+        MQTTMessage(
             topic,
             payload,
             0,

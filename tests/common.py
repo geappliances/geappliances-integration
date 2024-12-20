@@ -70,3 +70,8 @@ def the_mqtt_topic_value_should_be(
     mqtt_mock.async_publish.assert_called_with(
         ERD_WRITE_TOPIC.format(f"{erd:#06x}"), state.lower(), 0, False
     )
+
+
+def mqtt_client_should_not_publish(mqtt_client_mock: MqttMockHAClient) -> None:
+    """Assert MQTT has not published anything."""
+    mqtt_client_mock.async_publish.assert_not_called()

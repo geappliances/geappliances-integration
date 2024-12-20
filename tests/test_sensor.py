@@ -3,7 +3,7 @@
 import pytest
 from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
-from homeassistant.components.sensor import (
+from homeassistant.components.sensor.const import (
     ATTR_STATE_CLASS,
     SensorDeviceClass,
     SensorStateClass,
@@ -409,14 +409,20 @@ async def initialize(
 
 def the_sensor_value_should_be(name: str, state: str, hass: HomeAssistant) -> None:
     """Assert the value of the sensor."""
-    assert hass.states.get(name).state == state
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.state == state
+    else:
+        pytest.fail(f"Could not find sensor {name}")
 
 
 def the_sensor_state_class_should_be(
     name: str, state_class: SensorStateClass, hass: HomeAssistant
 ) -> None:
     """Assert the sensor state class is correct."""
-    assert hass.states.get(name).attributes[ATTR_STATE_CLASS] == state_class
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.attributes[ATTR_STATE_CLASS] == state_class
+    else:
+        pytest.fail(f"Could not find sensor {name}")
 
 
 class TestSensor:
@@ -497,12 +503,18 @@ def the_device_class_should_be(
     name: str, device_class: SensorDeviceClass, hass: HomeAssistant
 ) -> None:
     """Assert that the device class is correct for the entity."""
-    assert hass.states.get(name).attributes.get("device_class") == device_class
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.attributes.get("device_class") == device_class
+    else:
+        pytest.fail(f"Could not find sensor {name}")
 
 
 def the_unit_should_be(name: str, unit: str, hass: HomeAssistant) -> None:
     """Assert that the unit of measurement is correct for the entity."""
-    assert hass.states.get(name).attributes.get("unit_of_measurement") == unit
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.attributes.get("unit_of_measurement") == unit
+    else:
+        pytest.fail(f"Could not find sensor {name}")
 
 
 class TestSensorDeviceClasses:

@@ -6,6 +6,7 @@ from pytest_homeassistant_custom_component.common import async_fire_mqtt_message
 from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
 from homeassistant.components import text
+from homeassistant.components.text.const import ATTR_VALUE, SERVICE_SET_VALUE
 from homeassistant.const import ATTR_ENTITY_ID, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 
@@ -134,15 +135,16 @@ async def when_the_erd_string_is_set_to(
 
 async def when_the_text_is_set_to(name: str, value: str, hass: HomeAssistant) -> None:
     """Set the text value."""
-    data = {ATTR_ENTITY_ID: name, text.ATTR_VALUE: value}
-    await hass.services.async_call(
-        text.DOMAIN, text.SERVICE_SET_VALUE, data, blocking=True
-    )
+    data = {ATTR_ENTITY_ID: name, ATTR_VALUE: value}
+    await hass.services.async_call(text.DOMAIN, SERVICE_SET_VALUE, data, blocking=True)
 
 
 def the_text_value_should_be(name: str, state: str, hass: HomeAssistant) -> None:
     """Assert the value of the text input."""
-    assert hass.states.get(name).state == state
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.state == state
+    else:
+        pytest.fail(f"Could not find text {name}")
 
 
 async def the_text_should_except_when_set_to(

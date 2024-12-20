@@ -118,7 +118,7 @@ def the_binary_sensor_state_should_be(
     if (entity := hass.states.get(name)) is not None:
         assert entity.state == state
     else:
-        pytest.fail("Could not find binary sensor")
+        pytest.fail(f"Could not find binary sensor {name}")
 
 
 class TestBinarySensor:

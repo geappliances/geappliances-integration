@@ -131,7 +131,7 @@ class MetaErdCoordinator:
         self._create_entities_to_meta_erds_dict()
 
     def _create_entities_to_meta_erds_dict(self) -> None:
-        self._erds_to_meta_erds = {
+        self._entities_to_meta_erds = {
             entity_id: meta_erd
             for meta_erd, row_dict in self._transform_table.items()
             for transform_row in row_dict.values()
@@ -162,7 +162,7 @@ class MetaErdCoordinator:
 
     async def apply_transforms_to_field(self, device_name: str, field: str) -> None:
         """Check if any meta ERDs have transforms for the given field and apply them."""
-        meta_erd = self._erds_to_meta_erds.get(field)
+        meta_erd = self._entities_to_meta_erds.get(field)
 
         if meta_erd is not None:
             await self.apply_transforms_for_meta_erd(device_name, meta_erd)

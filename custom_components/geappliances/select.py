@@ -165,5 +165,4 @@ class GeaSelect(SelectEntity, GeaEntity):
                 self._attr_options.append(allowable)
         else:
             self._attr_options.remove(allowable)
-        _LOGGER.info("Current options: %s", self._attr_options)
         self.async_schedule_update_ha_state(True)

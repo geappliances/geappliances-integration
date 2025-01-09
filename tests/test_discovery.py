@@ -295,12 +295,8 @@ def the_error_log_should_be(msg: str, caplog: pytest.LogCaptureFixture) -> None:
 class TestDiscovery:
     """Hold discovery tests."""
 
-    async def test_discovers_new_device(
-        self, registry_updater_mock, data_source, discovery
-    ) -> None:
+    async def test_discovers_new_device(self, registry_updater_mock, discovery) -> None:
         """Test discovery discovers new appliance."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await when_the_device_is_discovered(discovery)
 
         the_device_should_exist(registry_updater_mock)
@@ -309,8 +305,6 @@ class TestDiscovery:
         self, registry_updater_mock, data_source, discovery
     ) -> None:
         """Test discovery waits to create an entity until the appliance API confirms that ERD is supported."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await when_the_erd_is_set_to(0x0001, bytes.fromhex("01"), discovery)
         the_device_should_exist(registry_updater_mock)
         the_entity_should_not_exist("Test", registry_updater_mock)
@@ -326,8 +320,6 @@ class TestDiscovery:
         self, registry_updater_mock, data_source, discovery
     ) -> None:
         """Test discovery discovers common appliance API and sets up sensors."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await when_the_erd_is_set_to(
             0x0092, bytes.fromhex("0000 0001 0000 0001"), discovery
         )
@@ -339,11 +331,9 @@ class TestDiscovery:
         the_entity_should_be_added_to_the_device("Another Test", registry_updater_mock)
 
     async def test_discovers_feature_appliance_api(
-        self, registry_updater_mock, data_source, discovery
+        self, registry_updater_mock, discovery
     ) -> None:
         """Test discovery discovers feature appliance API and sets up sensors."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await when_the_erd_is_set_to(
             0x0093, bytes.fromhex("0000 0001 0000 0001"), discovery
         )
@@ -353,11 +343,9 @@ class TestDiscovery:
         )
 
     async def test_does_not_create_multiple_sensors_for_same_erd(
-        self, registry_updater_mock, data_source, discovery
+        self, registry_updater_mock, discovery
     ) -> None:
         """Test discovery does not set up sensors multiple times for an existing ERD."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await when_the_erd_is_set_to(
             0x0092, bytes.fromhex("0000 0001 0000 0001"), discovery
         )
@@ -371,11 +359,9 @@ class TestDiscovery:
         the_entity_should_not_exist("Another Test_2", registry_updater_mock)
 
     async def test_creates_sensor_for_each_field(
-        self, registry_updater_mock, data_source, discovery
+        self, registry_updater_mock, discovery
     ) -> None:
         """Test discovery sets up a sensor for each field in the ERD."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await when_the_erd_is_set_to(
             0x0093, bytes.fromhex("0001 0001 0000 0000"), discovery
         )
@@ -383,11 +369,9 @@ class TestDiscovery:
         the_entity_should_be_added_to_the_device("Field Two", registry_updater_mock)
 
     async def test_moves_erds_to_unsupported_when_appliance_api_changes(
-        self, registry_updater_mock, data_source, discovery
+        self, data_source, discovery
     ) -> None:
         """Test discovery moves ERDs to the unsupported list when the appliance API manifest no longer lists them as supported."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await given_the_erd_is_set_to(
             0x0092, bytes.fromhex("0000 0001 0000 0001"), discovery
         )
@@ -398,12 +382,8 @@ class TestDiscovery:
         the_erd_should_be_supported(0x0001, data_source)
         the_erd_should_be_unsupported(0x0002, data_source)
 
-    async def test_logs_when_mqtt_topic_is_bad(
-        self, registry_updater_mock, data_source, capture_errors, discovery
-    ) -> None:
+    async def test_logs_when_mqtt_topic_is_bad(self, capture_errors, discovery) -> None:
         """Test discovery logs an error for a bad MQTT topic."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await when_an_mqtt_message_is_received_on_topic(
             "geappliances/test/bad", bytes.fromhex("00"), discovery
         )
@@ -412,11 +392,9 @@ class TestDiscovery:
         )
 
     async def test_logs_when_common_appliance_api_is_bad(
-        self, registry_updater_mock, data_source, capture_errors, discovery
+        self, capture_errors, discovery
     ) -> None:
         """Test discovery logs an error for a bad common appliance API version."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await when_the_erd_is_set_to(
             0x0092, bytes.fromhex("0000 0002 0000 0000"), discovery
         )
@@ -425,11 +403,9 @@ class TestDiscovery:
         )
 
     async def test_logs_when_feature_appliance_api_is_bad(
-        self, registry_updater_mock, data_source, capture_errors, discovery
+        self, capture_errors, discovery
     ) -> None:
         """Test discovery logs an error for a bad feature appliance API version."""
-        # discovery = GeaDiscovery(registry_updater_mock, data_source)
-
         await when_the_erd_is_set_to(
             0x0093, bytes.fromhex("0000 0002 0000 0000"), discovery
         )

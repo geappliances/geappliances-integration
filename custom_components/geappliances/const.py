@@ -1,6 +1,9 @@
 """Constants for the GE Appliances integration."""
 
-from homeassistant.const import Platform
+import voluptuous as vol
+
+from homeassistant.const import ATTR_ENTITY_ID, Platform
+import homeassistant.helpers.config_validation as cv
 
 type Erd = int
 
@@ -22,38 +25,63 @@ APPLIANCE_API_DEFINITIONS = "appliance_api_definitions"
 # Configuration fields
 CONF_NAME = "name"
 CONF_DEVICE_ID = "id"
-CONF_DEVICE_MANUFACTURER = "manufacturer"
-CONF_DEVICE_SERIAL_NUMBER = "serial_number"
-CONF_COMMAND_TOPIC = "command_topic"
-CONF_COMMAND_TEMPLATE = "command_template"
-CONF_STATE_TOPIC = "state_topic"
-CONF_VALUE_TEMPLATE = "value_template"
-CONF_UNIT_OF_MEASUREMENT = "unit_of_measurement"
-CONF_PLATFORM = "platform"
-CONF_DEVICE_CLASS = "device_class"
-CONF_MIN = "min"
-CONF_MAX = "max"
-CONF_MODE = "mode"
+
 
 # MQTT constants
 SUBSCRIBE_TOPIC = "geappliances/#"
 
-# MQTT Payload fields
-DEVICE_IDENTIFIER = "identifier"
-DEVICE_NAME = "name"
-DEVICE_MANUFACTURER = "manufacturer"
-DEVICE_SW_VERSION = "sw_version"
-DEVICE_MODEL = "model"
-DEVICE_SERIAL_NUMBER = "serial_number"
+# Services to update entitie attributes
+ATTR_MIN_VAL = "min_val"
+SERVICE_SET_MIN = "set_min"
+SERVICE_SET_MIN_SCHEMA = vol.Schema(
+    {
+        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+        vol.Required(ATTR_MIN_VAL): vol.Coerce(float),
+    }
+)
 
-ERD_NAME = "name"
-ERD_PLATFORM = "platform"
-ERD_COMMAND_TOPIC = "command_topic"
-ERD_COMMAND_TEMPLATE = "command_template"
-ERD_STATE_TOPIC = "state_topic"
-ERD_VALUE_TEMPLATE = "value_template"
-ERD_UNIT_OF_MEASUREMENT = "unit_of_measurement"
-ERD_DEVICE_CLASS = "device_class"
-ERD_MIN = "min"
-ERD_MAX = "max"
-ERD_MODE = "mode"
+ATTR_MAX_VAL = "max_val"
+SERVICE_SET_MAX = "set_max"
+SERVICE_SET_MAX_SCHEMA = vol.Schema(
+    {
+        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+        vol.Required(ATTR_MAX_VAL): vol.Coerce(float),
+    }
+)
+
+ATTR_UNIT = "unit"
+SERVICE_SET_UNIT = "set_units"
+SERVICE_SET_UNIT_SCHEMA = vol.Schema(
+    {
+        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+        vol.Required(ATTR_UNIT): vol.Coerce(str),
+    }
+)
+
+ATTR_TIME_FORMAT = "time_format"
+SERVICE_SET_TIME_FORMAT = "set_units"
+SERVICE_SET_TIME_FORMAT_SCHEMA = vol.Schema(
+    {
+        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+        vol.Required(ATTR_TIME_FORMAT): vol.All(vol.Coerce(int), vol.Range(0, 2)),
+    }
+)
+
+SERVICE_DISABLE = "disable"
+ATTR_ENABLED = "enabled"
+SERVICE_DISABLE_SCHEMA = vol.Schema(
+    {
+        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+        vol.Required(ATTR_ENABLED): vol.Coerce(bool),
+    }
+)
+
+ATTR_ALLOWABLE = "allowable"
+SERVICE_SET_ALLOWABLES = "set_allowables"
+SERVICE_SET_ALLOWABLES_SCHEMA = vol.Schema(
+    {
+        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+        vol.Required(ATTR_ALLOWABLE): vol.Coerce(str),
+        vol.Required(ATTR_ENABLED): vol.Coerce(bool),
+    }
+)

@@ -13,6 +13,7 @@ from homeassistant.core import HomeAssistant
 from .const import DISCOVERY, DOMAIN, PLATFORMS, SUBSCRIBE_TOPIC
 from .discovery import GeaDiscovery
 from .ha_compatibility.data_source import DataSource
+from .ha_compatibility.meta_erds import MetaErdCoordinator
 from .ha_compatibility.mqtt_client import GeaMQTTClient
 from .ha_compatibility.registry_updater import RegistryUpdater
 
@@ -22,7 +23,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up GE Appliances from a config entry."""
 
-    if not await mqtt.async_wait_for_mqtt_client(hass):
+    if not await mqtt.util.async_wait_for_mqtt_client(hass):
         _LOGGER.error("MQTT integration is not available")
         return False
 
@@ -65,9 +66,10 @@ async def start_discovery(hass: HomeAssistant, entry: ConfigEntry) -> GeaDiscove
             )
 
     registry_updater = RegistryUpdater(hass, entry)
-    gea_discovery = GeaDiscovery(registry_updater, data_source)
+    meta_erd_coordinator = MetaErdCoordinator(data_source, hass)
+    gea_discovery = GeaDiscovery(registry_updater, data_source, meta_erd_coordinator)
 
-    await mqtt.async_subscribe(
+    await mqtt.client.async_subscribe(
         hass,
         SUBSCRIBE_TOPIC,
         mqtt_client.handle_message,

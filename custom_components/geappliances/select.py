@@ -8,11 +8,17 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import entity_platform, entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import GEA_ENTITY_NEW
+from .const import (
+    GEA_ENTITY_NEW,
+    SERVICE_DISABLE,
+    SERVICE_DISABLE_SCHEMA,
+    SERVICE_SET_ALLOWABLES,
+    SERVICE_SET_ALLOWABLES_SCHEMA,
+)
 from .entity import GeaEntity
 from .models import GeaSelectConfig
 
@@ -38,6 +44,20 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up GE Appliances select dropdown dynamically through discovery."""
+    platform = entity_platform.async_get_current_platform()
+
+    platform.async_register_entity_service(
+        SERVICE_DISABLE,
+        SERVICE_DISABLE_SCHEMA,
+        "enable_or_disable",
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_ALLOWABLES,
+        SERVICE_SET_ALLOWABLES_SCHEMA,
+        "set_allowables",
+    )
+
     entity_registry = er.async_get(hass)
 
     @callback
@@ -106,9 +126,8 @@ class GeaSelect(SelectEntity, GeaEntity):
         """Update state from ERD."""
         if value is None:
             self._field_bytes = None
-            return
-
-        self._field_bytes = await self.get_field_bytes(value)
+        else:
+            self._field_bytes = await self.get_field_bytes(value)
 
         self.async_schedule_update_ha_state(True)
 
@@ -138,3 +157,13 @@ class GeaSelect(SelectEntity, GeaEntity):
             return None
 
         return self._enum_vals[int.from_bytes(self._field_bytes)]
+
+    async def set_allowables(self, allowable: str, enabled: bool) -> None:
+        """Update the allowable list of options."""
+        if enabled:
+            if allowable not in self._attr_options:
+                self._attr_options.append(allowable)
+        else:
+            self._attr_options.remove(allowable)
+        _LOGGER.info("Current options: %s", self._attr_options)
+        self.async_schedule_update_ha_state(True)

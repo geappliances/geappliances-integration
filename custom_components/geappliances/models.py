@@ -23,6 +23,7 @@ class GeaEntityConfig:
     erd: Erd
     offset: int
     size: int
+    entity_type: str
 
 
 @dataclass

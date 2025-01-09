@@ -5,6 +5,7 @@ import logging
 from .const import Erd
 from .erd_factory import ERDFactory
 from .ha_compatibility.data_source import DataSource
+from .ha_compatibility.meta_erds import MetaErdCoordinator
 from .ha_compatibility.mqtt_client import MQTTMessage
 from .ha_compatibility.registry_updater import RegistryUpdater
 
@@ -15,12 +16,18 @@ class GeaDiscovery:
     """Class for setting up GE Appliances using MQTT discovery."""
 
     def __init__(
-        self, registry_updater: RegistryUpdater, data_source: DataSource
+        self,
+        registry_updater: RegistryUpdater,
+        data_source: DataSource,
+        meta_erd_coordinator: MetaErdCoordinator,
     ) -> None:
         """Initialize discovery class."""
         self._registry_updater = registry_updater
-        self._erd_factory = ERDFactory(registry_updater, data_source)
+        self._erd_factory = ERDFactory(
+            registry_updater, data_source, meta_erd_coordinator
+        )
         self._data_source = data_source
+        self._meta_erd_coordinator = meta_erd_coordinator
 
     async def should_log_error(self, split_topic: list[str]) -> bool:
         """Return true if the MQTT topic is bad."""
@@ -50,6 +57,10 @@ class GeaDiscovery:
 
             else:
                 await self._data_source.erd_write(device_name, erd, msg.payload)
+                if await self._meta_erd_coordinator.is_meta_erd(erd):
+                    await self._meta_erd_coordinator.apply_transforms_for_meta_erd(
+                        device_name, erd
+                    )
 
         elif await self.should_log_error(split_topic):
             _LOGGER.error(

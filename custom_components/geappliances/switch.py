@@ -7,11 +7,11 @@ from homeassistant.components import switch
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import entity_platform, entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import GEA_ENTITY_NEW
+from .const import GEA_ENTITY_NEW, SERVICE_DISABLE, SERVICE_DISABLE_SCHEMA
 from .entity import GeaEntity
 from .models import GeaSwitchConfig
 
@@ -24,6 +24,14 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up GE Appliances switch dynamically through discovery."""
+    platform = entity_platform.async_get_current_platform()
+
+    platform.async_register_entity_service(
+        SERVICE_DISABLE,
+        SERVICE_DISABLE_SCHEMA,
+        "enable_or_disable",
+    )
+
     entity_registry = er.async_get(hass)
 
     @callback
@@ -89,9 +97,8 @@ class GeaSwitch(SwitchEntity, GeaEntity):
         """Update state from ERD."""
         if value is None:
             self._attr_is_on = None
-            return
-
-        self._attr_is_on = (await self.get_field_bytes(value)) != b"\x00"
+        else:
+            self._attr_is_on = (await self.get_field_bytes(value)) != b"\x00"
 
         self.async_schedule_update_ha_state(True)
 

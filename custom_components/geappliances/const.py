@@ -67,9 +67,9 @@ SERVICE_SET_TIME_FORMAT_SCHEMA = vol.Schema(
     }
 )
 
-SERVICE_DISABLE = "disable"
+SERVICE_ENABLE_OR_DISABLE = "disable"
 ATTR_ENABLED = "enabled"
-SERVICE_DISABLE_SCHEMA = vol.Schema(
+SERVICE_ENABLE_OR_DISABLE_SCHEMA = vol.Schema(
     {
         vol.Required(ATTR_ENTITY_ID): cv.entity_id,
         vol.Required(ATTR_ENABLED): vol.Coerce(bool),

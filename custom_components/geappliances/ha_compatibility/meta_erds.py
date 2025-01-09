@@ -14,7 +14,7 @@ from ..const import (
     ATTR_MIN_VAL,
     ATTR_UNIT,
     DOMAIN,
-    SERVICE_DISABLE,
+    SERVICE_ENABLE_OR_DISABLE,
     SERVICE_SET_ALLOWABLES,
     SERVICE_SET_MAX,
     SERVICE_SET_MIN,
@@ -92,7 +92,7 @@ async def enable_or_disable(
     """Enable or disable the entity."""
     await hass.services.async_call(
         DOMAIN,
-        SERVICE_DISABLE,
+        SERVICE_ENABLE_OR_DISABLE,
         {ATTR_ENTITY_ID: entity_id, ATTR_ENABLED: enabled_bytes != b"\x00"},
     )
 

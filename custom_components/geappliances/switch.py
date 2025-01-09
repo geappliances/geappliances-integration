@@ -11,7 +11,11 @@ from homeassistant.helpers import entity_platform, entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import GEA_ENTITY_NEW, SERVICE_DISABLE, SERVICE_DISABLE_SCHEMA
+from .const import (
+    GEA_ENTITY_NEW,
+    SERVICE_ENABLE_OR_DISABLE,
+    SERVICE_ENABLE_OR_DISABLE_SCHEMA,
+)
 from .entity import GeaEntity
 from .models import GeaSwitchConfig
 
@@ -27,8 +31,8 @@ async def async_setup_entry(
     platform = entity_platform.async_get_current_platform()
 
     platform.async_register_entity_service(
-        SERVICE_DISABLE,
-        SERVICE_DISABLE_SCHEMA,
+        SERVICE_ENABLE_OR_DISABLE,
+        SERVICE_ENABLE_OR_DISABLE_SCHEMA,
         "enable_or_disable",
     )
 

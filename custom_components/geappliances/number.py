@@ -16,8 +16,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
     GEA_ENTITY_NEW,
-    SERVICE_DISABLE,
-    SERVICE_DISABLE_SCHEMA,
+    SERVICE_ENABLE_OR_DISABLE,
+    SERVICE_ENABLE_OR_DISABLE_SCHEMA,
     SERVICE_SET_MAX,
     SERVICE_SET_MAX_SCHEMA,
     SERVICE_SET_MIN,
@@ -127,8 +127,8 @@ async def async_setup_entry(
     platform = entity_platform.async_get_current_platform()
 
     platform.async_register_entity_service(
-        SERVICE_DISABLE,
-        SERVICE_DISABLE_SCHEMA,
+        SERVICE_ENABLE_OR_DISABLE,
+        SERVICE_ENABLE_OR_DISABLE_SCHEMA,
         "enable_or_disable",
     )
 

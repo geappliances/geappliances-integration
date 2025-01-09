@@ -160,9 +160,11 @@ class MetaErdCoordinator:
                         target_entity,
                     )
 
-    async def apply_transforms_to_field(self, device_name: str, field: str) -> None:
-        """Check if any meta ERDs have transforms for the given field and apply them."""
-        meta_erd = self._entities_to_meta_erds.get(field)
+    async def apply_transforms_to_entity(
+        self, device_name: str, entity_id: str
+    ) -> None:
+        """Check if any meta ERDs have transforms for the given entity and apply them."""
+        meta_erd = self._entities_to_meta_erds.get(entity_id)
 
         if meta_erd is not None:
             await self.apply_transforms_for_meta_erd(device_name, meta_erd)

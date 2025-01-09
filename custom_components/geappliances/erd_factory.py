@@ -65,7 +65,7 @@ class ERDFactory:
                     await self._registry_updater.add_entity_to_device(
                         config, device_name
                     )
-                    await self._meta_erd_coordinator.apply_transforms_to_field(
+                    await self._meta_erd_coordinator.apply_transforms_to_entity(
                         device_name, await self._get_entity_name_for_config(config)
                     )
 

@@ -66,7 +66,7 @@ APPLIANCE_API_JSON = """
     "featureApis": {}
 }"""
 
-APPLIANCE_API_DEFINTION_JSON = """
+APPLIANCE_API_DEFINITION_JSON = """
 {
     "erds" :[
         {
@@ -268,7 +268,7 @@ async def initialize(hass: HomeAssistant, mqtt_mock: MqttMockHAClient) -> None:
     """Set up for all tests."""
     await given_integration_is_initialized(hass, mqtt_mock)
     given_the_appliance_api_is(APPLIANCE_API_JSON, hass)
-    given_the_appliance_api_erd_defs_are(APPLIANCE_API_DEFINTION_JSON, hass)
+    given_the_appliance_api_erd_defs_are(APPLIANCE_API_DEFINITION_JSON, hass)
     given_the_meta_erds_are_set_to(hass, META_TABLE)
     await given_the_erd_is_set_to(0x0092, "0000 0001 0000 0001", hass)
     mqtt_mock.reset_mock()

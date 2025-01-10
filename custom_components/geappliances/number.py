@@ -6,14 +6,25 @@ import re
 from typing import Any
 
 from homeassistant.components import number
-from homeassistant.components.number import NumberDeviceClass, NumberEntity
+from homeassistant.components.number import NumberEntity
+from homeassistant.components.number.const import NumberDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import entity_platform, entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import GEA_ENTITY_NEW
+from .const import (
+    GEA_ENTITY_NEW,
+    SERVICE_ENABLE_OR_DISABLE,
+    SERVICE_ENABLE_OR_DISABLE_SCHEMA,
+    SERVICE_SET_MAX,
+    SERVICE_SET_MAX_SCHEMA,
+    SERVICE_SET_MIN,
+    SERVICE_SET_MIN_SCHEMA,
+    SERVICE_SET_UNIT,
+    SERVICE_SET_UNIT_SCHEMA,
+)
 from .entity import GeaEntity
 from .models import GeaNumberConfig
 
@@ -113,6 +124,32 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up GE Appliances number input dynamically through discovery."""
+    platform = entity_platform.async_get_current_platform()
+
+    platform.async_register_entity_service(
+        SERVICE_ENABLE_OR_DISABLE,
+        SERVICE_ENABLE_OR_DISABLE_SCHEMA,
+        "enable_or_disable",
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_MIN,
+        SERVICE_SET_MIN_SCHEMA,
+        "set_min",
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_MAX,
+        SERVICE_SET_MAX_SCHEMA,
+        "set_max",
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_UNIT,
+        SERVICE_SET_UNIT_SCHEMA,
+        "set_unit",
+    )
+
     entity_registry = er.async_get(hass)
 
     @callback
@@ -130,7 +167,7 @@ async def async_setup_entry(
 
     async_dispatcher_connect(
         hass,
-        GEA_ENTITY_NEW.format(number.DOMAIN),
+        GEA_ENTITY_NEW.format(number.const.DOMAIN),
         async_discover,
     )
 
@@ -186,9 +223,8 @@ class GeaNumber(NumberEntity, GeaEntity):
         """Update state from ERD."""
         if value is None:
             self._field_bytes = None
-            return
-
-        self._field_bytes = await self.get_field_bytes(value)
+        else:
+            self._field_bytes = await self.get_field_bytes(value)
 
         self.async_schedule_update_ha_state(True)
 
@@ -216,3 +252,20 @@ class GeaNumber(NumberEntity, GeaEntity):
             return None
 
         return self._value_fn(self._field_bytes)
+
+    async def set_min(self, min_val: float) -> None:
+        """Set the minimum value."""
+        self._attr_native_min_value = min_val
+        self.async_schedule_update_ha_state(True)
+
+    async def set_max(self, max_val: float) -> None:
+        """Set the minimum value."""
+        self._attr_native_max_value = max_val
+        self.async_schedule_update_ha_state(True)
+
+    async def set_unit(self, unit: str) -> None:
+        "Set the unit."
+        _LOGGER.info("Set unit to %s", unit)
+        self._attr_native_unit_of_measurement = unit
+        self._attr_suggested_unit_of_measurement = unit
+        self.async_schedule_update_ha_state(True)

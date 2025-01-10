@@ -19,8 +19,8 @@ async def when_the_user_starts_config_flow(
 def the_confirm_form_should_be_shown(result: ConfigFlowResult) -> None:
     """Assert that the confirmation form is shown."""
     assert result is not None
-    assert result["type"] is FlowResultType.FORM
-    assert result["step_id"] == "confirm"
+    assert result.get("type") is FlowResultType.FORM
+    assert result.get("step_id") == "confirm"
 
 
 async def when_the_user_confirms(
@@ -37,8 +37,10 @@ async def when_the_user_confirms(
 def the_entry_should_be_created(result: ConfigFlowResult) -> None:
     """Assert that the config entry has been created."""
     assert result is not None
-    assert result["type"] is FlowResultType.CREATE_ENTRY
-    assert result["data"]["type"] == "user"
+    assert result.get("type") is FlowResultType.CREATE_ENTRY
+    assert result.get("data") is not None
+    if (data := result.get("data")) is not None:
+        assert data["type"] == "user"
 
 
 class TestConfigFlow:

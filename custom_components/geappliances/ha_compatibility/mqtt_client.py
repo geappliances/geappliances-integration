@@ -6,7 +6,7 @@ import logging
 from typing import Any, cast
 
 from homeassistant.components import mqtt
-from homeassistant.components.mqtt import ReceiveMessage
+from homeassistant.components.mqtt.models import ReceiveMessage
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
@@ -40,7 +40,7 @@ class GeaMQTTClient:
     async def publish_erd(self, device_name: str, erd: int, value: bytes) -> bool:
         """Publish an ERD and return true if successful."""
         try:
-            await mqtt.async_publish(
+            await mqtt.client.async_publish(
                 self._hass,
                 ERD_WRITE_TOPIC.format(device_name, f"{erd:#06x}"),
                 value.hex(),

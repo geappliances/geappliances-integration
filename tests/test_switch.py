@@ -123,24 +123,33 @@ async def initialize(hass: HomeAssistant, mqtt_mock: MqttMockHAClient) -> None:
 async def when_the_switch_is_turned_on(name: str, hass: HomeAssistant) -> None:
     """Turn the switch on."""
     data = {ATTR_ENTITY_ID: name}
-    await hass.services.async_call(switch.DOMAIN, SERVICE_TURN_ON, data, blocking=True)
+    await hass.services.async_call(
+        switch.const.DOMAIN, SERVICE_TURN_ON, data, blocking=True
+    )
 
 
 async def when_the_switch_is_turned_off(name: str, hass: HomeAssistant) -> None:
     """Turn the switch off."""
     data = {ATTR_ENTITY_ID: name}
-    await hass.services.async_call(switch.DOMAIN, SERVICE_TURN_OFF, data, blocking=True)
+    await hass.services.async_call(
+        switch.const.DOMAIN, SERVICE_TURN_OFF, data, blocking=True
+    )
 
 
 async def when_the_switch_is_toggled(name: str, hass: HomeAssistant) -> None:
     """Toggle the switch."""
     data = {ATTR_ENTITY_ID: name}
-    await hass.services.async_call(switch.DOMAIN, SERVICE_TOGGLE, data, blocking=True)
+    await hass.services.async_call(
+        switch.const.DOMAIN, SERVICE_TOGGLE, data, blocking=True
+    )
 
 
 def the_switch_state_should_be(name: str, state: str, hass: HomeAssistant) -> None:
     """Assert the state of the switch."""
-    assert hass.states.get(name).state == state
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.state == state
+    else:
+        pytest.fail(f"Could not find switch {name}")
 
 
 class TestSwitch:

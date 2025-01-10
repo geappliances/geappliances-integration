@@ -3,6 +3,8 @@
 import logging
 from typing import Any
 
+from custom_components.geappliances.ha_compatibility.meta_erds import MetaErdCoordinator
+
 from .config_factory import ConfigFactory
 from .const import Erd
 from .ha_compatibility.data_source import DataSource
@@ -16,12 +18,16 @@ class ERDFactory:
     """Class to set up ERDs as they are discovered."""
 
     def __init__(
-        self, registry_updater: RegistryUpdater, data_source: DataSource
+        self,
+        registry_updater: RegistryUpdater,
+        data_source: DataSource,
+        meta_erd_coordinator: MetaErdCoordinator,
     ) -> None:
         """Store references to registry updater and data source."""
         self._registry_updater = registry_updater
         self._data_source = data_source
         self._config_factory = ConfigFactory(data_source)
+        self._meta_erd_coordinator = meta_erd_coordinator
 
     async def get_entity_configs(
         self, erd: Erd, device_name: str
@@ -59,3 +65,10 @@ class ERDFactory:
                     await self._registry_updater.add_entity_to_device(
                         config, device_name
                     )
+                    await self._meta_erd_coordinator.apply_transforms_to_entity(
+                        device_name, await self._get_entity_name_for_config(config)
+                    )
+
+    async def _get_entity_name_for_config(self, config: GeaEntityConfig) -> str:
+        """Return the Home Assistant entity name for the given config."""
+        return f"{config.entity_type}.{config.name.lower().replace(" ", "_")}"

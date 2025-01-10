@@ -115,7 +115,10 @@ def the_binary_sensor_state_should_be(
     name: str, state: str, hass: HomeAssistant
 ) -> None:
     """Assert the state of the binary sensor."""
-    assert hass.states.get(name).state == state
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.state == state
+    else:
+        pytest.fail(f"Could not find binary sensor {name}")
 
 
 class TestBinarySensor:

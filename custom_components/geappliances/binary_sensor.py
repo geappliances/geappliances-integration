@@ -89,9 +89,8 @@ class GeaBinarySensor(BinarySensorEntity, GeaEntity):
         """Update state from ERD."""
         if value is None:
             self._attr_is_on = None
-            return
-
-        self._attr_is_on = (await self.get_field_bytes(value)) != b"\x00"
+        else:
+            self._attr_is_on = (await self.get_field_bytes(value)) != b"\x00"
 
         self.async_schedule_update_ha_state(True)
 

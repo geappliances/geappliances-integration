@@ -48,6 +48,8 @@ class ConfigFactory:
             r"(in Pa)": "Pa",
             r"gallons": "gal",
             r"(oz)": "fl. oz.",
+            r"(mL)": "mL",
+            r"(L)": "L",
             r" lbs|(lbs)": "lbs",
             r"mA$| mA |(mA)": "mA",
             r"seconds": "s",
@@ -84,6 +86,7 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
+            "binary_sensor",
         )
 
     async def build_number(
@@ -101,6 +104,7 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
+            "number",
             device_class,
             await self.get_units(field),
             await NumberConfigAttributes.get_min(field),
@@ -122,6 +126,7 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
+            "select",
             await SelectConfigAttributes.get_enum_values(field),
         )
 
@@ -140,6 +145,7 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
+            "sensor",
             device_class,
             await SensorConfigAttributes.get_state_class(field),
             await self.get_units(field),
@@ -161,6 +167,7 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
+            "switch",
         )
 
     async def build_text(
@@ -177,6 +184,7 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
+            "text",
         )
 
     async def build_config(

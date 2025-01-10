@@ -9,15 +9,14 @@ from pytest_homeassistant_custom_component.common import (
 )
 from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.util.unit_system import US_CUSTOMARY_SYSTEM
+from homeassistant.util.unit_system import US_CUSTOMARY_SYSTEM, UnitSystem
 
 ERD_VALUE_TOPIC = "geappliances/test/erd/{}/value"
 ERD_WRITE_TOPIC = "geappliances/test/erd/{}/write"
 
 
-def config_entry_stub() -> ConfigEntry:
+def config_entry_stub() -> MockConfigEntry:
     """Config entry version 1 fixture."""
     return MockConfigEntry(
         domain=DOMAIN,
@@ -32,7 +31,7 @@ def config_entry_stub() -> ConfigEntry:
 async def given_integration_is_initialized(
     hass: HomeAssistant,
     mqtt_mock: MqttMockHAClient,
-    unit_system: str = US_CUSTOMARY_SYSTEM,
+    unit_system: UnitSystem = US_CUSTOMARY_SYSTEM,
 ) -> None:
     """Test integration sets up discovery singleton."""
     entry = config_entry_stub()
@@ -71,3 +70,8 @@ def the_mqtt_topic_value_should_be(
     mqtt_mock.async_publish.assert_called_with(
         ERD_WRITE_TOPIC.format(f"{erd:#06x}"), state.lower(), 0, False
     )
+
+
+def mqtt_client_should_not_publish(mqtt_client_mock: MqttMockHAClient) -> None:
+    """Assert MQTT has not published anything."""
+    mqtt_client_mock.async_publish.assert_not_called()

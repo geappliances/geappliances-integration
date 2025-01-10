@@ -4,7 +4,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from homeassistant.components.number import NumberDeviceClass
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+from homeassistant.components.sensor.const import SensorDeviceClass, SensorStateClass
 
 from .const import Erd
 from .ha_compatibility.data_source import DataSource
@@ -23,6 +23,7 @@ class GeaEntityConfig:
     erd: Erd
     offset: int
     size: int
+    entity_type: str
 
 
 @dataclass

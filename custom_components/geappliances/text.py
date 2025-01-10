@@ -7,11 +7,15 @@ from homeassistant.components import text
 from homeassistant.components.text import TextEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import entity_platform, entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import GEA_ENTITY_NEW
+from .const import (
+    GEA_ENTITY_NEW,
+    SERVICE_ENABLE_OR_DISABLE,
+    SERVICE_ENABLE_OR_DISABLE_SCHEMA,
+)
 from .entity import GeaEntity
 from .models import GeaTextConfig
 
@@ -24,6 +28,14 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up GE Appliances text input dynamically through discovery."""
+    platform = entity_platform.async_get_current_platform()
+
+    platform.async_register_entity_service(
+        SERVICE_ENABLE_OR_DISABLE,
+        SERVICE_ENABLE_OR_DISABLE_SCHEMA,
+        "enable_or_disable",
+    )
+
     entity_registry = er.async_get(hass)
 
     @callback
@@ -41,7 +53,7 @@ async def async_setup_entry(
 
     async_dispatcher_connect(
         hass,
-        GEA_ENTITY_NEW.format(text.DOMAIN),
+        GEA_ENTITY_NEW.format(text.const.DOMAIN),
         async_discover,
     )
 
@@ -91,9 +103,8 @@ class GeaText(TextEntity, GeaEntity):
         """Update state from ERD."""
         if value is None:
             self._field_bytes = None
-            return
-
-        self._field_bytes = await self.get_field_bytes(value)
+        else:
+            self._field_bytes = await self.get_field_bytes(value)
 
         self.async_schedule_update_ha_state(True)
 

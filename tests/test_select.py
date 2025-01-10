@@ -163,7 +163,10 @@ async def when_the_select_is_set_to(
 
 def the_select_value_should_be(name: str, state: str, hass: HomeAssistant) -> None:
     """Assert the value of the select."""
-    assert hass.states.get(name).state == state
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.state == state
+    else:
+        pytest.fail(f"Could not find select {name}")
 
 
 class TestSelect:

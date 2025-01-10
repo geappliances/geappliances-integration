@@ -1,11 +1,11 @@
 """Test GE Appliances number."""
 
-from custom_components.geappliances.const import Erd
 import pytest
 from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
 from homeassistant.components import number
 from homeassistant.components.number import NumberDeviceClass
+from homeassistant.components.number.const import ATTR_VALUE, SERVICE_SET_VALUE
 from homeassistant.const import ATTR_ENTITY_ID, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 from homeassistant.util.unit_system import METRIC_SYSTEM
@@ -16,6 +16,7 @@ from .common import (
     given_the_appliance_api_is,
     given_the_erd_is_set_to,
     the_mqtt_topic_value_should_be,
+    when_the_erd_is_set_to,
 )
 
 APPLIANCE_API_JSON = """
@@ -358,24 +359,22 @@ async def initialize(
     await given_the_erd_is_set_to(0x0093, "0000 0001 0000 0000", hass)
 
 
-async def when_the_erd_is_set_to(erd: Erd, state: str, hass: HomeAssistant) -> None:
-    """Fire MQTT message."""
-    await given_the_erd_is_set_to(erd, state, hass)
-
-
 async def when_the_number_is_set_to(
     name: str, value: float, hass: HomeAssistant
 ) -> None:
     """Set the number value."""
-    data = {ATTR_ENTITY_ID: name, number.ATTR_VALUE: value}
+    data = {ATTR_ENTITY_ID: name, ATTR_VALUE: value}
     await hass.services.async_call(
-        number.DOMAIN, number.SERVICE_SET_VALUE, data, blocking=True
+        number.DOMAIN, SERVICE_SET_VALUE, data, blocking=True
     )
 
 
 def the_number_value_should_be(name: str, state: str, hass: HomeAssistant) -> None:
     """Assert the value of the number."""
-    assert hass.states.get(name).state == state
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.state == state
+    else:
+        pytest.fail(f"Could not find number {name}")
 
 
 class TestNumber:
@@ -429,12 +428,18 @@ def the_device_class_should_be(
     name: str, device_class: NumberDeviceClass, hass: HomeAssistant
 ) -> None:
     """Assert that the device class is correct for the entity."""
-    assert hass.states.get(name).attributes.get("device_class") == device_class
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.attributes.get("device_class") == device_class
+    else:
+        pytest.fail(f"Could not find number {name}")
 
 
 def the_unit_should_be(name: str, unit: str, hass: HomeAssistant) -> None:
     """Assert that the unit of measurement is correct for the entity."""
-    assert hass.states.get(name).attributes.get("unit_of_measurement") == unit
+    if (entity := hass.states.get(name)) is not None:
+        assert entity.attributes.get("unit_of_measurement") == unit
+    else:
+        pytest.fail(f"Could not find number {name}")
 
 
 class TestNumberDeviceClasses:

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+coverage run --source=custom_components/geappliances -m pytest tests/ && coverage report --show-missing

@@ -23,7 +23,6 @@ class GeaEntityConfig:
     erd: Erd
     offset: int
     size: int
-    entity_type: str
 
 
 @dataclass
@@ -68,3 +67,10 @@ class GeaSwitchConfig(GeaEntityConfig):
 @dataclass
 class GeaTextConfig(GeaEntityConfig):
     """Dataclass for holding configuration info for a text input."""
+
+
+@dataclass
+class GeaTimeConfig(GeaEntityConfig):
+    """Dataclass for holding configuration info for a time input."""
+
+    is_read_only: bool

@@ -14,6 +14,7 @@ PLATFORMS: list[Platform] = [
     Platform.SENSOR,
     Platform.SWITCH,
     Platform.TEXT,
+    Platform.TIME,
 ]
 
 DOMAIN = "geappliances"
@@ -55,15 +56,6 @@ SERVICE_SET_UNIT_SCHEMA = vol.Schema(
     {
         vol.Required(ATTR_ENTITY_ID): cv.entity_id,
         vol.Required(ATTR_UNIT): vol.Coerce(str),
-    }
-)
-
-ATTR_TIME_FORMAT = "time_format"
-SERVICE_SET_TIME_FORMAT = "set_units"
-SERVICE_SET_TIME_FORMAT_SCHEMA = vol.Schema(
-    {
-        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
-        vol.Required(ATTR_TIME_FORMAT): vol.All(vol.Coerce(int), vol.Range(0, 2)),
     }
 )
 

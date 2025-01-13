@@ -191,6 +191,12 @@ def discovery(
     return GeaDiscovery(registry_updater_mock, data_source, meta_erd_coordinator_mock)
 
 
+@pytest.fixture(autouse=True)
+def set_special_erd_map(discovery) -> None:
+    """Set the special ERD map to empty to avoid interfering with tests."""
+    discovery._erd_factory._special_erd_coordinator._special_erds_map = {}
+
+
 async def given_the_erd_is_set_to(
     erd: Erd,
     payload: bytes,

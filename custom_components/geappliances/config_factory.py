@@ -16,12 +16,14 @@ from .models import (
     GeaSensorConfig,
     GeaSwitchConfig,
     GeaTextConfig,
+    GeaTimeConfig,
 )
 from .number import GeaNumber, NumberConfigAttributes
 from .select import GeaSelect, SelectConfigAttributes
 from .sensor import GeaSensor, SensorConfigAttributes
 from .switch import GeaSwitch
 from .text import GeaText
+from .time import GeaTime
 
 PLATFORM_TYPE_LIST: list = [
     GeaBinarySensor,
@@ -86,7 +88,6 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
-            "binary_sensor",
         )
 
     async def build_number(
@@ -104,7 +105,6 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
-            "number",
             device_class,
             await self.get_units(field),
             await NumberConfigAttributes.get_min(field),
@@ -126,7 +126,6 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
-            "select",
             await SelectConfigAttributes.get_enum_values(field),
         )
 
@@ -145,7 +144,6 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
-            "sensor",
             device_class,
             await SensorConfigAttributes.get_state_class(field),
             await self.get_units(field),
@@ -167,7 +165,6 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
-            "switch",
         )
 
     async def build_text(
@@ -184,7 +181,23 @@ class ConfigFactory:
             erd,
             field["offset"],
             field["size"],
-            "text",
+        )
+
+    async def build_time(
+        self, device_name: str, erd: Erd, field: dict[str, Any]
+    ) -> GeaTimeConfig:
+        """Return a time config."""
+        return GeaTimeConfig(
+            f"{device_name}_{erd:04x}_{field[CONF_NAME]}",
+            (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
+            device_name,
+            field[CONF_NAME],
+            Platform.TIME,
+            self._data_source,
+            erd,
+            field["offset"],
+            field["size"],
+            True,
         )
 
     async def build_config(
@@ -221,6 +234,9 @@ class ConfigFactory:
 
         if platform == GeaText:
             return await self.build_text(device_name, erd, field)
+
+        if platform == GeaTime:
+            return await self.build_time(device_name, erd, field)
 
         # Explode if we don't support the given field
         raise NotImplementedError

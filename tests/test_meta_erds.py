@@ -6,7 +6,6 @@ from custom_components.geappliances.ha_compatibility.meta_erds import (
     set_allowables,
     set_max,
     set_min,
-    set_time_format,
     set_unit,
 )
 import pytest
@@ -253,7 +252,6 @@ META_TABLE = {
     0x0004: {"Temp Min": (["number.test_number", "number.test_reverse"], set_min)},
     0x0005: {"Temp Max": (["number.test_number"], set_max)},
     0x0006: {"Pressure Units": (["number.test_number"], set_unit)},
-    0x0007: {"Time Format": (["sensor.test_sensor"], set_time_format)},
     0x0008: {"Temp Supported": (["number.test_number"], enable_or_disable)},
     0x0009: {
         "EnumAllowables.Zero": (["select.test_select.Zero"], set_allowables),
@@ -285,12 +283,8 @@ async def setting_the_number_should_raise_error(
     name: str, value: float, hass: HomeAssistant
 ) -> None:
     """Assert that attempting to set the number's value raises an error."""
-    try:
+    with pytest.raises(ServiceValidationError):
         await when_the_number_is_set_to(name, value, hass)
-    except ServiceValidationError:
-        return
-
-    pytest.fail(f"Set value of {name}, expected ServiceValidationError")
 
 
 def the_entity_value_should_be(name: str, state: str, hass: HomeAssistant) -> None:
@@ -305,12 +299,8 @@ async def setting_the_select_should_raise_error(
     name: str, option: str, hass: HomeAssistant
 ) -> None:
     """Assert that attempting to set the select's value raises an error."""
-    try:
+    with pytest.raises(ServiceValidationError):
         await when_the_select_is_set_to(name, option, hass)
-    except ServiceValidationError:
-        return
-
-    pytest.fail(f"Set value of {name}, expected ServiceValidationError")
 
 
 class TestMetaErds:
@@ -347,21 +337,10 @@ class TestMetaErds:
 
         the_unit_should_be("number.test_number", "psi", hass)
 
-    @pytest.mark.skip
-    async def test_time_format_is_set_by_erd(
-        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
-    ) -> None:
-        """Test the time format is set by the associated ERD."""
-        await given_the_erd_is_set_to(0x0002, "00", hass)
-        await given_the_erd_is_set_to(0x0007, "01", hass)
-
-        await when_the_erd_is_set_to(0x0002, "10", hass)
-        the_entity_value_should_be("sensor.test_sensor", "13:00", hass)
-
     async def test_entity_is_disabled_by_erd(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
-        """Test the time format is set by the associated ERD."""
+        """Test the entity is disabled by the associated ERD."""
         await given_the_erd_is_set_to(0x0001, "00", hass)
         await given_the_erd_is_set_to(0x0008, "00", hass)
 
@@ -373,7 +352,7 @@ class TestMetaErds:
     async def test_allowables_are_set_by_erd(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
-        """Test the time format is set by the associated ERD."""
+        """Test the allowables are set by the associated ERD."""
         await given_the_erd_is_set_to(0x0003, "00", hass)
         await given_the_erd_is_set_to(0x0009, "80", hass)
 

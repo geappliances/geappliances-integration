@@ -4,6 +4,9 @@ import logging
 from typing import Any
 
 from custom_components.geappliances.ha_compatibility.meta_erds import MetaErdCoordinator
+from custom_components.geappliances.ha_compatibility.special_erds import (
+    SpecialErdCoordinator,
+)
 
 from .config_factory import ConfigFactory
 from .const import Erd
@@ -28,6 +31,9 @@ class ERDFactory:
         self._data_source = data_source
         self._config_factory = ConfigFactory(data_source)
         self._meta_erd_coordinator = meta_erd_coordinator
+        self._special_erd_coordinator = SpecialErdCoordinator(
+            data_source, self._config_factory
+        )
 
     async def get_entity_configs(
         self, erd: Erd, device_name: str
@@ -60,7 +66,16 @@ class ERDFactory:
                 device_name, erd_int, None
             )
             if not await self._data_source.erd_has_subscribers(device_name, erd_int):
-                entity_configs = await self.get_entity_configs(erd_int, device_name)
+                if await self._special_erd_coordinator.is_special_erd(erd_int):
+                    entity_configs = (
+                        await self._special_erd_coordinator.build_config_for_erd(
+                            device_name,
+                            erd_int,
+                        )
+                    )
+                else:
+                    entity_configs = await self.get_entity_configs(erd_int, device_name)
+
                 for config in entity_configs:
                     await self._registry_updater.add_entity_to_device(
                         config, device_name
@@ -71,4 +86,4 @@ class ERDFactory:
 
     async def _get_entity_name_for_config(self, config: GeaEntityConfig) -> str:
         """Return the Home Assistant entity name for the given config."""
-        return f"{config.entity_type}.{config.name.lower().replace(" ", "_")}"
+        return f"{config.platform}.{config.name.lower().replace(" ", "_")}"

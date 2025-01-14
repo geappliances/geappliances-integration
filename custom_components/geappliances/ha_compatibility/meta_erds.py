@@ -1,5 +1,6 @@
 """Module to manage meta ERDs."""
 
+from collections.abc import Callable
 import logging
 import math
 
@@ -69,17 +70,6 @@ async def set_unit(
         await hass.services.async_call(
             DOMAIN, SERVICE_SET_UNIT, {ATTR_ENTITY_ID: entity_id, ATTR_UNIT: unit}
         )
-
-
-async def set_time_format(
-    hass: HomeAssistant,
-    _data_source: DataSource,
-    _meta_erd: Erd,
-    time_format_bytes: bytes,
-    entity_id: str,
-) -> None:
-    """Set the time format for the sensor entity."""
-    raise NotImplementedError
 
 
 async def enable_or_disable(
@@ -213,7 +203,7 @@ class MetaErdCoordinator:
         return masked.to_bytes()
 
 
-_TRANSFORM_TABLE = {
+_TRANSFORM_TABLE: dict[Erd, dict[str, tuple[list[str], Callable]]] = {
     0x0007: {
         "Temperature Display Units": (["number.target_cooling_temperature"], set_unit)
     },

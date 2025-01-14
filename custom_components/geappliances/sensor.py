@@ -20,8 +20,6 @@ from .const import (
     GEA_ENTITY_NEW,
     SERVICE_ENABLE_OR_DISABLE,
     SERVICE_ENABLE_OR_DISABLE_SCHEMA,
-    SERVICE_SET_TIME_FORMAT,
-    SERVICE_SET_TIME_FORMAT_SCHEMA,
 )
 from .entity import GeaEntity
 from .models import GeaSensorConfig
@@ -113,12 +111,6 @@ async def async_setup_entry(
         SERVICE_ENABLE_OR_DISABLE,
         SERVICE_ENABLE_OR_DISABLE_SCHEMA,
         "enable_or_disable",
-    )
-
-    platform.async_register_entity_service(
-        SERVICE_SET_TIME_FORMAT,
-        SERVICE_SET_TIME_FORMAT_SCHEMA,
-        "set_time_format",
     )
 
     entity_registry = er.async_get(hass)

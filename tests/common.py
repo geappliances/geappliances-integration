@@ -38,6 +38,7 @@ async def given_integration_is_initialized(
     entry.add_to_hass(hass)
     await hass.config_entries.async_setup(entry.entry_id)
     hass.config.units = unit_system
+    given_the_special_erd_map_is({}, hass)
 
 
 def given_the_appliance_api_is(appliance_api: str, hass: HomeAssistant) -> None:
@@ -50,6 +51,13 @@ def given_the_appliance_api_erd_defs_are(erd_defs: str, hass: HomeAssistant) -> 
     hass.data[DOMAIN][
         DISCOVERY
     ]._data_source._appliance_api_erd_definitions = json.loads(erd_defs)["erds"]
+
+
+def given_the_special_erd_map_is(special_erd_map: dict, hass: HomeAssistant) -> None:
+    """Set the special ERD map for the integration."""
+    hass.data[DOMAIN][
+        DISCOVERY
+    ]._erd_factory._special_erd_coordinator._special_erds_map = special_erd_map
 
 
 async def given_the_erd_is_set_to(erd: Erd, state: str, hass: HomeAssistant) -> None:

@@ -41,23 +41,19 @@ class SpecialErdCoordinator:
         data_source: DataSource,
         config_factory: ConfigFactory,
     ) -> None:
-        """Create the meta ERD coordinator."""
+        """Create the special ERD coordinator."""
         self._data_source = data_source
         self._config_factory = config_factory
         self._special_erds_map = _SPECIAL_ERDS_MAP
 
     async def is_special_erd(self, erd: Erd) -> bool:
-        """Return true if the given ERD is a meta ERD."""
+        """Return true if the given ERD is a special ERD."""
         return erd in self._special_erds_map
 
     async def build_config_for_erd(
         self, device_name: str, erd: Erd
-    ) -> Sequence[GeaEntityConfig] | None:
-        """Create the Home Assistant entity for the give ERD."""
-        if not (await self.is_special_erd(erd)):
-            _LOGGER.error("%s is not listed as a special ERD", f"{erd:#06x}")
-            return None
-
+    ) -> Sequence[GeaEntityConfig]:
+        """Create the config entity for the given ERD. Raise KeyError if the ERD is not a special ERD."""
         return await self._special_erds_map[erd](device_name, self._data_source)
 
 

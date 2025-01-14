@@ -118,6 +118,9 @@ class GeaTime(TimeEntity, GeaEntity):
     async def async_set_value(self, value: time) -> None:
         """Update the value."""
         if self._is_read_only:
+            self.async_schedule_update_ha_state(
+                True
+            )  # Force update to wipe out user input
             return
 
         erd_value = await self._data_source.erd_read(self._device_name, self._erd)

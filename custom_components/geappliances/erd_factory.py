@@ -25,7 +25,6 @@ class ERDFactory:
         registry_updater: RegistryUpdater,
         data_source: DataSource,
         meta_erd_coordinator: MetaErdCoordinator,
-        # special_erd_coordinator: SpecialErdCoordinator,
     ) -> None:
         """Store references to registry updater and data source."""
         self._registry_updater = registry_updater
@@ -77,14 +76,13 @@ class ERDFactory:
                 else:
                     entity_configs = await self.get_entity_configs(erd_int, device_name)
 
-                if entity_configs is not None:
-                    for config in entity_configs:
-                        await self._registry_updater.add_entity_to_device(
-                            config, device_name
-                        )
-                        await self._meta_erd_coordinator.apply_transforms_to_entity(
-                            device_name, await self._get_entity_name_for_config(config)
-                        )
+                for config in entity_configs:
+                    await self._registry_updater.add_entity_to_device(
+                        config, device_name
+                    )
+                    await self._meta_erd_coordinator.apply_transforms_to_entity(
+                        device_name, await self._get_entity_name_for_config(config)
+                    )
 
     async def _get_entity_name_for_config(self, config: GeaEntityConfig) -> str:
         """Return the Home Assistant entity name for the given config."""

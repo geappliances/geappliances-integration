@@ -201,7 +201,7 @@ class DataSource:
     async def get_entity_id_for_field(
         self, device_name: str, erd: Erd, offset: int
     ) -> str | None:
-        """Return the entity ID of the entity associated with the given field."""
+        """Return the entity ID of the entity associated with the given field offset."""
         erd_val = await self._get_erd_or_none_from_either_list(device_name, erd)
         if erd_val is not None:
             return await erd_val[EVENT].get_subscriber_with_offset(offset)

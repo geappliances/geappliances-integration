@@ -29,7 +29,7 @@ class Event:
         return len(self._callbacks) != 0
 
     async def get_subscriber_with_offset(self, offset: int) -> str | None:
-        """Return the subscriber with the given field name, if it exists."""
+        """Return the subscriber with the given field offset, if it exists."""
         for callback in self._callbacks:
             entity = callback.__self__  # type:ignore [attr-defined]
             if entity.offset == offset:

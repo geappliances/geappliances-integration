@@ -1,8 +1,8 @@
 """Module to manage meta ERDs."""
 
-from collections.abc import Callable
 import logging
 import math
+from typing import Any
 
 from homeassistant.const import ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant
@@ -13,6 +13,7 @@ from ..const import (
     ATTR_ENABLED,
     ATTR_MAX_VAL,
     ATTR_MIN_VAL,
+    ATTR_UNIQUE_ID,
     ATTR_UNIT,
     DOMAIN,
     SERVICE_ENABLE_OR_DISABLE,
@@ -33,11 +34,14 @@ async def set_min(
     _meta_erd: Erd,
     min_val_bytes: bytes,
     entity_id: str,
+    unique_id: str,
 ) -> None:
     """Set the min value for the number entity."""
     min_val = int.from_bytes(min_val_bytes)
     await hass.services.async_call(
-        DOMAIN, SERVICE_SET_MIN, {ATTR_ENTITY_ID: entity_id, ATTR_MIN_VAL: min_val}
+        DOMAIN,
+        SERVICE_SET_MIN,
+        {ATTR_ENTITY_ID: entity_id, ATTR_UNIQUE_ID: unique_id, ATTR_MIN_VAL: min_val},
     )
 
 
@@ -47,11 +51,14 @@ async def set_max(
     _meta_erd: Erd,
     max_val_bytes: bytes,
     entity_id: str,
+    unique_id: str,
 ) -> None:
     """Set the max value for the number entity."""
     max_val = int.from_bytes(max_val_bytes)
     await hass.services.async_call(
-        DOMAIN, SERVICE_SET_MAX, {ATTR_ENTITY_ID: entity_id, ATTR_MAX_VAL: max_val}
+        DOMAIN,
+        SERVICE_SET_MAX,
+        {ATTR_ENTITY_ID: entity_id, ATTR_UNIQUE_ID: unique_id, ATTR_MAX_VAL: max_val},
     )
 
 
@@ -61,6 +68,7 @@ async def set_unit(
     meta_erd: Erd,
     unit_selection_bytes: bytes,
     entity_id: str,
+    unique_id: str,
 ) -> None:
     """Set the unit for the number entity."""
     unit_selection = int.from_bytes(unit_selection_bytes)
@@ -68,7 +76,9 @@ async def set_unit(
     if unit is not None:
         unit = unit["data"][0]["values"][f"{unit_selection}"]
         await hass.services.async_call(
-            DOMAIN, SERVICE_SET_UNIT, {ATTR_ENTITY_ID: entity_id, ATTR_UNIT: unit}
+            DOMAIN,
+            SERVICE_SET_UNIT,
+            {ATTR_ENTITY_ID: entity_id, ATTR_UNIQUE_ID: unique_id, ATTR_UNIT: unit},
         )
 
 
@@ -78,12 +88,17 @@ async def enable_or_disable(
     _meta_erd: Erd,
     enabled_bytes: bytes,
     entity_id: str,
+    unique_id: str,
 ) -> None:
     """Enable or disable the entity."""
     await hass.services.async_call(
         DOMAIN,
         SERVICE_ENABLE_OR_DISABLE,
-        {ATTR_ENTITY_ID: entity_id, ATTR_ENABLED: enabled_bytes != b"\x00"},
+        {
+            ATTR_ENTITY_ID: entity_id,
+            ATTR_UNIQUE_ID: unique_id,
+            ATTR_ENABLED: enabled_bytes != b"\x00",
+        },
     )
 
 
@@ -92,17 +107,18 @@ async def set_allowables(
     _data_source: DataSource,
     _meta_erd: Erd,
     allowables_bytes: bytes,
-    id_and_option: str,
+    entity_id: str,
+    unique_id: str,
 ) -> None:
     """Set the allowable options for the select entity."""
-    split = id_and_option.split(".")
-    entity_id = f"{split[0]}.{split[1]}"
-    option = split[2]
+    split = unique_id.split(".")
+    option = split[1]
     await hass.services.async_call(
         DOMAIN,
         SERVICE_SET_ALLOWABLES,
         {
             ATTR_ENTITY_ID: entity_id,
+            ATTR_UNIQUE_ID: split[0],
             ATTR_ALLOWABLE: option,
             ATTR_ENABLED: (int.from_bytes(allowables_bytes) & 0xFF) != 0,
         },
@@ -125,7 +141,7 @@ class MetaErdCoordinator:
             entity_id: meta_erd
             for meta_erd, row_dict in self._transform_table.items()
             for transform_row in row_dict.values()
-            for entity_id in transform_row[0]
+            for entity_id in transform_row["fields"]
         }
 
     async def is_meta_erd(self, erd: Erd) -> bool:
@@ -141,13 +157,20 @@ class MetaErdCoordinator:
                 device_name, meta_erd, meta_field
             )
             if field_bytes is not None:
-                for target_entity in transform_row[0]:
-                    await transform_row[1](
+                for target_entity, offset in zip(
+                    transform_row["fields"], transform_row["offsets"]
+                ):
+                    split = target_entity.split("_", 2)
+
+                    await transform_row["func"](
                         self._hass,
                         self._data_source,
                         meta_erd,
                         field_bytes,
-                        target_entity,
+                        await self._data_source.get_entity_id_for_field(
+                            device_name, int(split[1], base=16), offset
+                        ),
+                        target_entity.format(device_name),
                     )
 
     async def apply_transforms_to_entity(
@@ -174,7 +197,7 @@ class MetaErdCoordinator:
         erd_def = await self._data_source.get_erd_def(erd)
         if erd_def is None:
             _LOGGER.error(
-                "Could not fine ERD definition for meta ERD %s", f"{erd:#06x}"
+                "Could not find ERD definition for meta ERD %s", f"{erd:#06x}"
             )
             return None
 
@@ -188,43 +211,75 @@ class MetaErdCoordinator:
 
         if field_bytes is not None:
             if "bits" in field_def:
-                field_bytes = await self._get_bit_from_bytes(field_def, field_bytes)
+                field_bytes = await self._get_bits_from_bytes(field_def, field_bytes)
 
         return field_bytes
 
-    async def _get_bit_from_bytes(self, field_def: dict, field_bytes: bytes) -> bytes:
-        """Return the bit from the bitfield for the specified ERD field."""
-        # Right now this only supports getting a single bit but that's all we need for
-        # the "allowables" meta ERDs.
-        bit_def = field_def["bits"]
-        byte = field_bytes[math.floor(bit_def["offset"] / 8)]
-        masked = byte & (0x80 >> bit_def["offset"])
+    async def _get_bits_from_bytes(self, field_def: dict, field_bytes: bytes) -> bytes:
+        """Return the bits from the bitfield for the specified ERD field."""
+        offset = field_def["bits"]["offset"]
+        size = field_def["bits"]["size"]
+
+        byte = field_bytes[math.floor(offset / 8)]
+        mask = (1 << size) - 1  # Mask for the lowest `size` bytes
+        mask = mask << (8 - offset - size)  # Move mask to match offset
+        masked = byte & mask
 
         return masked.to_bytes()
 
 
-_TRANSFORM_TABLE: dict[Erd, dict[str, tuple[list[str], Callable]]] = {
+_TRANSFORM_TABLE: dict[Erd, dict[str, dict[str, Any]]] = {
     0x0007: {
-        "Temperature Display Units": (["number.target_cooling_temperature"], set_unit)
+        "Temperature Display Units": {
+            "fields": ["number.target_cooling_temperature"],
+            "offsets": [],
+            "func": set_unit,
+        }
     },
     0x4040: {
-        "Available Modes.Hybrid": (["select.mode.Hybrid"], set_allowables),
-        "Available Modes.Standard electric": (
-            ["select.mode.Standard electric"],
-            set_allowables,
-        ),
-        "Available Modes.E-heat": (["select.mode.E-heat"], set_allowables),
-        "Available Modes.HiDemand": (["select.mode.HiDemand"], set_allowables),
-        "Available Modes.Vacation": (["select.mode.Vacation"], set_allowables),
+        "Available Modes.Hybrid": {
+            "fields": ["select.mode.Hybrid"],
+            "offsets": [],
+            "func": set_allowables,
+        },
+        "Available Modes.Standard electric": {
+            "fields": ["select.mode.Standard electric"],
+            "offsets": [],
+            "func": set_allowables,
+        },
+        "Available Modes.E-heat": {
+            "fields": ["select.mode.E-heat"],
+            "offsets": [],
+            "func": set_allowables,
+        },
+        "Available Modes.HiDemand": {
+            "fields": ["select.mode.HiDemand"],
+            "offsets": [],
+            "func": set_allowables,
+        },
+        "Available Modes.Vacation": {
+            "fields": ["select.mode.Vacation"],
+            "offsets": [],
+            "func": set_allowables,
+        },
     },
     0x4047: {
-        "Minimum setpoint": (["number.temperature"], set_min),
-        "Maximum setpoint": (["number.temperature"], set_max),
+        "Minimum setpoint": {
+            "fields": ["{}_4024_Temperature"],
+            "offsets": [],
+            "func": set_min,
+        },
+        "Maximum setpoint": {
+            "fields": ["number.temperature"],
+            "offsets": [],
+            "func": set_max,
+        },
     },
     0x214E: {
-        "Eco Option Is In Client Writable State": (
-            ["select.eco_option_status"],
-            enable_or_disable,
-        )
+        "Eco Option Is In Client Writable State": {
+            "fields": ["select.eco_option_status"],
+            "offsets": [],
+            "func": enable_or_disable,
+        },
     },
 }

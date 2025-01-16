@@ -6,12 +6,14 @@ from typing import Any
 from homeassistant.components import switch
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant, ServiceCall, callback
 from homeassistant.helpers import entity_platform, entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
+    ATTR_ENABLED,
+    ATTR_UNIQUE_ID,
     GEA_ENTITY_NEW,
     SERVICE_ENABLE_OR_DISABLE,
     SERVICE_ENABLE_OR_DISABLE_SCHEMA,
@@ -30,10 +32,15 @@ async def async_setup_entry(
     """Set up GE Appliances switch dynamically through discovery."""
     platform = entity_platform.async_get_current_platform()
 
+    async def handle_service_call(entity: GeaSwitch, service_call: ServiceCall) -> None:
+        if entity.unique_id == service_call.data[ATTR_UNIQUE_ID]:
+            if service_call.service == SERVICE_ENABLE_OR_DISABLE:
+                await entity.enable_or_disable(service_call.data[ATTR_ENABLED])
+
     platform.async_register_entity_service(
         SERVICE_ENABLE_OR_DISABLE,
         SERVICE_ENABLE_OR_DISABLE_SCHEMA,
-        "enable_or_disable",
+        handle_service_call,
     )
 
     entity_registry = er.async_get(hass)

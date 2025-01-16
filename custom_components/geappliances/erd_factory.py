@@ -81,9 +81,12 @@ class ERDFactory:
                         config, device_name
                     )
                     await self._meta_erd_coordinator.apply_transforms_to_entity(
-                        device_name, await self._get_entity_name_for_config(config)
+                        device_name,
+                        await self._get_entity_unique_id_for_config(config, erd_int),
                     )
 
-    async def _get_entity_name_for_config(self, config: GeaEntityConfig) -> str:
+    async def _get_entity_unique_id_for_config(
+        self, config: GeaEntityConfig, erd: Erd
+    ) -> str:
         """Return the Home Assistant entity name for the given config."""
-        return f"{config.platform}.{config.name.lower().replace(" ", "_")}"
+        return "{}_" + f"{erd:04x}_" + config.name.replace(" ", "_")

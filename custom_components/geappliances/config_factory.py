@@ -74,12 +74,18 @@ class ConfigFactory:
 
         return None
 
+    async def get_unique_id(
+        self, device_name: str, erd: Erd, field: dict[str, Any]
+    ) -> str:
+        """Generate the unique ID string for the given ERD field."""
+        return f"{device_name}_{erd:04x}_{field[CONF_NAME]}".replace(" ", "_")
+
     async def build_binary_sensor(
         self, device_name: str, erd: Erd, field: dict[str, Any]
     ) -> GeaBinarySensorConfig:
         """Return a binary sensor config."""
         return GeaBinarySensorConfig(
-            f"{device_name}_{erd:04x}_{field[CONF_NAME]}",
+            await self.get_unique_id(device_name, erd, field),
             (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
             field[CONF_NAME],
@@ -96,7 +102,7 @@ class ConfigFactory:
         """Return a number config."""
         device_class = await NumberConfigAttributes.get_device_class(field)
         return GeaNumberConfig(
-            f"{device_name}_{erd:04x}_{field[CONF_NAME]}",
+            await self.get_unique_id(device_name, erd, field),
             (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
             field[CONF_NAME],
@@ -117,7 +123,7 @@ class ConfigFactory:
     ) -> GeaSelectConfig:
         """Return a binary sensor config."""
         return GeaSelectConfig(
-            f"{device_name}_{erd:04x}_{field[CONF_NAME]}",
+            await self.get_unique_id(device_name, erd, field),
             (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
             field[CONF_NAME],
@@ -135,7 +141,7 @@ class ConfigFactory:
         """Return a sensor config."""
         device_class = await SensorConfigAttributes.get_device_class(field)
         return GeaSensorConfig(
-            f"{device_name}_{erd:04x}_{field[CONF_NAME]}",
+            await self.get_unique_id(device_name, erd, field),
             (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
             field[CONF_NAME],
@@ -156,7 +162,7 @@ class ConfigFactory:
     ) -> GeaSwitchConfig:
         """Return a switch config."""
         return GeaSwitchConfig(
-            f"{device_name}_{erd:04x}_{field[CONF_NAME]}",
+            await self.get_unique_id(device_name, erd, field),
             (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
             field[CONF_NAME],
@@ -172,7 +178,7 @@ class ConfigFactory:
     ) -> GeaTextConfig:
         """Return a text config."""
         return GeaTextConfig(
-            f"{device_name}_{erd:04x}_{field[CONF_NAME]}",
+            await self.get_unique_id(device_name, erd, field),
             (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
             field[CONF_NAME],
@@ -188,7 +194,7 @@ class ConfigFactory:
     ) -> GeaTimeConfig:
         """Return a time config."""
         return GeaTimeConfig(
-            f"{device_name}_{erd:04x}_{field[CONF_NAME]}",
+            await self.get_unique_id(device_name, erd, field),
             (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
             field[CONF_NAME],

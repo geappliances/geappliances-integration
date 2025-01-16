@@ -207,7 +207,7 @@ def get_configs_for_erd(
         ],
         [
             GeaBinarySensorConfig(
-                "test_0002_Another Test",
+                "test_0002_Another_Test",
                 "test_id",
                 DEVICE_NAME,
                 "Another Test",
@@ -220,7 +220,7 @@ def get_configs_for_erd(
         ],
         [
             GeaBinarySensorConfig(
-                "test_0003_Yet Another Test",
+                "test_0003_Yet_Another_Test",
                 "test_id",
                 DEVICE_NAME,
                 "Yet Another Test",
@@ -233,7 +233,7 @@ def get_configs_for_erd(
         ],
         [
             GeaBinarySensorConfig(
-                "test_0004_Field One",
+                "test_0004_Field_One",
                 "test_id",
                 DEVICE_NAME,
                 "Field One",
@@ -244,7 +244,7 @@ def get_configs_for_erd(
                 1,
             ),
             GeaBinarySensorConfig(
-                "test_0004_Field Two",
+                "test_0004_Field_Two",
                 "test_id",
                 DEVICE_NAME,
                 "Field Two",

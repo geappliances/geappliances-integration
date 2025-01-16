@@ -129,5 +129,5 @@ class GeaDiscovery:
         """Add a device if not in the registry."""
         if not await self._data_source.device_exists(device_name):
             _LOGGER.debug("Adding %s", device_name)
-            device_id: str = await self._registry_updater.create_device(device_name)
+            device_id = await self._registry_updater.create_device(device_name)
             await self._data_source.add_device(device_name, device_id)

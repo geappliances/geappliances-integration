@@ -9,12 +9,17 @@ from homeassistant.components import number
 from homeassistant.components.number import NumberEntity
 from homeassistant.components.number.const import NumberDeviceClass
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant, ServiceCall, callback
 from homeassistant.helpers import entity_platform, entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
+    ATTR_ENABLED,
+    ATTR_MAX_VAL,
+    ATTR_MIN_VAL,
+    ATTR_UNIQUE_ID,
+    ATTR_UNIT,
     GEA_ENTITY_NEW,
     SERVICE_ENABLE_OR_DISABLE,
     SERVICE_ENABLE_OR_DISABLE_SCHEMA,
@@ -126,28 +131,39 @@ async def async_setup_entry(
     """Set up GE Appliances number input dynamically through discovery."""
     platform = entity_platform.async_get_current_platform()
 
+    async def handle_service_call(entity: GeaNumber, service_call: ServiceCall):
+        if entity.unique_id == service_call.data[ATTR_UNIQUE_ID]:
+            if service_call.service == SERVICE_ENABLE_OR_DISABLE:
+                await entity.enable_or_disable(service_call.data[ATTR_ENABLED])
+            elif service_call.service == SERVICE_SET_MIN:
+                await entity.set_min(service_call.data[ATTR_MIN_VAL])
+            elif service_call.service == SERVICE_SET_MAX:
+                await entity.set_max(service_call.data[ATTR_MAX_VAL])
+            elif service_call.service == SERVICE_SET_UNIT:
+                await entity.set_unit(service_call.data[ATTR_UNIT])
+
     platform.async_register_entity_service(
         SERVICE_ENABLE_OR_DISABLE,
         SERVICE_ENABLE_OR_DISABLE_SCHEMA,
-        "enable_or_disable",
+        handle_service_call,
     )
 
     platform.async_register_entity_service(
         SERVICE_SET_MIN,
         SERVICE_SET_MIN_SCHEMA,
-        "set_min",
+        handle_service_call,
     )
 
     platform.async_register_entity_service(
         SERVICE_SET_MAX,
         SERVICE_SET_MAX_SCHEMA,
-        "set_max",
+        handle_service_call,
     )
 
     platform.async_register_entity_service(
         SERVICE_SET_UNIT,
         SERVICE_SET_UNIT_SCHEMA,
-        "set_unit",
+        handle_service_call,
     )
 
     entity_registry = er.async_get(hass)

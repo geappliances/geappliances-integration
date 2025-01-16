@@ -249,14 +249,50 @@ APPLIANCE_API_DEFINITION_JSON = """
 }"""
 
 META_TABLE = {
-    0x0004: {"Temp Min": (["number.test_number", "number.test_reverse"], set_min)},
-    0x0005: {"Temp Max": (["number.test_number"], set_max)},
-    0x0006: {"Pressure Units": (["number.test_number"], set_unit)},
-    0x0008: {"Temp Supported": (["number.test_number"], enable_or_disable)},
+    0x0004: {
+        "Temp Min": {
+            "fields": ["{}_0001_Test_Number", "{}_000a_Test_Reverse"],
+            "offsets": [0, 0],
+            "func": set_min,
+        }
+    },
+    0x0005: {
+        "Temp Max": {
+            "fields": ["{}_0001_Test_Number"],
+            "offsets": [0],
+            "func": set_max,
+        }
+    },
+    0x0006: {
+        "Pressure Units": {
+            "fields": ["{}_0001_Test_Number"],
+            "offsets": [0],
+            "func": set_unit,
+        }
+    },
+    0x0008: {
+        "Temp Supported": {
+            "fields": ["{}_0001_Test_Number"],
+            "offsets": [0],
+            "func": enable_or_disable,
+        }
+    },
     0x0009: {
-        "EnumAllowables.Zero": (["select.test_select.Zero"], set_allowables),
-        "EnumAllowables.One": (["select.test_select.One"], set_allowables),
-        "EnumAllowables.Max": (["select.test_select.Max"], set_allowables),
+        "EnumAllowables.Zero": {
+            "fields": ["{}_0003_Test_Select.Zero"],
+            "offsets": [0],
+            "func": set_allowables,
+        },
+        "EnumAllowables.One": {
+            "fields": ["{}_0003_Test_Select.One"],
+            "offsets": [0],
+            "func": set_allowables,
+        },
+        "EnumAllowables.Max": {
+            "fields": ["{}_0003_Test_Select.Max"],
+            "offsets": [0],
+            "func": set_allowables,
+        },
     },
 }
 

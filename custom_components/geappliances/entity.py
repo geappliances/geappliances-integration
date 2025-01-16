@@ -32,3 +32,8 @@ class GeaEntity:
             await self._data_source.move_erd_to_unsupported(
                 self._device_name, self._erd
             )
+
+    @property
+    def offset(self) -> int:
+        """Return the entity's offset."""
+        return self._offset

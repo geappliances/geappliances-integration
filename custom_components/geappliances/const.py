@@ -1,6 +1,9 @@
 """Constants for the GE Appliances integration."""
 
-import voluptuous as vol
+import re
+from typing import Any
+
+import voluptuous as vol  # type:ignore [import-untyped]
 
 from homeassistant.const import ATTR_ENTITY_ID, Platform
 import homeassistant.helpers.config_validation as cv
@@ -27,25 +30,42 @@ APPLIANCE_API_DEFINITIONS = "appliance_api_definitions"
 CONF_NAME = "name"
 CONF_DEVICE_ID = "id"
 
-
 # MQTT constants
 SUBSCRIBE_TOPIC = "geappliances/#"
 
-# Services to update entitie attributes
+# Services to update entity attributes
+VALID_UNIQUE_ID = re.compile(r".*_[a-z0-9]{4}_.*")
+
+
+def unique_id(value: Any) -> str:
+    """Validate Entity ID."""
+    str_value = cv.string(value)
+    if VALID_UNIQUE_ID.match(str_value) is not None:
+        return str_value
+
+    raise vol.Invalid(f"Unique ID {value} is an invalid unique ID")
+
+
+ATTR_UNIQUE_ID = "unique_id"
+SERVICE_BASE_SCHEMA = {
+    vol.Required(ATTR_ENTITY_ID): vol.Any(cv.entity_id, None),
+    vol.Required(ATTR_UNIQUE_ID): unique_id,
+}
+
 ATTR_MIN_VAL = "min_val"
 SERVICE_SET_MIN = "set_min"
 SERVICE_SET_MIN_SCHEMA = vol.Schema(
-    {
-        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+    SERVICE_BASE_SCHEMA
+    | {
         vol.Required(ATTR_MIN_VAL): vol.Coerce(float),
-    }
+    },
 )
 
 ATTR_MAX_VAL = "max_val"
 SERVICE_SET_MAX = "set_max"
 SERVICE_SET_MAX_SCHEMA = vol.Schema(
-    {
-        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+    SERVICE_BASE_SCHEMA
+    | {
         vol.Required(ATTR_MAX_VAL): vol.Coerce(float),
     }
 )
@@ -53,8 +73,8 @@ SERVICE_SET_MAX_SCHEMA = vol.Schema(
 ATTR_UNIT = "unit"
 SERVICE_SET_UNIT = "set_units"
 SERVICE_SET_UNIT_SCHEMA = vol.Schema(
-    {
-        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+    SERVICE_BASE_SCHEMA
+    | {
         vol.Required(ATTR_UNIT): vol.Coerce(str),
     }
 )
@@ -62,8 +82,8 @@ SERVICE_SET_UNIT_SCHEMA = vol.Schema(
 SERVICE_ENABLE_OR_DISABLE = "disable"
 ATTR_ENABLED = "enabled"
 SERVICE_ENABLE_OR_DISABLE_SCHEMA = vol.Schema(
-    {
-        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+    SERVICE_BASE_SCHEMA
+    | {
         vol.Required(ATTR_ENABLED): vol.Coerce(bool),
     }
 )
@@ -71,8 +91,8 @@ SERVICE_ENABLE_OR_DISABLE_SCHEMA = vol.Schema(
 ATTR_ALLOWABLE = "allowable"
 SERVICE_SET_ALLOWABLES = "set_allowables"
 SERVICE_SET_ALLOWABLES_SCHEMA = vol.Schema(
-    {
-        vol.Required(ATTR_ENTITY_ID): cv.entity_id,
+    SERVICE_BASE_SCHEMA
+    | {
         vol.Required(ATTR_ALLOWABLE): vol.Coerce(str),
         vol.Required(ATTR_ENABLED): vol.Coerce(bool),
     }

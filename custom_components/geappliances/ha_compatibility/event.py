@@ -28,11 +28,11 @@ class Event:
         """Return true if the callback set is not empty."""
         return len(self._callbacks) != 0
 
-    async def get_subscriber_with_offset(self, offset: int) -> str | None:
-        """Return the subscriber with the given field offset, if it exists."""
+    async def get_subscriber_with_unique_id(self, unique_id: str) -> str | None:
+        """Return the subscriber with the given unique ID, if it exists."""
         for callback in self._callbacks:
             entity = callback.__self__  # type:ignore [attr-defined]
-            if entity.offset == offset:
+            if entity.unique_id == unique_id:
                 return entity.entity_id
 
         return None

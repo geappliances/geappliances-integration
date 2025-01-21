@@ -385,43 +385,49 @@ class TestNumber:
     ) -> None:
         """Test number updates state."""
         await when_the_erd_is_set_to(0x0001, "00", hass)
-        the_number_value_should_be("number.test", "0", hass)
+        the_number_value_should_be("number.test_test", "0", hass)
 
         await when_the_erd_is_set_to(0x0001, "01", hass)
-        the_number_value_should_be("number.test", "1", hass)
+        the_number_value_should_be("number.test_test", "1", hass)
 
     async def test_gets_correct_byte(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number only updates based on the associated byte."""
         await when_the_erd_is_set_to(0x0002, "FF00", hass)
-        the_number_value_should_be("number.field_one", "255", hass)
-        the_number_value_should_be("number.field_two", "0", hass)
+        the_number_value_should_be("number.multi_field_test_field_one", "255", hass)
+        the_number_value_should_be("number.multi_field_test_field_two", "0", hass)
 
         await when_the_erd_is_set_to(0x0002, "010F", hass)
-        the_number_value_should_be("number.field_one", "1", hass)
-        the_number_value_should_be("number.field_two", "15", hass)
+        the_number_value_should_be("number.multi_field_test_field_one", "1", hass)
+        the_number_value_should_be("number.multi_field_test_field_two", "15", hass)
 
     async def test_sets_correct_byte(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number only updates the associated byte."""
         await given_the_erd_is_set_to(0x0002, "0000", hass)
-        await when_the_number_is_set_to("number.field_one", 255.0, hass)
+        await when_the_number_is_set_to(
+            "number.multi_field_test_field_one", 255.0, hass
+        )
         the_mqtt_topic_value_should_be(0x0002, "FF00", mqtt_mock)
-        the_number_value_should_be("number.field_one", "255", hass)
-        the_number_value_should_be("number.field_two", "0", hass)
+        the_number_value_should_be("number.multi_field_test_field_one", "255", hass)
+        the_number_value_should_be("number.multi_field_test_field_two", "0", hass)
 
-        await when_the_number_is_set_to("number.field_two", 100.0, hass)
-        the_number_value_should_be("number.field_one", "255", hass)
-        the_number_value_should_be("number.field_two", "100", hass)
+        await when_the_number_is_set_to(
+            "number.multi_field_test_field_two", 100.0, hass
+        )
+        the_number_value_should_be("number.multi_field_test_field_one", "255", hass)
+        the_number_value_should_be("number.multi_field_test_field_two", "100", hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number shows STATE_UNKNOWN when the associated ERD is no longer supported."""
         await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0000", hass)
-        the_number_value_should_be("number.removal_test", STATE_UNKNOWN, hass)
+        the_number_value_should_be(
+            "number.removal_test_removal_test", STATE_UNKNOWN, hass
+        )
 
 
 def the_device_class_should_be(
@@ -450,9 +456,11 @@ class TestNumberDeviceClasses:
     ) -> None:
         """Test number sets device class and unit for Fahrenheit temperatures correctly."""
         the_device_class_should_be(
-            "number.temperature_test", NumberDeviceClass.TEMPERATURE, hass
+            "number.temperature_test_temperature_test",
+            NumberDeviceClass.TEMPERATURE,
+            hass,
         )
-        the_unit_should_be("number.temperature_test", "°F", hass)
+        the_unit_should_be("number.temperature_test_temperature_test", "°F", hass)
 
     @pytest.mark.metric
     async def test_celsius_class_and_unit(
@@ -460,133 +468,145 @@ class TestNumberDeviceClasses:
     ) -> None:
         """Test number sets device class and unit for Celsius temperatures correctly."""
         the_device_class_should_be(
-            "number.temperature_c_test", NumberDeviceClass.TEMPERATURE, hass
+            "number.celsius_test_temperature_c_test",
+            NumberDeviceClass.TEMPERATURE,
+            hass,
         )
-        the_unit_should_be("number.temperature_C_test", "°C", hass)
+        the_unit_should_be("number.celsius_test_temperature_C_test", "°C", hass)
 
     async def test_battery_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for battery percentage correctly."""
         the_device_class_should_be(
-            "number.battery_level", NumberDeviceClass.BATTERY, hass
+            "number.battery_test_battery_level", NumberDeviceClass.BATTERY, hass
         )
-        the_unit_should_be("number.battery_level", "%", hass)
+        the_unit_should_be("number.battery_test_battery_level", "%", hass)
 
     async def test_energy_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for energy usage correctly."""
-        the_device_class_should_be("number.energy_kWh", NumberDeviceClass.ENERGY, hass)
-        the_unit_should_be("number.energy_kWh", "kWh", hass)
+        the_device_class_should_be(
+            "number.energy_test_energy_kWh", NumberDeviceClass.ENERGY, hass
+        )
+        the_unit_should_be("number.energy_test_energy_kWh", "kWh", hass)
 
     async def test_humidity_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for humidity correctly."""
         the_device_class_should_be(
-            "number.humidity_test", NumberDeviceClass.HUMIDITY, hass
+            "number.humidity_test_humidity_test", NumberDeviceClass.HUMIDITY, hass
         )
-        the_unit_should_be("number.humidity_test", "%", hass)
+        the_unit_should_be("number.humidity_test_humidity_test", "%", hass)
 
     async def test_pressure_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for pressure correctly."""
         the_device_class_should_be(
-            "number.pressure_in_pa", NumberDeviceClass.PRESSURE, hass
+            "number.pressure_test_pressure_in_pa", NumberDeviceClass.PRESSURE, hass
         )
-        the_unit_should_be("number.pressure_in_pa", "Pa", hass)
+        the_unit_should_be("number.pressure_test_pressure_in_pa", "Pa", hass)
 
     async def test_gallons_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for volume in gallons correctly."""
         the_device_class_should_be(
-            "number.gallons_test", NumberDeviceClass.VOLUME_STORAGE, hass
+            "number.gallons_test_gallons_test", NumberDeviceClass.VOLUME_STORAGE, hass
         )
-        the_unit_should_be("number.gallons_test", "gal", hass)
+        the_unit_should_be("number.gallons_test_gallons_test", "gal", hass)
 
     async def test_fluid_ounces_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for volume in fluid ounces correctly."""
         the_device_class_should_be(
-            "number.fluid_ounces_oz", NumberDeviceClass.VOLUME_STORAGE, hass
+            "number.fluid_ounces_test_fluid_ounces_oz",
+            NumberDeviceClass.VOLUME_STORAGE,
+            hass,
         )
-        the_unit_should_be("number.fluid_ounces_oz", "fl. oz.", hass)
+        the_unit_should_be("number.fluid_ounces_test_fluid_ounces_oz", "fl. oz.", hass)
 
     async def test_pounds_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for weight in pounds correctly."""
-        the_device_class_should_be("number.pounds_lbs", NumberDeviceClass.WEIGHT, hass)
-        the_unit_should_be("number.pounds_lbs", "lbs", hass)
+        the_device_class_should_be(
+            "number.pounds_test_pounds_lbs", NumberDeviceClass.WEIGHT, hass
+        )
+        the_unit_should_be("number.pounds_test_pounds_lbs", "lbs", hass)
 
     async def test_current_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for current in mA correctly."""
-        the_device_class_should_be("number.current_mA", NumberDeviceClass.CURRENT, hass)
-        the_unit_should_be("number.current_mA", "mA", hass)
+        the_device_class_should_be(
+            "number.current_test_current_mA", NumberDeviceClass.CURRENT, hass
+        )
+        the_unit_should_be("number.current_test_current_mA", "mA", hass)
 
     async def test_seconds_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for duration in seconds correctly."""
         the_device_class_should_be(
-            "number.duration_seconds", NumberDeviceClass.DURATION, hass
+            "number.seconds_test_duration_seconds", NumberDeviceClass.DURATION, hass
         )
-        the_unit_should_be("number.duration_seconds", "s", hass)
+        the_unit_should_be("number.seconds_test_duration_seconds", "s", hass)
 
     async def test_minutes_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for duration in minutes correctly."""
         the_device_class_should_be(
-            "number.duration_minutes", NumberDeviceClass.DURATION, hass
+            "number.minutes_test_duration_minutes", NumberDeviceClass.DURATION, hass
         )
-        the_unit_should_be("number.duration_minutes", "min", hass)
+        the_unit_should_be("number.minutes_test_duration_minutes", "min", hass)
 
     async def test_hours_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for duration in hours correctly."""
         the_device_class_should_be(
-            "number.duration_hours", NumberDeviceClass.DURATION, hass
+            "number.hours_test_duration_hours", NumberDeviceClass.DURATION, hass
         )
-        the_unit_should_be("number.duration_hours", "h", hass)
+        the_unit_should_be("number.hours_test_duration_hours", "h", hass)
 
     async def test_days_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for duration in days correctly."""
         the_device_class_should_be(
-            "number.duration_days", NumberDeviceClass.DURATION, hass
+            "number.days_test_duration_days", NumberDeviceClass.DURATION, hass
         )
-        the_unit_should_be("number.duration_days", "d", hass)
+        the_unit_should_be("number.days_test_duration_days", "d", hass)
 
     async def test_power_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for power in watts correctly."""
-        the_device_class_should_be("number.power_watts", NumberDeviceClass.POWER, hass)
-        the_unit_should_be("number.power_watts", "W", hass)
+        the_device_class_should_be(
+            "number.power_test_power_watts", NumberDeviceClass.POWER, hass
+        )
+        the_unit_should_be("number.power_test_power_watts", "W", hass)
 
     async def test_voltage_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for voltage correctly."""
         the_device_class_should_be(
-            "number.voltage_test", NumberDeviceClass.VOLTAGE, hass
+            "number.voltage_test_voltage_test", NumberDeviceClass.VOLTAGE, hass
         )
-        the_unit_should_be("number.voltage_test", "V", hass)
+        the_unit_should_be("number.voltage_test_voltage_test", "V", hass)
 
     async def test_frequency_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number sets device class and unit for frequency in Hz correctly."""
         the_device_class_should_be(
-            "number.frequency_hz", NumberDeviceClass.FREQUENCY, hass
+            "number.frequency_test_frequency_hz", NumberDeviceClass.FREQUENCY, hass
         )
-        the_unit_should_be("number.frequency_hz", "Hz", hass)
+        the_unit_should_be("number.frequency_test_frequency_hz", "Hz", hass)

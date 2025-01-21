@@ -45,6 +45,7 @@ class ERDFactory:
                 await self._config_factory.build_config(
                     device_name,
                     erd,
+                    erd_def["name"],
                     field,
                     "read" in erd_def["operations"],
                     "write" in erd_def["operations"],
@@ -89,4 +90,5 @@ class ERDFactory:
         self, config: GeaEntityConfig, erd: Erd
     ) -> str:
         """Return the Home Assistant entity name for the given config."""
-        return "{}_" + f"{erd:04x}_" + config.name.replace(" ", "_")
+        split = config.unique_identifier.split("_", 2)
+        return "{}_" + split[1] + "_" + split[2]

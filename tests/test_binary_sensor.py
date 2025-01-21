@@ -129,22 +129,30 @@ class TestBinarySensor:
     ) -> None:
         """Test binary sensor toggles state."""
         await when_the_erd_is_set_to(0x0001, "00", hass)
-        the_binary_sensor_state_should_be("binary_sensor.test", STATE_OFF, hass)
+        the_binary_sensor_state_should_be("binary_sensor.test_test", STATE_OFF, hass)
 
         await when_the_erd_is_set_to(0x0001, "01", hass)
-        the_binary_sensor_state_should_be("binary_sensor.test", STATE_ON, hass)
+        the_binary_sensor_state_should_be("binary_sensor.test_test", STATE_ON, hass)
 
     async def test_gets_correct_byte(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test binary sensor only updates based on the associated byte."""
         await when_the_erd_is_set_to(0x0002, "0000", hass)
-        the_binary_sensor_state_should_be("binary_sensor.field_one", STATE_OFF, hass)
-        the_binary_sensor_state_should_be("binary_sensor.field_two", STATE_OFF, hass)
+        the_binary_sensor_state_should_be(
+            "binary_sensor.multi_field_test_field_one", STATE_OFF, hass
+        )
+        the_binary_sensor_state_should_be(
+            "binary_sensor.multi_field_test_field_two", STATE_OFF, hass
+        )
 
         await when_the_erd_is_set_to(0x0002, "0100", hass)
-        the_binary_sensor_state_should_be("binary_sensor.field_one", STATE_ON, hass)
-        the_binary_sensor_state_should_be("binary_sensor.field_two", STATE_OFF, hass)
+        the_binary_sensor_state_should_be(
+            "binary_sensor.multi_field_test_field_one", STATE_ON, hass
+        )
+        the_binary_sensor_state_should_be(
+            "binary_sensor.multi_field_test_field_two", STATE_OFF, hass
+        )
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
@@ -152,5 +160,5 @@ class TestBinarySensor:
         """Test binary sensor shows STATE_UNKNOWN when the associated ERD is no longer supported."""
         await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0000", hass)
         the_binary_sensor_state_should_be(
-            "binary_sensor.removal_test", STATE_UNKNOWN, hass
+            "binary_sensor.removal_test_removal_test", STATE_UNKNOWN, hass
         )

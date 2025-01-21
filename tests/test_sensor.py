@@ -433,70 +433,74 @@ class TestSensor:
     ) -> None:
         """Test sensor updates state."""
         await when_the_erd_is_set_to(0x0001, "00", hass)
-        the_sensor_value_should_be("sensor.test", "0", hass)
+        the_sensor_value_should_be("sensor.test_test", "0", hass)
 
         await when_the_erd_is_set_to(0x0001, "01", hass)
-        the_sensor_value_should_be("sensor.test", "1", hass)
+        the_sensor_value_should_be("sensor.test_test", "1", hass)
 
     async def test_gets_correct_byte(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor only updates based on the associated byte."""
         await when_the_erd_is_set_to(0x0002, "FF00", hass)
-        the_sensor_value_should_be("sensor.field_one", "255", hass)
-        the_sensor_value_should_be("sensor.field_two", "0", hass)
+        the_sensor_value_should_be("sensor.multi_field_test_field_one", "255", hass)
+        the_sensor_value_should_be("sensor.multi_field_test_field_two", "0", hass)
 
         await when_the_erd_is_set_to(0x0002, "010F", hass)
-        the_sensor_value_should_be("sensor.field_one", "1", hass)
-        the_sensor_value_should_be("sensor.field_two", "15", hass)
+        the_sensor_value_should_be("sensor.multi_field_test_field_one", "1", hass)
+        the_sensor_value_should_be("sensor.multi_field_test_field_two", "15", hass)
 
     async def test_temperature(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor displays temperatures correctly."""
         await when_the_erd_is_set_to(0x0003, "FF01", hass)
-        the_sensor_value_should_be("sensor.temperature_test", "-255", hass)
+        the_sensor_value_should_be(
+            "sensor.temperature_test_temperature_test", "-255", hass
+        )
 
     async def test_enum(self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient) -> None:
         """Test sensor displays enums correctly."""
         await when_the_erd_is_set_to(0x0004, "0000", hass)
-        the_sensor_value_should_be("sensor.enum_test", "Zero", hass)
+        the_sensor_value_should_be("sensor.enum_test_enum_test", "Zero", hass)
 
         await when_the_erd_is_set_to(0x0004, "0001", hass)
-        the_sensor_value_should_be("sensor.enum_test", "One", hass)
+        the_sensor_value_should_be("sensor.enum_test_enum_test", "One", hass)
 
         await when_the_erd_is_set_to(0x0004, "FFFF", hass)
-        the_sensor_value_should_be("sensor.enum_test", "Max", hass)
+        the_sensor_value_should_be("sensor.enum_test_enum_test", "Max", hass)
 
     async def test_string(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor displays strings correctly."""
         await when_the_erd_is_set_to(0x0005, bytes("hey", encoding="utf-8").hex(), hass)
-        the_sensor_value_should_be("sensor.string_test", "hey", hass)
+        the_sensor_value_should_be("sensor.string_test_string_test", "hey", hass)
 
         await when_the_erd_is_set_to(0x0005, bytes("hi", encoding="utf-8").hex(), hass)
-        the_sensor_value_should_be("sensor.string_test", "hi", hass)
+        the_sensor_value_should_be("sensor.string_test_string_test", "hi", hass)
 
     async def test_total(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor displays totals correctly."""
         await when_the_erd_is_set_to(0x0006, "01", hass)
-        the_sensor_value_should_be("sensor.total_test", "1", hass)
+        the_sensor_value_should_be("sensor.total_test_total_test", "1", hass)
         the_sensor_state_class_should_be(
-            "sensor.total_test", SensorStateClass.TOTAL, hass
+            "sensor.total_test_total_test", SensorStateClass.TOTAL, hass
         )
 
         await when_the_erd_is_set_to(0x0006, "01", hass)
-        the_sensor_value_should_be("sensor.total_test", "1", hass)
+        the_sensor_value_should_be("sensor.total_test_total_test", "1", hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor shows STATE_UNKNOWN when the associated ERD is no longer supported."""
         await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0000", hass)
-        the_sensor_value_should_be("sensor.removal_test", STATE_UNKNOWN, hass)
+        the_sensor_value_should_be(
+            "sensor.removal_test_removal_test", STATE_UNKNOWN, hass
+        )
 
 
 def the_device_class_should_be(
@@ -525,9 +529,11 @@ class TestSensorDeviceClasses:
     ) -> None:
         """Test sensor sets device class and unit for Fahrenheit temperatures correctly."""
         the_device_class_should_be(
-            "sensor.temperature_test", SensorDeviceClass.TEMPERATURE, hass
+            "sensor.temperature_test_temperature_test",
+            SensorDeviceClass.TEMPERATURE,
+            hass,
         )
-        the_unit_should_be("sensor.temperature_test", "°F", hass)
+        the_unit_should_be("sensor.temperature_test_temperature_test", "°F", hass)
 
     @pytest.mark.metric
     async def test_celsius_class_and_unit(
@@ -535,133 +541,145 @@ class TestSensorDeviceClasses:
     ) -> None:
         """Test sensor sets device class and unit for Celsius temperatures correctly."""
         the_device_class_should_be(
-            "sensor.temperature_c_test", SensorDeviceClass.TEMPERATURE, hass
+            "sensor.celsius_test_temperature_c_test",
+            SensorDeviceClass.TEMPERATURE,
+            hass,
         )
-        the_unit_should_be("sensor.temperature_C_test", "°C", hass)
+        the_unit_should_be("sensor.celsius_test_temperature_C_test", "°C", hass)
 
     async def test_battery_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for battery percentage correctly."""
         the_device_class_should_be(
-            "sensor.battery_level", SensorDeviceClass.BATTERY, hass
+            "sensor.battery_test_battery_level", SensorDeviceClass.BATTERY, hass
         )
-        the_unit_should_be("sensor.battery_level", "%", hass)
+        the_unit_should_be("sensor.battery_test_battery_level", "%", hass)
 
     async def test_energy_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for energy usage correctly."""
-        the_device_class_should_be("sensor.energy_kWh", SensorDeviceClass.ENERGY, hass)
-        the_unit_should_be("sensor.energy_kWh", "kWh", hass)
+        the_device_class_should_be(
+            "sensor.energy_test_energy_kWh", SensorDeviceClass.ENERGY, hass
+        )
+        the_unit_should_be("sensor.energy_test_energy_kWh", "kWh", hass)
 
     async def test_humidity_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for humidity correctly."""
         the_device_class_should_be(
-            "sensor.humidity_test", SensorDeviceClass.HUMIDITY, hass
+            "sensor.humidity_test_humidity_test", SensorDeviceClass.HUMIDITY, hass
         )
-        the_unit_should_be("sensor.humidity_test", "%", hass)
+        the_unit_should_be("sensor.humidity_test_humidity_test", "%", hass)
 
     async def test_pressure_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for pressure correctly."""
         the_device_class_should_be(
-            "sensor.pressure_in_pa", SensorDeviceClass.PRESSURE, hass
+            "sensor.pressure_test_pressure_in_pa", SensorDeviceClass.PRESSURE, hass
         )
-        the_unit_should_be("sensor.pressure_in_pa", "Pa", hass)
+        the_unit_should_be("sensor.pressure_test_pressure_in_pa", "Pa", hass)
 
     async def test_gallons_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for volume in gallons correctly."""
         the_device_class_should_be(
-            "sensor.gallons_test", SensorDeviceClass.VOLUME_STORAGE, hass
+            "sensor.gallons_test_gallons_test", SensorDeviceClass.VOLUME_STORAGE, hass
         )
-        the_unit_should_be("sensor.gallons_test", "gal", hass)
+        the_unit_should_be("sensor.gallons_test_gallons_test", "gal", hass)
 
     async def test_fluid_ounces_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for volume in fluid ounces correctly."""
         the_device_class_should_be(
-            "sensor.fluid_ounces_oz", SensorDeviceClass.VOLUME_STORAGE, hass
+            "sensor.fluid_ounces_test_fluid_ounces_oz",
+            SensorDeviceClass.VOLUME_STORAGE,
+            hass,
         )
-        the_unit_should_be("sensor.fluid_ounces_oz", "fl. oz.", hass)
+        the_unit_should_be("sensor.fluid_ounces_test_fluid_ounces_oz", "fl. oz.", hass)
 
     async def test_pounds_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for weight in pounds correctly."""
-        the_device_class_should_be("sensor.pounds_lbs", SensorDeviceClass.WEIGHT, hass)
-        the_unit_should_be("sensor.pounds_lbs", "lbs", hass)
+        the_device_class_should_be(
+            "sensor.pounds_test_pounds_lbs", SensorDeviceClass.WEIGHT, hass
+        )
+        the_unit_should_be("sensor.pounds_test_pounds_lbs", "lbs", hass)
 
     async def test_current_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for current in mA correctly."""
-        the_device_class_should_be("sensor.current_mA", SensorDeviceClass.CURRENT, hass)
-        the_unit_should_be("sensor.current_mA", "mA", hass)
+        the_device_class_should_be(
+            "sensor.current_test_current_mA", SensorDeviceClass.CURRENT, hass
+        )
+        the_unit_should_be("sensor.current_test_current_mA", "mA", hass)
 
     async def test_seconds_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for duration in seconds correctly."""
         the_device_class_should_be(
-            "sensor.duration_seconds", SensorDeviceClass.DURATION, hass
+            "sensor.seconds_test_duration_seconds", SensorDeviceClass.DURATION, hass
         )
-        the_unit_should_be("sensor.duration_seconds", "s", hass)
+        the_unit_should_be("sensor.seconds_test_duration_seconds", "s", hass)
 
     async def test_minutes_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for duration in minutes correctly."""
         the_device_class_should_be(
-            "sensor.duration_minutes", SensorDeviceClass.DURATION, hass
+            "sensor.minutes_test_duration_minutes", SensorDeviceClass.DURATION, hass
         )
-        the_unit_should_be("sensor.duration_minutes", "min", hass)
+        the_unit_should_be("sensor.minutes_test_duration_minutes", "min", hass)
 
     async def test_hours_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for duration in hours correctly."""
         the_device_class_should_be(
-            "sensor.duration_hours", SensorDeviceClass.DURATION, hass
+            "sensor.hours_test_duration_hours", SensorDeviceClass.DURATION, hass
         )
-        the_unit_should_be("sensor.duration_hours", "h", hass)
+        the_unit_should_be("sensor.hours_test_duration_hours", "h", hass)
 
     async def test_days_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for duration in days correctly."""
         the_device_class_should_be(
-            "sensor.duration_days", SensorDeviceClass.DURATION, hass
+            "sensor.days_test_duration_days", SensorDeviceClass.DURATION, hass
         )
-        the_unit_should_be("sensor.duration_days", "d", hass)
+        the_unit_should_be("sensor.days_test_duration_days", "d", hass)
 
     async def test_power_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for power in watts correctly."""
-        the_device_class_should_be("sensor.power_watts", SensorDeviceClass.POWER, hass)
-        the_unit_should_be("sensor.power_watts", "W", hass)
+        the_device_class_should_be(
+            "sensor.power_test_power_watts", SensorDeviceClass.POWER, hass
+        )
+        the_unit_should_be("sensor.power_test_power_watts", "W", hass)
 
     async def test_voltage_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for voltage correctly."""
         the_device_class_should_be(
-            "sensor.voltage_test", SensorDeviceClass.VOLTAGE, hass
+            "sensor.voltage_test_voltage_test", SensorDeviceClass.VOLTAGE, hass
         )
-        the_unit_should_be("sensor.voltage_test", "V", hass)
+        the_unit_should_be("sensor.voltage_test_voltage_test", "V", hass)
 
     async def test_frequency_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor sets device class and unit for frequency in Hz correctly."""
         the_device_class_should_be(
-            "sensor.frequency_hz", SensorDeviceClass.FREQUENCY, hass
+            "sensor.frequency_test_frequency_hz", SensorDeviceClass.FREQUENCY, hass
         )
-        the_unit_should_be("sensor.frequency_hz", "Hz", hass)
+        the_unit_should_be("sensor.frequency_test_frequency_hz", "Hz", hass)

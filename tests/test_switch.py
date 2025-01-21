@@ -160,78 +160,80 @@ class TestSwitch:
     ) -> None:
         """Test switch toggles state."""
         await when_the_erd_is_set_to(0x0001, "00", hass)
-        the_switch_state_should_be("switch.test", STATE_OFF, hass)
+        the_switch_state_should_be("switch.test_test", STATE_OFF, hass)
 
         await when_the_erd_is_set_to(0x0001, "01", hass)
-        the_switch_state_should_be("switch.test", STATE_ON, hass)
+        the_switch_state_should_be("switch.test_test", STATE_ON, hass)
 
     async def test_turns_on(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test switch publishes to MQTT when turning on."""
         await when_the_erd_is_set_to(0x0001, "00", hass)
-        the_switch_state_should_be("switch.test", STATE_OFF, hass)
+        the_switch_state_should_be("switch.test_test", STATE_OFF, hass)
 
-        await when_the_switch_is_turned_on("switch.test", hass)
+        await when_the_switch_is_turned_on("switch.test_test", hass)
         the_mqtt_topic_value_should_be(0x0001, "01", mqtt_mock)
-        the_switch_state_should_be("switch.test", STATE_ON, hass)
+        the_switch_state_should_be("switch.test_test", STATE_ON, hass)
 
     async def test_turns_off(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test switch publishes to MQTT when turning off."""
         await when_the_erd_is_set_to(0x0001, "01", hass)
-        the_switch_state_should_be("switch.test", STATE_ON, hass)
+        the_switch_state_should_be("switch.test_test", STATE_ON, hass)
 
-        await when_the_switch_is_turned_off("switch.test", hass)
+        await when_the_switch_is_turned_off("switch.test_test", hass)
         the_mqtt_topic_value_should_be(0x0001, "00", mqtt_mock)
-        the_switch_state_should_be("switch.test", STATE_OFF, hass)
+        the_switch_state_should_be("switch.test_test", STATE_OFF, hass)
 
     async def test_toggles(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test switch publishes to MQTT when toggling."""
         await when_the_erd_is_set_to(0x0001, "00", hass)
-        the_switch_state_should_be("switch.test", STATE_OFF, hass)
+        the_switch_state_should_be("switch.test_test", STATE_OFF, hass)
 
-        await when_the_switch_is_toggled("switch.test", hass)
+        await when_the_switch_is_toggled("switch.test_test", hass)
         the_mqtt_topic_value_should_be(0x0001, "01", mqtt_mock)
-        the_switch_state_should_be("switch.test", STATE_ON, hass)
+        the_switch_state_should_be("switch.test_test", STATE_ON, hass)
 
-        await when_the_switch_is_toggled("switch.test", hass)
+        await when_the_switch_is_toggled("switch.test_test", hass)
         the_mqtt_topic_value_should_be(0x0001, "00", mqtt_mock)
-        the_switch_state_should_be("switch.test", STATE_OFF, hass)
+        the_switch_state_should_be("switch.test_test", STATE_OFF, hass)
 
     async def reads_and_write_correct_byte(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test switch only reads from and writes to its associated byte."""
         await when_the_erd_is_set_to(0x0002, "0000", hass)
-        the_switch_state_should_be("switch.field_one", STATE_OFF, hass)
-        the_switch_state_should_be("switch.field_two", STATE_OFF, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_one", STATE_OFF, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_two", STATE_OFF, hass)
 
         await when_the_erd_is_set_to(0x0002, "0100", hass)
-        the_switch_state_should_be("switch.field_one", STATE_ON, hass)
-        the_switch_state_should_be("switch.field_two", STATE_OFF, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_one", STATE_ON, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_two", STATE_OFF, hass)
 
         await when_the_switch_is_turned_off("switch.field_one", hass)
         the_mqtt_topic_value_should_be(0x0002, "0000", mqtt_mock)
-        the_switch_state_should_be("switch.field_one", STATE_OFF, hass)
-        the_switch_state_should_be("switch.field_two", STATE_OFF, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_one", STATE_OFF, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_two", STATE_OFF, hass)
 
         await when_the_switch_is_turned_on("switch.field_two", hass)
         the_mqtt_topic_value_should_be(0x0002, "0001", mqtt_mock)
-        the_switch_state_should_be("switch.field_one", STATE_OFF, hass)
-        the_switch_state_should_be("switch.field_two", STATE_ON, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_one", STATE_OFF, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_two", STATE_ON, hass)
 
         await when_the_switch_is_toggled("switch.field_one", hass)
         the_mqtt_topic_value_should_be(0x0002, "0101", mqtt_mock)
-        the_switch_state_should_be("switch.field_one", STATE_ON, hass)
-        the_switch_state_should_be("switch.field_two", STATE_ON, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_one", STATE_ON, hass)
+        the_switch_state_should_be("switch.multi_field_test_field_two", STATE_ON, hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test switch shows STATE_UNKNOWN when the associated ERD is no longer supported."""
         await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0000", hass)
-        the_switch_state_should_be("switch.removal_test", STATE_UNKNOWN, hass)
+        the_switch_state_should_be(
+            "switch.removal_test_removal_test", STATE_UNKNOWN, hass
+        )

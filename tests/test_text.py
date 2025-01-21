@@ -163,49 +163,49 @@ class TestText:
     ) -> None:
         """Test text input updates state."""
         await when_the_erd_string_is_set_to(0x0001, "hi", hass)
-        the_text_value_should_be("text.test", "hi", hass)
+        the_text_value_should_be("text.test_test", "hi", hass)
 
         await when_the_erd_string_is_set_to(0x0001, "bye", hass)
-        the_text_value_should_be("text.test", "bye", hass)
+        the_text_value_should_be("text.test_test", "bye", hass)
 
     async def test_gets_correct_bytes(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test text input only updates based on the associated bytes."""
         await when_the_erd_string_is_set_to(0x0002, "hello", hass)
-        the_text_value_should_be("text.field_one", "hello", hass)
-        the_text_value_should_be("text.field_two", "", hass)
+        the_text_value_should_be("text.multi_field_test_field_one", "hello", hass)
+        the_text_value_should_be("text.multi_field_test_field_two", "", hass)
 
         await when_the_erd_string_is_set_to(0x0002, "hello,world", hass)
-        the_text_value_should_be("text.field_one", "hello", hass)
-        the_text_value_should_be("text.field_two", ",world", hass)
+        the_text_value_should_be("text.multi_field_test_field_one", "hello", hass)
+        the_text_value_should_be("text.multi_field_test_field_two", ",world", hass)
 
     async def test_sets_correct_bytes(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test text input only updates the associated bytes."""
         await given_the_erd_string_is_set_to(0x0002, "aaa", hass)
-        await when_the_text_is_set_to("text.field_one", "hello", hass)
+        await when_the_text_is_set_to("text.multi_field_test_field_one", "hello", hass)
         the_mqtt_topic_value_should_be(0x0002, b"hello".hex(), mqtt_mock)
-        the_text_value_should_be("text.field_one", "hello", hass)
-        the_text_value_should_be("text.field_two", "", hass)
+        the_text_value_should_be("text.multi_field_test_field_one", "hello", hass)
+        the_text_value_should_be("text.multi_field_test_field_two", "", hass)
 
-        await when_the_text_is_set_to("text.field_two", ",world", hass)
+        await when_the_text_is_set_to("text.multi_field_test_field_two", ",world", hass)
         the_mqtt_topic_value_should_be(0x0002, b"hello,world".hex(), mqtt_mock)
-        the_text_value_should_be("text.field_one", "hello", hass)
-        the_text_value_should_be("text.field_two", ",world", hass)
+        the_text_value_should_be("text.multi_field_test_field_one", "hello", hass)
+        the_text_value_should_be("text.multi_field_test_field_two", ",world", hass)
 
     async def test_string_too_long(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test the text input raises exception when the string is too long."""
         await given_the_erd_string_is_set_to(0x0001, "hi", hass)
-        await the_text_should_except_when_set_to("text.test", "hello1234", hass)
-        the_text_value_should_be("text.test", "hi", hass)
+        await the_text_should_except_when_set_to("text.test_test", "hello1234", hass)
+        the_text_value_should_be("text.test_test", "hi", hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test text shows STATE_UNKNOWN when the associated ERD is no longer supported."""
         await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0000", hass)
-        the_text_value_should_be("text.removal_test", STATE_UNKNOWN, hass)
+        the_text_value_should_be("text.removal_test_removal_test", STATE_UNKNOWN, hass)

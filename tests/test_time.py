@@ -147,7 +147,7 @@ async def build_time_test_config(
             f"{device_name}_0001_Test_Time",
             (await data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
-            "Time Test",
+            "Time Test: Time Test",
             "time",
             data_source,
             0x0001,
@@ -167,7 +167,7 @@ async def build_read_only_time_test_config(
             f"{device_name}_0002_Read_Only_Test",
             (await data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
-            "Read Only Test",
+            "Read Only Test: Read Only Test",
             "time",
             data_source,
             0x0002,
@@ -187,7 +187,7 @@ async def build_time_removal_test_config(
             f"{device_name}_0003_Removal_Test",
             (await data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
-            "Removal Test",
+            "Removal Test: Removal Test",
             "time",
             data_source,
             0x0003,
@@ -240,30 +240,32 @@ class TestTime:
     ) -> None:
         """Test time input updates state."""
         await when_the_erd_is_set_to(0x0001, "000000", hass)
-        the_time_value_should_be("time.time_test", "00:00:00", hass)
+        the_time_value_should_be("time.time_test_time_test", "00:00:00", hass)
 
         await when_the_erd_is_set_to(0x0001, "010101", hass)
-        the_time_value_should_be("time.time_test", "01:01:01", hass)
+        the_time_value_should_be("time.time_test_time_test", "01:01:01", hass)
 
     async def test_sets_erd(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test time input updates ERD."""
         await when_the_erd_is_set_to(0x0001, "000000", hass)
-        the_time_value_should_be("time.time_test", "00:00:00", hass)
+        the_time_value_should_be("time.time_test_time_test", "00:00:00", hass)
 
-        await when_the_time_is_set_to("time.time_test", time(1, 1, 1), hass)
-        the_time_value_should_be("time.time_test", "01:01:01", hass)
+        await when_the_time_is_set_to("time.time_test_time_test", time(1, 1, 1), hass)
+        the_time_value_should_be("time.time_test_time_test", "01:01:01", hass)
 
     async def test_read_only(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test read-only time inputs do not update from user input."""
         await when_the_erd_is_set_to(0x0002, "000000", hass)
-        the_time_value_should_be("time.read_only_test", "00:00:00", hass)
+        the_time_value_should_be("time.read_only_test_read_only_test", "00:00:00", hass)
 
-        await when_the_time_is_set_to("time.read_only_test", time(1, 1, 1), hass)
-        the_time_value_should_be("time.read_only_test", "00:00:00", hass)
+        await when_the_time_is_set_to(
+            "time.read_only_test_read_only_test", time(1, 1, 1), hass
+        )
+        the_time_value_should_be("time.read_only_test_read_only_test", "00:00:00", hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
@@ -271,4 +273,4 @@ class TestTime:
         """Test time shows STATE_UNKNOWN when the associated ERD is no longer supported."""
         await when_the_erd_is_set_to(0x0003, "000000", hass)
         await when_the_erd_is_set_to(0x0093, "0000 0001 0000 0000", hass)
-        the_time_value_should_be("time.removal_test", STATE_UNKNOWN, hass)
+        the_time_value_should_be("time.removal_test_removal_test", STATE_UNKNOWN, hass)

@@ -81,7 +81,7 @@ class ConfigFactory:
         return f"{device_name}_{erd:04x}_{field[CONF_NAME]}".replace(" ", "_")
 
     async def build_binary_sensor(
-        self, device_name: str, erd: Erd, field: dict[str, Any]
+        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaBinarySensorConfig:
         """Return a binary sensor config."""
         return GeaBinarySensorConfig(
@@ -97,7 +97,7 @@ class ConfigFactory:
         )
 
     async def build_number(
-        self, device_name: str, erd: Erd, field: dict[str, Any]
+        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaNumberConfig:
         """Return a number config."""
         device_class = await NumberConfigAttributes.get_device_class(field)
@@ -105,7 +105,7 @@ class ConfigFactory:
             await self.get_unique_id(device_name, erd, field),
             (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
-            field[CONF_NAME],
+            erd_name + ": " + field[CONF_NAME],
             Platform.NUMBER,
             self._data_source,
             erd,
@@ -119,7 +119,7 @@ class ConfigFactory:
         )
 
     async def build_select(
-        self, device_name: str, erd: Erd, field: dict[str, Any]
+        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaSelectConfig:
         """Return a binary sensor config."""
         return GeaSelectConfig(
@@ -136,7 +136,7 @@ class ConfigFactory:
         )
 
     async def build_sensor(
-        self, device_name: str, erd: Erd, field: dict[str, Any]
+        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaSensorConfig:
         """Return a sensor config."""
         device_class = await SensorConfigAttributes.get_device_class(field)
@@ -158,7 +158,7 @@ class ConfigFactory:
         )
 
     async def build_switch(
-        self, device_name: str, erd: Erd, field: dict[str, Any]
+        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaSwitchConfig:
         """Return a switch config."""
         return GeaSwitchConfig(
@@ -174,7 +174,7 @@ class ConfigFactory:
         )
 
     async def build_text(
-        self, device_name: str, erd: Erd, field: dict[str, Any]
+        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaTextConfig:
         """Return a text config."""
         return GeaTextConfig(
@@ -190,7 +190,7 @@ class ConfigFactory:
         )
 
     async def build_time(
-        self, device_name: str, erd: Erd, field: dict[str, Any]
+        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaTimeConfig:
         """Return a time config."""
         return GeaTimeConfig(
@@ -210,6 +210,7 @@ class ConfigFactory:
         self,
         device_name: str,
         erd: Erd,
+        erd_name: str,
         field: dict[str, Any],
         readable: bool,
         writeable: bool,
@@ -224,25 +225,25 @@ class ConfigFactory:
                 break
 
         if platform == GeaBinarySensor:
-            return await self.build_binary_sensor(device_name, erd, field)
+            return await self.build_binary_sensor(device_name, erd, erd_name, field)
 
         if platform == GeaNumber:
-            return await self.build_number(device_name, erd, field)
+            return await self.build_number(device_name, erd, erd_name, field)
 
         if platform == GeaSelect:
-            return await self.build_select(device_name, erd, field)
+            return await self.build_select(device_name, erd, erd_name, field)
 
         if platform == GeaSensor:
-            return await self.build_sensor(device_name, erd, field)
+            return await self.build_sensor(device_name, erd, erd_name, field)
 
         if platform == GeaSwitch:
-            return await self.build_switch(device_name, erd, field)
+            return await self.build_switch(device_name, erd, erd_name, field)
 
         if platform == GeaText:
-            return await self.build_text(device_name, erd, field)
+            return await self.build_text(device_name, erd, erd_name, field)
 
         if platform == GeaTime:
-            return await self.build_time(device_name, erd, field)
+            return await self.build_time(device_name, erd, erd_name, field)
 
         # Explode if we don't support the given field
         raise NotImplementedError

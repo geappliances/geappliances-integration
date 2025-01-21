@@ -80,37 +80,66 @@ class ConfigFactory:
         """Generate the unique ID string for the given ERD field."""
         return f"{device_name}_{erd:04x}_{field[CONF_NAME]}".replace(" ", "_")
 
-    async def build_binary_sensor(
-        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
-    ) -> GeaBinarySensorConfig:
-        """Return a binary sensor config."""
-        return GeaBinarySensorConfig(
+    async def build_base_config(
+        self,
+        device_name: str,
+        erd: Erd,
+        erd_name: str,
+        field: dict[str, Any],
+        platform: str,
+    ) -> GeaEntityConfig:
+        """Return a GeaEntity config."""
+        return GeaEntityConfig(
             await self.get_unique_id(device_name, erd, field),
             (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
             device_name,
-            field[CONF_NAME],
-            Platform.BINARY_SENSOR,
+            erd_name + ": " + field[CONF_NAME],
+            platform,
             self._data_source,
             erd,
             field["offset"],
             field["size"],
         )
 
+    async def build_binary_sensor(
+        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
+    ) -> GeaBinarySensorConfig:
+        """Return a binary sensor config."""
+        base = await self.build_base_config(
+            device_name, erd, erd_name, field, Platform.BINARY_SENSOR
+        )
+
+        return GeaBinarySensorConfig(
+            base.unique_identifier,
+            base.device_id,
+            base.device_name,
+            base.name,
+            base.platform,
+            base.data_source,
+            base.erd,
+            base.offset,
+            base.size,
+        )
+
     async def build_number(
         self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaNumberConfig:
         """Return a number config."""
+        base = await self.build_base_config(
+            device_name, erd, erd_name, field, Platform.NUMBER
+        )
         device_class = await NumberConfigAttributes.get_device_class(field)
+
         return GeaNumberConfig(
-            await self.get_unique_id(device_name, erd, field),
-            (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
-            device_name,
-            erd_name + ": " + field[CONF_NAME],
-            Platform.NUMBER,
-            self._data_source,
-            erd,
-            field["offset"],
-            field["size"],
+            base.unique_identifier,
+            base.device_id,
+            base.device_name,
+            base.name,
+            base.platform,
+            base.data_source,
+            base.erd,
+            base.offset,
+            base.size,
             device_class,
             await self.get_units(field),
             await NumberConfigAttributes.get_min(field),
@@ -121,17 +150,21 @@ class ConfigFactory:
     async def build_select(
         self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaSelectConfig:
-        """Return a binary sensor config."""
+        """Return a select config."""
+        base = await self.build_base_config(
+            device_name, erd, erd_name, field, Platform.SELECT
+        )
+
         return GeaSelectConfig(
-            await self.get_unique_id(device_name, erd, field),
-            (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
-            device_name,
-            field[CONF_NAME],
-            Platform.SELECT,
-            self._data_source,
-            erd,
-            field["offset"],
-            field["size"],
+            base.unique_identifier,
+            base.device_id,
+            base.device_name,
+            base.name,
+            base.platform,
+            base.data_source,
+            base.erd,
+            base.offset,
+            base.size,
             await SelectConfigAttributes.get_enum_values(field),
         )
 
@@ -139,17 +172,21 @@ class ConfigFactory:
         self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaSensorConfig:
         """Return a sensor config."""
+        base = await self.build_base_config(
+            device_name, erd, erd_name, field, Platform.SENSOR
+        )
         device_class = await SensorConfigAttributes.get_device_class(field)
+
         return GeaSensorConfig(
-            await self.get_unique_id(device_name, erd, field),
-            (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
-            device_name,
-            field[CONF_NAME],
-            Platform.SENSOR,
-            self._data_source,
-            erd,
-            field["offset"],
-            field["size"],
+            base.unique_identifier,
+            base.device_id,
+            base.device_name,
+            base.name,
+            base.platform,
+            base.data_source,
+            base.erd,
+            base.offset,
+            base.size,
             device_class,
             await SensorConfigAttributes.get_state_class(field),
             await self.get_units(field),
@@ -161,49 +198,61 @@ class ConfigFactory:
         self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaSwitchConfig:
         """Return a switch config."""
+        base = await self.build_base_config(
+            device_name, erd, erd_name, field, Platform.SWITCH
+        )
+
         return GeaSwitchConfig(
-            await self.get_unique_id(device_name, erd, field),
-            (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
-            device_name,
-            field[CONF_NAME],
-            Platform.SWITCH,
-            self._data_source,
-            erd,
-            field["offset"],
-            field["size"],
+            base.unique_identifier,
+            base.device_id,
+            base.device_name,
+            base.name,
+            base.platform,
+            base.data_source,
+            base.erd,
+            base.offset,
+            base.size,
         )
 
     async def build_text(
         self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaTextConfig:
         """Return a text config."""
+        base = await self.build_base_config(
+            device_name, erd, erd_name, field, Platform.TEXT
+        )
+
         return GeaTextConfig(
-            await self.get_unique_id(device_name, erd, field),
-            (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
-            device_name,
-            field[CONF_NAME],
-            Platform.TEXT,
-            self._data_source,
-            erd,
-            field["offset"],
-            field["size"],
+            base.unique_identifier,
+            base.device_id,
+            base.device_name,
+            base.name,
+            base.platform,
+            base.data_source,
+            base.erd,
+            base.offset,
+            base.size,
         )
 
     async def build_time(
         self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
     ) -> GeaTimeConfig:
         """Return a time config."""
+        base = await self.build_base_config(
+            device_name, erd, erd_name, field, Platform.TIME
+        )
+
         return GeaTimeConfig(
-            await self.get_unique_id(device_name, erd, field),
-            (await self._data_source.get_device(device_name))[CONF_DEVICE_ID],
-            device_name,
-            field[CONF_NAME],
-            Platform.TIME,
-            self._data_source,
-            erd,
-            field["offset"],
-            field["size"],
-            True,
+            base.unique_identifier,
+            base.device_id,
+            base.device_name,
+            base.name,
+            base.platform,
+            base.data_source,
+            base.erd,
+            base.offset,
+            base.size,
+            "write" not in field["operations"],
         )
 
     async def build_config(

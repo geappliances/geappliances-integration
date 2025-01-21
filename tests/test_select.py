@@ -177,55 +177,61 @@ class TestSelect:
     ) -> None:
         """Test select updates state."""
         await when_the_erd_is_set_to(0x0001, "00", hass)
-        the_select_value_should_be("select.test", "Zero", hass)
+        the_select_value_should_be("select.test_test", "Zero", hass)
 
         await when_the_erd_is_set_to(0x0001, "01", hass)
-        the_select_value_should_be("select.test", "One", hass)
+        the_select_value_should_be("select.test_test", "One", hass)
 
     async def test_gets_correct_byte(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test select only updates based on the associated byte."""
         await when_the_erd_is_set_to(0x0002, "FF00", hass)
-        the_select_value_should_be("select.field_one", "Max One", hass)
-        the_select_value_should_be("select.field_two", "Zero", hass)
+        the_select_value_should_be("select.multi_field_test_field_one", "Max One", hass)
+        the_select_value_should_be("select.multi_field_test_field_two", "Zero", hass)
 
         await when_the_erd_is_set_to(0x0002, "01FF", hass)
-        the_select_value_should_be("select.field_one", "One", hass)
-        the_select_value_should_be("select.field_two", "Max Two", hass)
+        the_select_value_should_be("select.multi_field_test_field_one", "One", hass)
+        the_select_value_should_be("select.multi_field_test_field_two", "Max Two", hass)
 
     async def test_sets_correct_byte(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test select only updates the associated byte."""
         await when_the_erd_is_set_to(0x0002, "0000", hass)
-        await when_the_select_is_set_to("select.field_one", "Max One", hass)
+        await when_the_select_is_set_to(
+            "select.multi_field_test_field_one", "Max One", hass
+        )
         the_mqtt_topic_value_should_be(0x0002, "FF00", mqtt_mock)
-        the_select_value_should_be("select.field_one", "Max One", hass)
-        the_select_value_should_be("select.field_two", "Zero", hass)
+        the_select_value_should_be("select.multi_field_test_field_one", "Max One", hass)
+        the_select_value_should_be("select.multi_field_test_field_two", "Zero", hass)
 
-        await when_the_select_is_set_to("select.field_two", "One", hass)
+        await when_the_select_is_set_to(
+            "select.multi_field_test_field_two", "One", hass
+        )
         the_mqtt_topic_value_should_be(0x0002, "FF01", mqtt_mock)
-        the_select_value_should_be("select.field_one", "Max One", hass)
-        the_select_value_should_be("select.field_two", "One", hass)
+        the_select_value_should_be("select.multi_field_test_field_one", "Max One", hass)
+        the_select_value_should_be("select.multi_field_test_field_two", "One", hass)
 
     async def test_bigger_enum(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test select sets and displays multi-byte enums correctly."""
         await when_the_erd_is_set_to(0x0003, "0000", hass)
-        the_select_value_should_be("select.enum", "Zero", hass)
+        the_select_value_should_be("select.bigger_enum_test_enum", "Zero", hass)
 
         await when_the_erd_is_set_to(0x0003, "0001", hass)
-        the_select_value_should_be("select.enum", "One", hass)
+        the_select_value_should_be("select.bigger_enum_test_enum", "One", hass)
 
-        await when_the_select_is_set_to("select.enum", "Max", hass)
+        await when_the_select_is_set_to("select.bigger_enum_test_enum", "Max", hass)
         the_mqtt_topic_value_should_be(0x0003, "FFFF", mqtt_mock)
-        the_select_value_should_be("select.enum", "Max", hass)
+        the_select_value_should_be("select.bigger_enum_test_enum", "Max", hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test select shows STATE_UNKNOWN when the associated ERD is no longer supported."""
         await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0000", hass)
-        the_select_value_should_be("select.removal_test", STATE_UNKNOWN, hass)
+        the_select_value_should_be(
+            "select.removal_test_removal_test", STATE_UNKNOWN, hass
+        )

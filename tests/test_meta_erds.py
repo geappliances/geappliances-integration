@@ -391,9 +391,11 @@ class TestMetaErds:
         await given_the_erd_is_set_to(0x0003, "00", hass)
         await given_the_erd_is_set_to(0x0009, "80", hass)
 
-        await setting_the_select_should_raise_error("select.test_select", "One", hass)
+        await setting_the_select_should_raise_error(
+            "select.test_select_test_select", "One", hass
+        )
         mqtt_client_should_not_publish(mqtt_mock)
-        the_entity_value_should_be("select.test_select", "Zero", hass)
+        the_entity_value_should_be("select.test_select_test_select", "Zero", hass)
 
     async def test_applies_changes_when_meta_erd_is_first(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient

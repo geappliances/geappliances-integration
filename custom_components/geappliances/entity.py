@@ -24,14 +24,6 @@ class GeaEntity:
             value[0 : self._offset] + set_bytes + value[(self._offset + self._size) :]
         )
 
-    async def set_field_bits(self, value: bytes, bits: int) -> bytes:
-        """Set the bits associated with the entity's field and return the new value."""
-        return (
-            value[0 : self._offset]
-            + (value[self._offset] & bits).to_bytes()
-            + value[(self._offset + self._size) :]
-        )
-
     async def enable_or_disable(self, enabled: bool) -> None:
         """Enable or disable the entity."""
         if enabled:

@@ -463,7 +463,7 @@ class TestNumber:
     async def test_writes_to_bitfields(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
-        """Test writes values to bitfields correctly."""
+        """Test number writes values to bitfields correctly."""
         await given_the_erd_is_set_to(0x000A, "00", hass)
 
         await when_the_number_is_set_to("number.bitfield_test_field_one", 15, hass)

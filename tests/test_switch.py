@@ -49,7 +49,8 @@ APPLIANCE_API_JSON = """
             "versions": {
                 "1": {
                     "required": [
-                        { "erd": "0x0002", "name": "Multi Field Test", "length": 2 }
+                        { "erd": "0x0002", "name": "Multi Field Test", "length": 2 },
+                        { "erd": "0x0004", "name": "Bitfield Test", "length": 1 }
                     ],
                     "features": []
                 }
@@ -101,6 +102,43 @@ APPLIANCE_API_DEFINTION_JSON = """
                 {
                     "name": "Removal Test",
                     "type": "bool",
+                    "offset": 0,
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "Bitfield Test",
+            "id": "0x0004",
+            "operations": ["read", "write"],
+            "data": [
+                {
+                    "name": "Bit One",
+                    "type": "bool",
+                    "bits": {
+                        "offset": 0,
+                        "size": 1
+                    },
+                    "offset": 0,
+                    "size": 1
+                },
+                {
+                    "name": "Bit Two",
+                    "type": "u8",
+                    "bits": {
+                        "offset": 1,
+                        "size": 1
+                    },
+                    "offset": 0,
+                    "size": 1
+                },
+                {
+                    "name": "Reserved",
+                    "type": "u8",
+                    "bits": {
+                        "offset": 2,
+                        "size": 6
+                    },
                     "offset": 0,
                     "size": 1
                 }
@@ -228,6 +266,22 @@ class TestSwitch:
         the_mqtt_topic_value_should_be(0x0002, "0101", mqtt_mock)
         the_switch_state_should_be("switch.multi_field_test_field_one", STATE_ON, hass)
         the_switch_state_should_be("switch.multi_field_test_field_two", STATE_ON, hass)
+
+    async def test_works_with_bitfields(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test switch works with writeable bitfields."""
+        await when_the_erd_is_set_to(0x0004, "80", hass)
+        the_switch_state_should_be("switch.bitfield_test_bit_one", STATE_ON, hass)
+        the_switch_state_should_be("switch.bitfield_test_bit_two", STATE_OFF, hass)
+
+        await when_the_switch_is_turned_on("switch.bitfield_test_bit_two", hass)
+        the_switch_state_should_be("switch.bitfield_test_bit_one", STATE_ON, hass)
+        the_switch_state_should_be("switch.bitfield_test_bit_two", STATE_ON, hass)
+
+        await when_the_switch_is_turned_off("switch.bitfield_test_bit_one", hass)
+        the_switch_state_should_be("switch.bitfield_test_bit_one", STATE_OFF, hass)
+        the_switch_state_should_be("switch.bitfield_test_bit_two", STATE_ON, hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient

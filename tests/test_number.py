@@ -52,6 +52,7 @@ APPLIANCE_API_JSON = """
                         { "erd": "0x0007", "name": "Energy Test", "length": 1 },
                         { "erd": "0x0008", "name": "Humidity Test", "length": 1 },
                         { "erd": "0x0009", "name": "Pressure Test", "length": 1 },
+                        { "erd": "0x000a", "name": "Bitfield Test", "length": 1 },
                         { "erd": "0x0010", "name": "Gallons Test", "length": 1 },
                         { "erd": "0x0011", "name": "Fluid Ounces Test", "length": 1 },
                         { "erd": "0x0012", "name": "Pounds Test", "length": 1 },
@@ -192,6 +193,33 @@ APPLIANCE_API_DEFINTION_JSON = """
                 {
                     "name": "Pressure (in Pa)",
                     "type": "u8",
+                    "offset": 0,
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "Bitfield Test",
+            "id": "0x000a",
+            "operations": ["read", "write"],
+            "data": [
+                {
+                    "name": "Field One",
+                    "type": "u8",
+                    "bits": {
+                        "offset": 0,
+                        "size": 4
+                    },
+                    "offset": 0,
+                    "size": 1
+                },
+                {
+                    "name": "Field Two",
+                    "type": "u8",
+                    "bits": {
+                        "offset": 4,
+                        "size": 4
+                    },
                     "offset": 0,
                     "size": 1
                 }
@@ -419,6 +447,32 @@ class TestNumber:
         )
         the_number_value_should_be("number.multi_field_test_field_one", "255", hass)
         the_number_value_should_be("number.multi_field_test_field_two", "100", hass)
+
+    async def test_reads_from_bitfields(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test number retrieves values from bitfields correctly."""
+        await when_the_erd_is_set_to(0x000A, "F0", hass)
+        the_number_value_should_be("number.bitfield_test_field_one", "15", hass)
+        the_number_value_should_be("number.bitfield_test_field_two", "0", hass)
+
+        await when_the_erd_is_set_to(0x000A, "0F", hass)
+        the_number_value_should_be("number.bitfield_test_field_one", "0", hass)
+        the_number_value_should_be("number.bitfield_test_field_two", "15", hass)
+
+    async def test_writes_to_bitfields(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test writes values to bitfields correctly."""
+        await given_the_erd_is_set_to(0x000A, "00", hass)
+
+        await when_the_number_is_set_to("number.bitfield_test_field_one", 15, hass)
+        the_number_value_should_be("number.bitfield_test_field_one", "15", hass)
+        the_number_value_should_be("number.bitfield_test_field_two", "0", hass)
+
+        await when_the_number_is_set_to("number.bitfield_test_field_two", 7, hass)
+        the_number_value_should_be("number.bitfield_test_field_one", "15", hass)
+        the_number_value_should_be("number.bitfield_test_field_two", "7", hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient

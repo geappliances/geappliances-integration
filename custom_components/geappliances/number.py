@@ -2,6 +2,7 @@
 
 from collections.abc import Callable
 import logging
+from math import ceil
 import re
 from typing import Any
 
@@ -209,6 +210,9 @@ class GeaNumber(NumberEntity, GeaEntity):
         self._offset = config.offset
         self._size = config.size
         self._value_fn = config.value_func
+        self._bit_mask = config.bit_mask
+        self._bit_size = config.bit_size
+        self._bit_offset = config.bit_offset
 
     @classmethod
     async def is_correct_platform_for_field(
@@ -255,6 +259,14 @@ class GeaNumber(NumberEntity, GeaEntity):
         erd_value = await self._data_source.erd_read(self._device_name, self._erd)
         if erd_value is not None:
             value_bytes = await self._get_bytes_from_value(value)
+
+            if self._bit_mask is not None:
+                cur_field_bytes = await self.get_field_bytes(erd_value)
+                value_bytes = (
+                    int.from_bytes(cur_field_bytes)
+                    | (int(value) << (self._bit_size - self._bit_offset))
+                ).to_bytes()
+
             await self._data_source.erd_publish(
                 self._device_name,
                 self._erd,
@@ -266,6 +278,11 @@ class GeaNumber(NumberEntity, GeaEntity):
         """Return value of the number."""
         if self._field_bytes is None:
             return None
+
+        if self._bit_mask is not None:
+            return (self._value_fn(self._field_bytes) & self._bit_mask) >> (
+                (self._size * 8) - self._bit_size - self._bit_offset
+            )
 
         return self._value_fn(self._field_bytes)
 

@@ -102,7 +102,12 @@ class ConfigFactory:
         )
 
     async def build_binary_sensor(
-        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
+        self,
+        device_name: str,
+        erd: Erd,
+        erd_name: str,
+        field: dict[str, Any],
+        bit_mask=0xFF,
     ) -> GeaBinarySensorConfig:
         """Return a binary sensor config."""
         base = await self.build_base_config(
@@ -119,10 +124,18 @@ class ConfigFactory:
             base.erd,
             base.offset,
             base.size,
+            bit_mask,
         )
 
     async def build_number(
-        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
+        self,
+        device_name: str,
+        erd: Erd,
+        erd_name: str,
+        field: dict[str, Any],
+        bit_mask=None,
+        bit_size=0,
+        bit_offset=0,
     ) -> GeaNumberConfig:
         """Return a number config."""
         base = await self.build_base_config(
@@ -145,6 +158,9 @@ class ConfigFactory:
             await NumberConfigAttributes.get_min(field),
             await NumberConfigAttributes.get_max(field),
             await NumberConfigAttributes.get_value_function(field),
+            bit_mask,
+            bit_size,
+            bit_offset,
         )
 
     async def build_select(
@@ -169,7 +185,14 @@ class ConfigFactory:
         )
 
     async def build_sensor(
-        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
+        self,
+        device_name: str,
+        erd: Erd,
+        erd_name: str,
+        field: dict[str, Any],
+        bit_mask=None,
+        bit_size=0,
+        bit_offset=0,
     ) -> GeaSensorConfig:
         """Return a sensor config."""
         base = await self.build_base_config(
@@ -192,10 +215,18 @@ class ConfigFactory:
             await self.get_units(field),
             await SensorConfigAttributes.get_value_function(field),
             await SensorConfigAttributes.get_enum_values(field),
+            bit_mask,
+            bit_size,
+            bit_offset,
         )
 
     async def build_switch(
-        self, device_name: str, erd: Erd, erd_name: str, field: dict[str, Any]
+        self,
+        device_name: str,
+        erd: Erd,
+        erd_name: str,
+        field: dict[str, Any],
+        bit_mask=0xFF,
     ) -> GeaSwitchConfig:
         """Return a switch config."""
         base = await self.build_base_config(
@@ -212,6 +243,7 @@ class ConfigFactory:
             base.erd,
             base.offset,
             base.size,
+            bit_mask,
         )
 
     async def build_text(
@@ -266,6 +298,30 @@ class ConfigFactory:
     ) -> GeaEntityConfig:
         """Build the given type of configuration."""
         platform = None
+
+        if field.get("bits") is not None:
+            offset = field["bits"]["offset"]
+            size = field["bits"]["size"]
+
+            mask = (1 << size) - 1  # Mask for the lowest `size` bytes
+            mask = mask << ((field["size"] * 8) - offset - size)
+            if size == 1:
+                if writeable:
+                    return await self.build_switch(
+                        device_name, erd, erd_name, field, mask
+                    )
+                return await self.build_binary_sensor(
+                    device_name, erd, erd_name, field, mask
+                )
+
+            if writeable:
+                return await self.build_number(
+                    device_name, erd, erd_name, field, mask, size, offset
+                )
+            return await self.build_sensor(
+                device_name, erd, erd_name, field, mask, size, offset
+            )
+
         for platform_type in PLATFORM_TYPE_LIST:
             if await platform_type.is_correct_platform_for_field(
                 field, readable, writeable

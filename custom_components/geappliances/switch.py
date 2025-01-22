@@ -79,13 +79,14 @@ class GeaSwitch(SwitchEntity, GeaEntity):
         self._data_source = config.data_source
         self._offset = config.offset
         self._size = config.size
+        self._bit_mask = config.bit_mask
 
     @classmethod
     async def is_correct_platform_for_field(
-        cls, field: dict[str, Any], readable: bool, writeable: bool
+        cls, field: dict[str, Any], writeable: bool
     ) -> bool:
         """Return true if switch is an appropriate platform for the field."""
-        return field["type"] == "bool" and readable and writeable
+        return field["type"] == "bool" and writeable
 
     async def async_added_to_hass(self) -> None:
         """Set initial state from ERD and set up callback for updates."""
@@ -109,7 +110,9 @@ class GeaSwitch(SwitchEntity, GeaEntity):
         if value is None:
             self._attr_is_on = None
         else:
-            self._attr_is_on = (await self.get_field_bytes(value)) != b"\x00"
+            self._attr_is_on = (
+                int.from_bytes(await self.get_field_bytes(value)) & self._bit_mask != 0
+            )
 
         self.async_schedule_update_ha_state(True)
 
@@ -122,21 +125,29 @@ class GeaSwitch(SwitchEntity, GeaEntity):
         """Turn the switch on."""
         value = await self._data_source.erd_read(self._device_name, self._erd)
         if value is not None:
-            value = await self.set_field_bytes(value, bytes.fromhex("01"))
+            if self._bit_mask == 0xFF:
+                value = await self.set_field_bytes(value, bytes.fromhex("01"))
+            else:
+                value = await self.set_field_bytes(
+                    value,
+                    (value[self._offset] | self._bit_mask).to_bytes(),
+                )
+
             await self._data_source.erd_publish(self._device_name, self._erd, value)
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the switch off."""
         value = await self._data_source.erd_read(self._device_name, self._erd)
         if value is not None:
-            value = await self.set_field_bytes(value, bytes.fromhex("00"))
+            value = await self.set_field_bytes(
+                value,
+                (value[self._offset] & ~self._bit_mask).to_bytes(),
+            )
             await self._data_source.erd_publish(self._device_name, self._erd, value)
 
     async def async_toggle(self, **kwargs: Any) -> None:
         """Toggle the switch."""
-        value = await self._data_source.erd_read(self._device_name, self._erd)
-        if value is not None:
-            value = await self.set_field_bytes(
-                value, bytes.fromhex("00") if self._attr_is_on else bytes.fromhex("01")
-            )
-            await self._data_source.erd_publish(self._device_name, self._erd, value)
+        if self._attr_is_on:
+            await self.async_turn_off()
+        else:
+            await self.async_turn_on()

@@ -163,10 +163,13 @@ class GeaSensor(SensorEntity, GeaEntity):
         self._offset = config.offset
         self._size = config.size
         self._value_fn = config.value_func
+        self._bit_mask = config.bit_mask
+        self._bit_size = config.bit_size
+        self._bit_offset = config.bit_offset
 
     @classmethod
     async def is_correct_platform_for_field(
-        cls, field: dict[str, Any], readable: bool, writeable: bool
+        cls, field: dict[str, Any], writeable: bool
     ) -> bool:
         """Return true if sensor is an appropriate platform for the field."""
         supported_types = [
@@ -181,7 +184,7 @@ class GeaSensor(SensorEntity, GeaEntity):
             "enum",
             "string",
         ]
-        return field["type"] in supported_types and readable and not writeable
+        return field["type"] in supported_types and not writeable
 
     async def async_added_to_hass(self) -> None:
         """Set initial state from ERD and set up callback for updates."""
@@ -220,8 +223,9 @@ class GeaSensor(SensorEntity, GeaEntity):
                 assert self._enum_vals is not None
             return self._enum_vals.get(self._value_fn(self._field_bytes))
 
-        return self._value_fn(self._field_bytes)
+        if self._bit_mask is not None:
+            return (self._value_fn(self._field_bytes) & self._bit_mask) >> (
+                (self._size * 8) - self._bit_size - self._bit_offset
+            )
 
-    async def set_time_format(self, format_option: int) -> None:
-        """Set the time format."""
-        raise NotImplementedError
+        return self._value_fn(self._field_bytes)

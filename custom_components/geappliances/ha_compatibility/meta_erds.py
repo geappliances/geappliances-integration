@@ -1,7 +1,6 @@
 """Module to manage meta ERDs."""
 
 import logging
-import math
 from typing import Any
 
 from homeassistant.const import ATTR_ENTITY_ID
@@ -157,18 +156,19 @@ class MetaErdCoordinator:
                 device_name, meta_erd, meta_field
             )
             if field_bytes is not None:
-                for target_entity, offset in zip(
-                    transform_row["fields"], transform_row["offsets"]
-                ):
-                    split = target_entity.split("_", 2)
+                for target_entity in transform_row["fields"]:
+                    erd_str = target_entity.split("_", 2)[1]
+                    select_option_removed = target_entity.split(".")[0]
 
                     await transform_row["func"](
                         self._hass,
                         self._data_source,
                         meta_erd,
                         field_bytes,
-                        await self._data_source.get_entity_id_for_field(
-                            device_name, int(split[1], base=16), offset
+                        await self._data_source.get_entity_id_for_unique_id(
+                            device_name,
+                            int(erd_str, base=16),
+                            select_option_removed.format(device_name),
                         ),
                         target_entity.format(device_name),
                     )
@@ -219,11 +219,11 @@ class MetaErdCoordinator:
         """Return the bits from the bitfield for the specified ERD field."""
         offset = field_def["bits"]["offset"]
         size = field_def["bits"]["size"]
+        field_size = field_def["size"]
 
-        byte = field_bytes[math.floor(offset / 8)]
         mask = (1 << size) - 1  # Mask for the lowest `size` bytes
-        mask = mask << (8 - offset - size)  # Move mask to match offset
-        masked = byte & mask
+        mask = mask << ((field_size * 8) - offset - size)  # Move mask to match offset
+        masked = int.from_bytes(field_bytes) & mask
 
         return masked.to_bytes()
 
@@ -232,53 +232,44 @@ _TRANSFORM_TABLE: dict[Erd, dict[str, dict[str, Any]]] = {
     0x0007: {
         "Temperature Display Units": {
             "fields": ["number.target_cooling_temperature"],
-            "offsets": [],
             "func": set_unit,
         }
     },
     0x4040: {
         "Available Modes.Hybrid": {
             "fields": ["select.mode.Hybrid"],
-            "offsets": [],
             "func": set_allowables,
         },
         "Available Modes.Standard electric": {
             "fields": ["select.mode.Standard electric"],
-            "offsets": [],
             "func": set_allowables,
         },
         "Available Modes.E-heat": {
             "fields": ["select.mode.E-heat"],
-            "offsets": [],
             "func": set_allowables,
         },
         "Available Modes.HiDemand": {
             "fields": ["select.mode.HiDemand"],
-            "offsets": [],
             "func": set_allowables,
         },
         "Available Modes.Vacation": {
             "fields": ["select.mode.Vacation"],
-            "offsets": [],
             "func": set_allowables,
         },
     },
     0x4047: {
         "Minimum setpoint": {
             "fields": ["{}_4024_Temperature"],
-            "offsets": [],
             "func": set_min,
         },
         "Maximum setpoint": {
             "fields": ["number.temperature"],
-            "offsets": [],
             "func": set_max,
         },
     },
     0x214E: {
         "Eco Option Is In Client Writable State": {
             "fields": ["select.eco_option_status"],
-            "offsets": [],
             "func": enable_or_disable,
         },
     },

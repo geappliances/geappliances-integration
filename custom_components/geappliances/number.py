@@ -209,14 +209,17 @@ class GeaNumber(NumberEntity, GeaEntity):
         self._offset = config.offset
         self._size = config.size
         self._value_fn = config.value_func
+        self._bit_mask = config.bit_mask
+        self._bit_size = config.bit_size
+        self._bit_offset = config.bit_offset
 
     @classmethod
     async def is_correct_platform_for_field(
-        cls, field: dict[str, Any], readable: bool, writeable: bool
+        cls, field: dict[str, Any], writeable: bool
     ) -> bool:
         """Return true if number is an appropriate platform for the field."""
         supported_types = ["u8", "u16", "u32", "u64", "i8", "i16", "i32", "i64"]
-        return field["type"] in supported_types and readable and writeable
+        return field["type"] in supported_types and writeable
 
     async def async_added_to_hass(self) -> None:
         """Set initial state from ERD and set up callback for updates."""
@@ -255,6 +258,14 @@ class GeaNumber(NumberEntity, GeaEntity):
         erd_value = await self._data_source.erd_read(self._device_name, self._erd)
         if erd_value is not None:
             value_bytes = await self._get_bytes_from_value(value)
+
+            if self._bit_mask is not None:
+                cur_field_bytes = await self.get_field_bytes(erd_value)
+                value_bytes = (
+                    int.from_bytes(cur_field_bytes)
+                    | (int(value) << (self._bit_size - self._bit_offset))
+                ).to_bytes()
+
             await self._data_source.erd_publish(
                 self._device_name,
                 self._erd,
@@ -266,6 +277,11 @@ class GeaNumber(NumberEntity, GeaEntity):
         """Return value of the number."""
         if self._field_bytes is None:
             return None
+
+        if self._bit_mask is not None:
+            return (self._value_fn(self._field_bytes) & self._bit_mask) >> (
+                (self._size * 8) - self._bit_size - self._bit_offset
+            )
 
         return self._value_fn(self._field_bytes)
 

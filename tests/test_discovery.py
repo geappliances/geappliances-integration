@@ -313,14 +313,14 @@ class TestDiscovery:
         """Test discovery waits to create an entity until the appliance API confirms that ERD is supported."""
         await when_the_erd_is_set_to(0x0001, bytes.fromhex("01"), discovery)
         the_device_should_exist(registry_updater_mock)
-        the_entity_should_not_exist("Test", registry_updater_mock)
+        the_entity_should_not_exist("Test: Test", registry_updater_mock)
         the_erd_should_be_unsupported(0x0001, data_source)
 
         await when_the_erd_is_set_to(
             0x0092, bytes.fromhex("0000 0001 0000 0000"), discovery
         )
         the_erd_should_be_supported(0x0001, data_source)
-        the_entity_should_be_added_to_the_device("Test", registry_updater_mock)
+        the_entity_should_be_added_to_the_device("Test: Test", registry_updater_mock)
 
     async def test_discovers_common_appliance_api(
         self, registry_updater_mock, data_source, discovery
@@ -331,10 +331,12 @@ class TestDiscovery:
         )
 
         the_erd_should_be_supported(0x0001, data_source)
-        the_entity_should_be_added_to_the_device("Test", registry_updater_mock)
+        the_entity_should_be_added_to_the_device("Test: Test", registry_updater_mock)
 
         the_erd_should_be_supported(0x0002, data_source)
-        the_entity_should_be_added_to_the_device("Another Test", registry_updater_mock)
+        the_entity_should_be_added_to_the_device(
+            "Another Test: Another Test", registry_updater_mock
+        )
 
     async def test_discovers_feature_appliance_api(
         self, registry_updater_mock, discovery
@@ -343,9 +345,11 @@ class TestDiscovery:
         await when_the_erd_is_set_to(
             0x0093, bytes.fromhex("0000 0001 0000 0001"), discovery
         )
-        the_entity_should_be_added_to_the_device("Feature Test", registry_updater_mock)
         the_entity_should_be_added_to_the_device(
-            "Another Feature Test", registry_updater_mock
+            "Feature Test: Feature Test", registry_updater_mock
+        )
+        the_entity_should_be_added_to_the_device(
+            "Another Feature Test: Another Feature Test", registry_updater_mock
         )
 
     async def test_does_not_create_multiple_sensors_for_same_erd(
@@ -355,14 +359,18 @@ class TestDiscovery:
         await when_the_erd_is_set_to(
             0x0092, bytes.fromhex("0000 0001 0000 0001"), discovery
         )
-        the_entity_should_be_added_to_the_device("Test", registry_updater_mock)
-        the_entity_should_be_added_to_the_device("Another Test", registry_updater_mock)
+        the_entity_should_be_added_to_the_device("Test: Test", registry_updater_mock)
+        the_entity_should_be_added_to_the_device(
+            "Another Test: Another Test", registry_updater_mock
+        )
 
         await when_the_erd_is_set_to(
             0x0092, bytes.fromhex("0000 0001 0000 0001"), discovery
         )
-        the_entity_should_not_exist("Test_2", registry_updater_mock)
-        the_entity_should_not_exist("Another Test_2", registry_updater_mock)
+        the_entity_should_not_exist("Test: Test_2", registry_updater_mock)
+        the_entity_should_not_exist(
+            "Another Test: Another Test_2", registry_updater_mock
+        )
 
     async def test_creates_sensor_for_each_field(
         self, registry_updater_mock, discovery
@@ -371,8 +379,12 @@ class TestDiscovery:
         await when_the_erd_is_set_to(
             0x0093, bytes.fromhex("0001 0001 0000 0000"), discovery
         )
-        the_entity_should_be_added_to_the_device("Field One", registry_updater_mock)
-        the_entity_should_be_added_to_the_device("Field Two", registry_updater_mock)
+        the_entity_should_be_added_to_the_device(
+            "Multi Field Test: Field One", registry_updater_mock
+        )
+        the_entity_should_be_added_to_the_device(
+            "Multi Field Test: Field Two", registry_updater_mock
+        )
 
     async def test_moves_erds_to_unsupported_when_appliance_api_changes(
         self, data_source, discovery

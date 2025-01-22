@@ -29,6 +29,8 @@ class GeaEntityConfig:
 class GeaBinarySensorConfig(GeaEntityConfig):
     """Dataclass for holding configuration info for a binary sensor."""
 
+    bit_mask: int
+
 
 @dataclass
 class GeaNumberConfig(GeaEntityConfig):
@@ -39,6 +41,9 @@ class GeaNumberConfig(GeaEntityConfig):
     min: float
     max: float
     value_func: Callable
+    bit_mask: int | None
+    bit_size: int
+    bit_offset: int
 
 
 @dataclass
@@ -57,11 +62,16 @@ class GeaSensorConfig(GeaEntityConfig):
     unit: str | None
     value_func: Callable
     enum_vals: dict[int, str] | None
+    bit_mask: int | None
+    bit_size: int
+    bit_offset: int
 
 
 @dataclass
 class GeaSwitchConfig(GeaEntityConfig):
     """Dataclass for holding configuration info for a switch."""
+
+    bit_mask: int
 
 
 @dataclass

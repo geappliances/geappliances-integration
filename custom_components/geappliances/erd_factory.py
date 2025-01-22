@@ -47,7 +47,6 @@ class ERDFactory:
                     erd,
                     erd_def["name"],
                     field,
-                    "read" in erd_def["operations"],
                     "write" in erd_def["operations"],
                 )
                 for field in erd_def["data"]

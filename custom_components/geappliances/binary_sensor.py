@@ -64,10 +64,10 @@ class GeaBinarySensor(BinarySensorEntity, GeaEntity):
 
     @classmethod
     async def is_correct_platform_for_field(
-        cls, field: dict[str, Any], readable: bool, writeable: bool
+        cls, field: dict[str, Any], writeable: bool
     ) -> bool:
         """Return true if binary sensor is an appropriate platform for the field."""
-        return field["type"] == "bool" and readable and not writeable
+        return field["type"] == "bool" and not writeable
 
     async def async_added_to_hass(self) -> None:
         """Set initial state from ERD and set up callback for updates."""

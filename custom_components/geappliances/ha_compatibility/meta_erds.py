@@ -1,7 +1,6 @@
 """Module to manage meta ERDs."""
 
 import logging
-import math
 from typing import Any
 
 from homeassistant.const import ATTR_ENTITY_ID

@@ -60,6 +60,7 @@ class GeaBinarySensor(BinarySensorEntity, GeaEntity):
         self._data_source = config.data_source
         self._offset = config.offset
         self._size = config.size
+        self._bit_mask = config.bit_mask
 
     @classmethod
     async def is_correct_platform_for_field(
@@ -90,7 +91,9 @@ class GeaBinarySensor(BinarySensorEntity, GeaEntity):
         if value is None:
             self._attr_is_on = None
         else:
-            self._attr_is_on = (await self.get_field_bytes(value)) != b"\x00"
+            self._attr_is_on = (
+                int.from_bytes(await self.get_field_bytes(value)) & self._bit_mask != 0
+            )
 
         self.async_schedule_update_ha_state(True)
 

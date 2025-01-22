@@ -203,6 +203,7 @@ def get_configs_for_erd(
                 0x0001,
                 0,
                 1,
+                0xFF,
             )
         ],
         [
@@ -216,6 +217,7 @@ def get_configs_for_erd(
                 0x0002,
                 0,
                 1,
+                0xFF,
             )
         ],
         [
@@ -229,6 +231,7 @@ def get_configs_for_erd(
                 0x0003,
                 0,
                 1,
+                0xFF,
             )
         ],
         [
@@ -242,6 +245,7 @@ def get_configs_for_erd(
                 0x0004,
                 0,
                 1,
+                0xFF,
             ),
             GeaBinarySensorConfig(
                 "test_0004_Field_Two",
@@ -253,6 +257,7 @@ def get_configs_for_erd(
                 0x0004,
                 1,
                 1,
+                0xFF,
             ),
         ],
     ]

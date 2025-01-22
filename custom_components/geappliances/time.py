@@ -85,7 +85,7 @@ class GeaTime(TimeEntity, GeaEntity):
 
     @classmethod
     async def is_correct_platform_for_field(
-        cls, field: dict[str, Any], readable: bool, writeable: bool
+        cls, field: dict[str, Any], writeable: bool
     ) -> bool:
         """Return true if time is an appropriate platform for the field."""
         # Right now the only ERD that should use this platform is 0x0005, which is handled

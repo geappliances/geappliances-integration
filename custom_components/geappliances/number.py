@@ -2,7 +2,6 @@
 
 from collections.abc import Callable
 import logging
-from math import ceil
 import re
 from typing import Any
 
@@ -216,11 +215,11 @@ class GeaNumber(NumberEntity, GeaEntity):
 
     @classmethod
     async def is_correct_platform_for_field(
-        cls, field: dict[str, Any], readable: bool, writeable: bool
+        cls, field: dict[str, Any], writeable: bool
     ) -> bool:
         """Return true if number is an appropriate platform for the field."""
         supported_types = ["u8", "u16", "u32", "u64", "i8", "i16", "i32", "i64"]
-        return field["type"] in supported_types and readable and writeable
+        return field["type"] in supported_types and writeable
 
     async def async_added_to_hass(self) -> None:
         """Set initial state from ERD and set up callback for updates."""

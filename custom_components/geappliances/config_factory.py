@@ -293,7 +293,6 @@ class ConfigFactory:
         erd: Erd,
         erd_name: str,
         field: dict[str, Any],
-        readable: bool,
         writeable: bool,
     ) -> GeaEntityConfig:
         """Build the given type of configuration."""
@@ -323,9 +322,7 @@ class ConfigFactory:
             )
 
         for platform_type in PLATFORM_TYPE_LIST:
-            if await platform_type.is_correct_platform_for_field(
-                field, readable, writeable
-            ):
+            if await platform_type.is_correct_platform_for_field(field, writeable):
                 platform = platform_type
                 break
 

@@ -28,6 +28,8 @@ from .test_number import the_unit_should_be, when_the_number_is_set_to
 
 from tests.test_select import when_the_select_is_set_to
 
+pytestmark = pytest.mark.parametrize("expected_lingering_timers", [True])
+
 APPLIANCE_API_JSON = """
 {
     "common": {

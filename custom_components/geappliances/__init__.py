@@ -38,11 +38,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    if ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        hass.data.pop(DOMAIN)
-        return ok
+    ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if not ok:
+        return False
 
-    return False
+    hass.data[DOMAIN]["unsubscribe"]()
+    hass.data.pop(DOMAIN)
+
+    return True
 
 
 async def start_discovery(hass: HomeAssistant, entry: ConfigEntry) -> GeaDiscovery:
@@ -69,7 +72,7 @@ async def start_discovery(hass: HomeAssistant, entry: ConfigEntry) -> GeaDiscove
     meta_erd_coordinator = MetaErdCoordinator(data_source, hass)
     gea_discovery = GeaDiscovery(registry_updater, data_source, meta_erd_coordinator)
 
-    await mqtt.client.async_subscribe(
+    hass.data[DOMAIN]["unsubscribe"] = await mqtt.client.async_subscribe(
         hass,
         SUBSCRIBE_TOPIC,
         mqtt_client.handle_message,

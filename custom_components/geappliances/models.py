@@ -78,6 +78,8 @@ class GeaSwitchConfig(GeaEntityConfig):
 class GeaTextConfig(GeaEntityConfig):
     """Dataclass for holding configuration info for a text input."""
 
+    is_raw_bytes: bool
+
 
 @dataclass
 class GeaTimeConfig(GeaEntityConfig):

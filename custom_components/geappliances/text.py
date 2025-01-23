@@ -75,19 +75,20 @@ class GeaText(TextEntity, GeaEntity):
         self._attr_name = config.name
         self._attr_should_poll = False
         self._field_bytes: bytes | None = None
-        self._attr_native_max = config.size
+        self._attr_native_max = config.size * 2 if config.is_raw_bytes else config.size
         self._erd = config.erd
         self._device_name = config.device_name
         self._data_source = config.data_source
         self._offset = config.offset
         self._size = config.size
+        self._is_raw_bytes = config.is_raw_bytes
 
     @classmethod
     async def is_correct_platform_for_field(
         cls, field: dict[str, Any], writeable: bool
     ) -> bool:
         """Return true if text is an appropriate platform for the field."""
-        return field["type"] == "string" and writeable
+        return field["type"] in ["string", "raw"] and writeable
 
     async def async_added_to_hass(self) -> None:
         """Set initial state from ERD and set up callback for updates."""
@@ -123,7 +124,11 @@ class GeaText(TextEntity, GeaEntity):
         """Set the text value."""
         erd_value = await self._data_source.erd_read(self._device_name, self._erd)
         if erd_value is not None:
-            value_bytes = await self._get_bytes_from_value(value)
+            if self._is_raw_bytes:
+                value_bytes = bytes.fromhex(value)
+            else:
+                value_bytes = await self._get_bytes_from_value(value)
+
             await self._data_source.erd_publish(
                 self._device_name,
                 self._erd,
@@ -135,5 +140,7 @@ class GeaText(TextEntity, GeaEntity):
         """Return value of the text."""
         if self._field_bytes is None:
             return None
+        if self._is_raw_bytes:
+            return self._field_bytes.hex()
 
         return self._field_bytes.decode()

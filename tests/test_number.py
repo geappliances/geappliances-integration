@@ -19,6 +19,8 @@ from .common import (
     when_the_erd_is_set_to,
 )
 
+pytestmark = pytest.mark.parametrize("expected_lingering_timers", [True])
+
 APPLIANCE_API_JSON = """
 {
     "common": {
@@ -591,7 +593,7 @@ class TestNumberDeviceClasses:
         the_device_class_should_be(
             "number.pounds_test_pounds_lbs", NumberDeviceClass.WEIGHT, hass
         )
-        the_unit_should_be("number.pounds_test_pounds_lbs", "lbs", hass)
+        the_unit_should_be("number.pounds_test_pounds_lbs", "lb", hass)
 
     async def test_current_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient

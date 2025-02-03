@@ -156,13 +156,12 @@ class MetaErdCoordinator:
 
     async def is_meta_erd(self, erd: Erd) -> bool:
         """Return true if the given ERD is a meta ERD."""
-        erd_is_meta_erd = False
         for feature_type in self._transform_table:
             for feature_version in self._transform_table[feature_type]:
                 if erd in self._transform_table[feature_type][feature_version]:
-                    erd_is_meta_erd = True
+                    return True
 
-        return erd_is_meta_erd
+        return False
 
     async def _look_for_erd_def_in_appliance_api(
         self, device_name: str, api_erd: Erd, meta_erd: Erd
@@ -310,55 +309,3 @@ class MetaErdCoordinator:
         masked = int.from_bytes(field_bytes) & mask
 
         return masked.to_bytes()
-
-
-_TRANSFORM_TABLE: dict[Any, Any] = {
-    "common": {
-        "1": {
-            0x0007: {
-                "Temperature Display Units": {
-                    "fields": ["number.target_cooling_temperature"],
-                    "func": set_unit,
-                }
-            },
-            0x4040: {
-                "Available Modes.Hybrid": {
-                    "fields": ["select.mode.Hybrid"],
-                    "func": set_allowables,
-                },
-                "Available Modes.Standard electric": {
-                    "fields": ["select.mode.Standard electric"],
-                    "func": set_allowables,
-                },
-                "Available Modes.E-heat": {
-                    "fields": ["select.mode.E-heat"],
-                    "func": set_allowables,
-                },
-                "Available Modes.HiDemand": {
-                    "fields": ["select.mode.HiDemand"],
-                    "func": set_allowables,
-                },
-                "Available Modes.Vacation": {
-                    "fields": ["select.mode.Vacation"],
-                    "func": set_allowables,
-                },
-            },
-            0x4047: {
-                "Minimum setpoint": {
-                    "fields": ["{}_4024_Temperature"],
-                    "func": set_min,
-                },
-                "Maximum setpoint": {
-                    "fields": ["number.temperature"],
-                    "func": set_max,
-                },
-            },
-            0x214E: {
-                "Eco Option Is In Client Writable State": {
-                    "fields": ["select.eco_option_status"],
-                    "func": enable_or_disable,
-                },
-            },
-        }
-    }
-}

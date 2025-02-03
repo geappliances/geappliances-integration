@@ -81,7 +81,7 @@ async def start_discovery(hass: HomeAssistant, entry: ConfigEntry) -> GeaDiscove
 
     gea_discovery = GeaDiscovery(registry_updater, data_source, meta_erd_coordinator)
 
-    hass.data[DOMAIN]["unsubscribe"] = await mqtt.client.async_subscribe(
+    await mqtt.client.async_subscribe(
         hass,
         SUBSCRIBE_TOPIC,
         mqtt_client.handle_message,

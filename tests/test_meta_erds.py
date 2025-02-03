@@ -251,43 +251,47 @@ APPLIANCE_API_DEFINITION_JSON = """
 }"""
 
 META_TABLE = {
-    0x0004: {
-        "Temp Min": {
-            "fields": ["{}_0001_Test_Number", "{}_000a_Test_Reverse"],
-            "func": set_min,
+    "common": {
+        "1": {
+            0x0004: {
+                "Temp Min": {
+                    "fields": ["{}_0001_Test_Number", "{}_000a_Test_Reverse"],
+                    "func": set_min,
+                }
+            },
+            0x0005: {
+                "Temp Max": {
+                    "fields": ["{}_0001_Test_Number"],
+                    "func": set_max,
+                }
+            },
+            0x0006: {
+                "Pressure Units": {
+                    "fields": ["{}_0001_Test_Number"],
+                    "func": set_unit,
+                }
+            },
+            0x0008: {
+                "Temp Supported": {
+                    "fields": ["{}_0001_Test_Number"],
+                    "func": enable_or_disable,
+                }
+            },
+            0x0009: {
+                "EnumAllowables.Zero": {
+                    "fields": ["{}_0003_Test_Select.Zero"],
+                    "func": set_allowables,
+                },
+                "EnumAllowables.One": {
+                    "fields": ["{}_0003_Test_Select.One"],
+                    "func": set_allowables,
+                },
+                "EnumAllowables.Max": {
+                    "fields": ["{}_0003_Test_Select.Max"],
+                    "func": set_allowables,
+                },
+            },
         }
-    },
-    0x0005: {
-        "Temp Max": {
-            "fields": ["{}_0001_Test_Number"],
-            "func": set_max,
-        }
-    },
-    0x0006: {
-        "Pressure Units": {
-            "fields": ["{}_0001_Test_Number"],
-            "func": set_unit,
-        }
-    },
-    0x0008: {
-        "Temp Supported": {
-            "fields": ["{}_0001_Test_Number"],
-            "func": enable_or_disable,
-        }
-    },
-    0x0009: {
-        "EnumAllowables.Zero": {
-            "fields": ["{}_0003_Test_Select.Zero"],
-            "func": set_allowables,
-        },
-        "EnumAllowables.One": {
-            "fields": ["{}_0003_Test_Select.One"],
-            "func": set_allowables,
-        },
-        "EnumAllowables.Max": {
-            "fields": ["{}_0003_Test_Select.Max"],
-            "func": set_allowables,
-        },
     },
 }
 
@@ -404,7 +408,7 @@ class TestMetaErds:
     ) -> None:
         """Test the options set by the meta ERD is still applied if Home Assistant learns about the target ERD afterwards."""
         await given_the_erd_is_set_to(0x0004, "F0", hass)
-        await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0002", hass)
+        await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0003", hass)
 
         await setting_the_number_should_raise_error(
             "number.test_reverse_test_reverse", 1.0, hass

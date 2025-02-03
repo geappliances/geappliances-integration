@@ -45,9 +45,15 @@ class GeaDiscovery:
             erd: Erd = int(split_topic[3], base=16)
             if not await self._data_source.erd_is_supported_by_device(device_name, erd):
                 if erd == 0x0092:
+                    await self._data_source.add_unsupported_erd_to_device(
+                        device_name, erd, msg.payload
+                    )
                     await self.process_common_appliance_api(msg, device_name)
 
                 elif (0x0093 <= erd <= 0x0097) or (0x0109 <= erd <= 0x010D):
+                    await self._data_source.add_unsupported_erd_to_device(
+                        device_name, erd, msg.payload
+                    )
                     await self.process_feature_appliance_api(msg, device_name)
 
                 else:

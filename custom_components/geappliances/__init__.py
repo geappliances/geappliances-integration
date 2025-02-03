@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 
 import aiofiles
@@ -68,8 +69,16 @@ async def start_discovery(hass: HomeAssistant, entry: ConfigEntry) -> GeaDiscove
                 contents_api, contents_api_erd_defintions, mqtt_client
             )
 
+    async with aiofiles.open(
+        "custom_components/geappliances/meta_erds.json",
+    ) as meta_erd_json_file:
+        contents_meta_erd_json_file = await meta_erd_json_file.read()
+        meta_erd_coordinator = MetaErdCoordinator(
+            data_source, json.loads(contents_meta_erd_json_file), hass
+        )
+
     registry_updater = RegistryUpdater(hass, entry)
-    meta_erd_coordinator = MetaErdCoordinator(data_source, hass)
+
     gea_discovery = GeaDiscovery(registry_updater, data_source, meta_erd_coordinator)
 
     hass.data[DOMAIN]["unsubscribe"] = await mqtt.client.async_subscribe(

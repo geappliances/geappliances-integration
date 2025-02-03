@@ -121,8 +121,8 @@ class DataSource:
 
         return self._data[device_name][UNSUPPORTED_ERDS][erd]
 
-    async def erd_read(self, device_name: str, erd: Erd) -> bytes | None:
-        """Return the value of the specified ERD."""
+    async def erd_read(self, device_name: str, erd: Erd) -> bytes:
+        """Return the value of the specified ERD. Raises if the ERD is not present on the given device."""
         return (await self._get_erd_from_either_list(device_name, erd))[VALUE]
 
     async def erd_write(self, device_name: str, erd: Erd, value: bytes) -> None:

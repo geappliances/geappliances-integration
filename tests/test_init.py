@@ -2,12 +2,15 @@
 
 from custom_components.geappliances.const import DISCOVERY, DOMAIN
 from custom_components.geappliances.discovery import GeaDiscovery
+import pytest
 from pytest_homeassistant_custom_component.typing import MqttMockHAClient
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
 from .common import config_entry_stub
+
+pytestmark = pytest.mark.parametrize("expected_lingering_timers", [True])
 
 
 def given_the_entry_is_created(hass: HomeAssistant) -> ConfigEntry:

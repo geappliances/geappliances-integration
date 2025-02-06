@@ -2,6 +2,8 @@
 
 import json
 
+from unittest.mock import patch
+
 from custom_components.geappliances.const import DISCOVERY, DOMAIN, Erd
 from pytest_homeassistant_custom_component.common import (
     MockConfigEntry,
@@ -34,11 +36,25 @@ async def given_integration_is_initialized(
     unit_system: UnitSystem = US_CUSTOMARY_SYSTEM,
 ) -> None:
     """Test integration sets up discovery singleton."""
-    entry = config_entry_stub()
-    entry.add_to_hass(hass)
-    await hass.config_entries.async_setup(entry.entry_id)
-    hass.config.units = unit_system
-    given_the_special_erd_map_is({}, hass)
+    with (
+        patch(
+            "custom_components.geappliances.get_appliance_api_json"
+        ) as get_appliance_api_json,
+        patch(
+            "custom_components.geappliances.get_appliance_api_erd_defs_json"
+        ) as get_appliance_api_erd_defs_json,
+        patch(
+            "custom_components.geappliances.get_meta_erds_json"
+        ) as get_meta_erds_json,
+    ):
+        get_appliance_api_json.return_value = "{}"
+        get_appliance_api_erd_defs_json.return_value = '{"erds": {}}'
+        get_meta_erds_json.return_value = "{}"
+        entry = config_entry_stub()
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        hass.config.units = unit_system
+        given_the_special_erd_map_is({}, hass)
 
 
 def given_the_appliance_api_is(appliance_api: str, hass: HomeAssistant) -> None:

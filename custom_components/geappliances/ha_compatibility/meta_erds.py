@@ -1,7 +1,7 @@
 """Module to manage meta ERDs."""
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from homeassistant.const import ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant
@@ -14,7 +14,12 @@ from ..const import (
     ATTR_MIN_VAL,
     ATTR_UNIQUE_ID,
     ATTR_UNIT,
+    COMMON_APPLIANCE_API_ERD,
     DOMAIN,
+    FEATURE_API_ERD_HIGH_END,
+    FEATURE_API_ERD_HIGH_START,
+    FEATURE_API_ERD_LOW_END,
+    FEATURE_API_ERD_LOW_START,
     SERVICE_ENABLE_OR_DISABLE,
     SERVICE_SET_ALLOWABLES,
     SERVICE_SET_MAX,
@@ -127,31 +132,120 @@ async def set_allowables(
 class MetaErdCoordinator:
     """Class to manage meta ERDs and apply transforms."""
 
-    def __init__(self, data_source: DataSource, hass: HomeAssistant) -> None:
+    def __init__(
+        self,
+        data_source: DataSource,
+        meta_erd_json: dict[Any, Any],
+        hass: HomeAssistant,
+    ) -> None:
         """Create the meta ERD coordinator."""
         self._entity_registry = er.async_get(hass)
         self._hass = hass
         self._data_source = data_source
-        self._transform_table = _TRANSFORM_TABLE
+        self._transform_table = meta_erd_json
         self._create_entities_to_meta_erds_dict()
 
     def _create_entities_to_meta_erds_dict(self) -> None:
-        self._entities_to_meta_erds = {
-            entity_id: meta_erd
-            for meta_erd, row_dict in self._transform_table.items()
-            for transform_row in row_dict.values()
-            for entity_id in transform_row["fields"]
-        }
+        self._entities_to_meta_erds: dict[str, list[Erd]] = {}
+        for feature_type in self._transform_table:
+            for feature_version in self._transform_table[feature_type]:
+                for meta_erd, row_dict in self._transform_table[feature_type][
+                    feature_version
+                ].items():
+                    for transform_row in row_dict.values():
+                        for entity_id in transform_row["fields"]:
+                            if self._entities_to_meta_erds.get(entity_id) is None:
+                                self._entities_to_meta_erds[entity_id] = [meta_erd]
+                            elif meta_erd not in self._entities_to_meta_erds[entity_id]:
+                                self._entities_to_meta_erds[entity_id].append(meta_erd)
 
     async def is_meta_erd(self, erd: Erd) -> bool:
         """Return true if the given ERD is a meta ERD."""
-        return erd in self._transform_table
+        for feature_type in self._transform_table:
+            for feature_version in self._transform_table[feature_type]:
+                if erd in self._transform_table[feature_type][feature_version]:
+                    return True
+
+        return False
+
+    async def _look_for_erd_def_in_appliance_api(
+        self, device_name: str, api_erd: Erd, meta_erd: Erd
+    ) -> tuple[str, str] | None:
+        """Check the given appliance API ERD and return a tuple containing the feature type and version if it contains the given meta ERD."""
+        try:
+            api_value = await self._data_source.erd_read(device_name, api_erd)
+        except KeyError:
+            return None
+        else:
+            if api_erd == 0x0092:
+                feature_type = "common"
+                feature_version = f"{int.from_bytes(api_value[0:4])}"
+                feature_mask = int.from_bytes(api_value[4:8])
+                feature_def = await self._data_source.get_common_appliance_api_version(
+                    feature_version
+                )
+            else:
+                feature_type = f"{int.from_bytes(api_value[0:2])}"
+                feature_version = f"{int.from_bytes(api_value[2:4])}"
+                feature_mask = int.from_bytes(api_value[4:8])
+                feature_def = await self._data_source.get_feature_api_version(
+                    feature_type, feature_version
+                )
+
+            if TYPE_CHECKING:
+                assert feature_def is not None
+
+            for erd_def in feature_def["required"]:
+                if erd_def["erd"] == f"{meta_erd:#06x}":
+                    return (feature_type, feature_version)
+
+            for feature in feature_def["features"]:
+                if int(feature["mask"], base=16) & feature_mask:
+                    for erd_def in feature["required"]:
+                        if erd_def["erd"] == f"{meta_erd:#06x}":
+                            return (feature_type, feature_version)
+
+            return None
+
+    async def _get_meta_erd_feature_type_and_version(
+        self, device_name: str, meta_erd: Erd
+    ) -> tuple[str, str] | None:
+        """Return a tuple containing the feature type and version associated with the meta ERD on this device."""
+        feature_type_and_version = await self._look_for_erd_def_in_appliance_api(
+            device_name, COMMON_APPLIANCE_API_ERD, meta_erd
+        )
+        if feature_type_and_version is not None:
+            return feature_type_and_version
+
+        for api_erd in range(FEATURE_API_ERD_LOW_START, FEATURE_API_ERD_LOW_END):
+            feature_type_and_version = await self._look_for_erd_def_in_appliance_api(
+                device_name, api_erd, meta_erd
+            )
+            if feature_type_and_version is not None:
+                return feature_type_and_version
+
+        for api_erd in range(FEATURE_API_ERD_HIGH_START, FEATURE_API_ERD_HIGH_END):
+            feature_type_and_version = await self._look_for_erd_def_in_appliance_api(
+                device_name, api_erd, meta_erd
+            )
+            if feature_type_and_version is not None:
+                return feature_type_and_version
+
+        return None
 
     async def apply_transforms_for_meta_erd(
         self, device_name: str, meta_erd: Erd
     ) -> None:
         """Apply transforms for the given meta ERD. Will raise KeyError if meta_erd is not a meta ERD."""
-        for meta_field, transform_row in self._transform_table[meta_erd].items():
+        feature_type_and_version = await self._get_meta_erd_feature_type_and_version(
+            device_name, meta_erd
+        )
+        if feature_type_and_version is None:
+            return
+
+        for meta_field, transform_row in self._transform_table[
+            feature_type_and_version[0]
+        ][feature_type_and_version[1]][meta_erd].items():
             field_bytes = await self.get_bytes_for_field(
                 device_name, meta_erd, meta_field
             )
@@ -177,10 +271,11 @@ class MetaErdCoordinator:
         self, device_name: str, entity_id: str
     ) -> None:
         """Check if any meta ERDs have transforms for the given entity and apply them."""
-        meta_erd = self._entities_to_meta_erds.get(entity_id)
+        meta_erds = self._entities_to_meta_erds.get(entity_id)
 
-        if meta_erd is not None:
-            await self.apply_transforms_for_meta_erd(device_name, meta_erd)
+        if meta_erds is not None:
+            for meta_erd in meta_erds:
+                await self.apply_transforms_for_meta_erd(device_name, meta_erd)
 
     async def get_bytes_for_field(
         self, device_name: str, erd: Erd, field: str
@@ -226,51 +321,3 @@ class MetaErdCoordinator:
         masked = int.from_bytes(field_bytes) & mask
 
         return masked.to_bytes()
-
-
-_TRANSFORM_TABLE: dict[Erd, dict[str, dict[str, Any]]] = {
-    0x0007: {
-        "Temperature Display Units": {
-            "fields": ["number.target_cooling_temperature"],
-            "func": set_unit,
-        }
-    },
-    0x4040: {
-        "Available Modes.Hybrid": {
-            "fields": ["select.mode.Hybrid"],
-            "func": set_allowables,
-        },
-        "Available Modes.Standard electric": {
-            "fields": ["select.mode.Standard electric"],
-            "func": set_allowables,
-        },
-        "Available Modes.E-heat": {
-            "fields": ["select.mode.E-heat"],
-            "func": set_allowables,
-        },
-        "Available Modes.HiDemand": {
-            "fields": ["select.mode.HiDemand"],
-            "func": set_allowables,
-        },
-        "Available Modes.Vacation": {
-            "fields": ["select.mode.Vacation"],
-            "func": set_allowables,
-        },
-    },
-    0x4047: {
-        "Minimum setpoint": {
-            "fields": ["{}_4024_Temperature"],
-            "func": set_min,
-        },
-        "Maximum setpoint": {
-            "fields": ["number.temperature"],
-            "func": set_max,
-        },
-    },
-    0x214E: {
-        "Eco Option Is In Client Writable State": {
-            "fields": ["select.eco_option_status"],
-            "func": enable_or_disable,
-        },
-    },
-}

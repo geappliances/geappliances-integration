@@ -52,7 +52,7 @@ class ConfigFactory:
             r"(oz)": "fl. oz.",
             r"(mL)": "mL",
             r"(L)": "L",
-            r" lbs|(lbs)": "lbs",
+            r" lbs|(lbs)": "lb",
             r"mA$| mA |(mA)": "mA",
             r"seconds": "s",
             r"minutes": "min",
@@ -264,6 +264,7 @@ class ConfigFactory:
             base.erd,
             base.offset,
             base.size,
+            field["type"] == "raw",
         )
 
     async def build_time(

@@ -119,7 +119,7 @@ class GeaTime(TimeEntity, GeaEntity):
         self.async_schedule_update_ha_state(True)
 
     async def _get_bytes_from_value(self, value: time) -> bytes:
-        """Cast the value to bytes depending on whether the time is signed or unsigned."""
+        """Cast the time to bytes."""
         return bytes([value.hour, value.minute, value.second])
 
     async def async_set_value(self, value: time) -> None:

@@ -98,6 +98,9 @@ class SensorConfigAttributes:
         if field["type"] == "string":
             return lambda value: value.decode("utf-8")
 
+        if field["type"] == "raw":
+            return lambda value: value.hex()
+
         return lambda value: int.from_bytes(value)  # pylint: disable=unnecessary-lambda
 
 
@@ -155,7 +158,12 @@ class GeaSensor(SensorEntity, GeaEntity):
         self._attr_state_class = config.state_class
         self._field_bytes: bytes | None = None
         self._attr_native_unit_of_measurement = config.unit
-        self._attr_suggested_unit_of_measurement = config.unit
+        if config.device_class not in [
+            SensorDeviceClass.BATTERY,
+            SensorDeviceClass.HUMIDITY,
+            SensorDeviceClass.FREQUENCY,
+        ]:
+            self._attr_suggested_unit_of_measurement = config.unit
         self._enum_vals = config.enum_vals
         self._erd = config.erd
         self._device_name = config.device_name
@@ -183,6 +191,7 @@ class GeaSensor(SensorEntity, GeaEntity):
             "i64",
             "enum",
             "string",
+            "raw",
         ]
         return field["type"] in supported_types and not writeable
 

@@ -15,9 +15,12 @@ from .common import (
     given_integration_is_initialized,
     given_the_appliance_api_erd_defs_are,
     given_the_appliance_api_is,
+    given_the_erd_is_set_to,
     the_mqtt_topic_value_should_be,
     when_the_erd_is_set_to,
 )
+
+pytestmark = pytest.mark.parametrize("expected_lingering_timers", [True])
 
 APPLIANCE_API_JSON = """
 {
@@ -45,7 +48,9 @@ APPLIANCE_API_JSON = """
             "versions": {
                 "1": {
                     "required": [
-                        { "erd": "0x0002", "name": "Multi Field Test", "length": 11 }
+                        { "erd": "0x0002", "name": "Multi Field Test", "length": 11 },
+                        { "erd": "0x0004", "name": "Raw Test", "length": 6 }
+
                     ],
                     "features": []
                 }
@@ -99,6 +104,25 @@ APPLIANCE_API_DEFINTION_JSON = """
                     "type": "string",
                     "offset": 0,
                     "size": 1
+                }
+            ]
+        },
+        {
+            "name": "Raw Test",
+            "id": "0x0004",
+            "operations": ["read", "write"],
+            "data": [
+                {
+                    "name": "Field One",
+                    "type": "raw",
+                    "offset": 0,
+                    "size": 4
+                },
+                {
+                    "name": "Field Two",
+                    "type": "raw",
+                    "offset": 4,
+                    "size": 2
                 }
             ]
         }
@@ -202,6 +226,26 @@ class TestText:
         await given_the_erd_string_is_set_to(0x0001, "hi", hass)
         await the_text_should_except_when_set_to("text.test_test", "hello1234", hass)
         the_text_value_should_be("text.test_test", "hi", hass)
+
+    async def test_represents_raw_bytes_as_hex_strings(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test text represents raw fields as hexadecimal strings."""
+        await when_the_erd_is_set_to(0x0004, "0102 0304 0506", hass)
+
+        the_text_value_should_be("text.raw_test_field_one", "01020304", hass)
+        the_text_value_should_be("text.raw_test_field_two", "0506", hass)
+
+    async def test_validates_hex_strings_for_raw_bytes(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test text raises error when input is not a valid hex string."""
+        await given_the_erd_is_set_to(0x0004, "0102 0304 0506", hass)
+
+        await the_text_should_except_when_set_to(
+            "text.raw_test_field_one", "hello", hass
+        )
+        the_text_value_should_be("text.raw_test_field_one", "01020304", hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient

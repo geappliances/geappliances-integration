@@ -15,6 +15,8 @@ from .common import (
     when_the_erd_is_set_to,
 )
 
+pytestmark = pytest.mark.parametrize("expected_lingering_timers", [True])
+
 APPLIANCE_API_JSON = """
 {
     "common": {

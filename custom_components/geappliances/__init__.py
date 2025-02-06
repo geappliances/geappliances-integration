@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 
 import aiofiles
@@ -38,11 +39,40 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    if ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        hass.data.pop(DOMAIN)
-        return ok
+    ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if not ok:
+        return False
 
-    return False
+    hass.data[DOMAIN]["unsubscribe"]()
+    hass.data.pop(DOMAIN)
+
+    return True
+
+
+async def get_appliance_api_json() -> str:
+    """Read the appliance API JSON file and return its contents."""
+    async with aiofiles.open(
+        "custom_components/geappliances/appliance_api/appliance_api_erd_definitions.json",
+        encoding="utf-8",
+    ) as appliance_api_erd_definitions:
+        return await appliance_api_erd_definitions.read()
+
+
+async def get_appliance_api_erd_defs_json() -> str:
+    """Read the appliance API ERD definitions JSON file and return its contents."""
+    async with aiofiles.open(
+        "custom_components/geappliances/appliance_api/appliance_api_erd_definitions.json",
+        encoding="utf-8",
+    ) as appliance_api_erd_definitions:
+        return await appliance_api_erd_definitions.read()
+
+
+async def get_meta_erds_json() -> str:
+    """Read the meta ERD JSON file and return its contents."""
+    async with aiofiles.open(
+        "custom_components/geappliances/meta_erds.json",
+    ) as meta_erd_json_file:
+        return await meta_erd_json_file.read()
 
 
 async def start_discovery(hass: HomeAssistant, entry: ConfigEntry) -> GeaDiscovery:
@@ -50,23 +80,17 @@ async def start_discovery(hass: HomeAssistant, entry: ConfigEntry) -> GeaDiscove
 
     mqtt_client = GeaMQTTClient(hass)
 
-    async with aiofiles.open(
-        "custom_components/geappliances/appliance_api/appliance_api.json",
-        encoding="utf-8",
-    ) as appliance_api:
-        contents_api = await appliance_api.read()
+    data_source = DataSource(
+        await get_appliance_api_json(),
+        await get_appliance_api_erd_defs_json(),
+        mqtt_client,
+    )
 
-        async with aiofiles.open(
-            "custom_components/geappliances/appliance_api/appliance_api_erd_definitions.json",
-            encoding="utf-8",
-        ) as appliance_api_erd_definitions:
-            contents_api_erd_defintions = await appliance_api_erd_definitions.read()
-            data_source = DataSource(
-                contents_api, contents_api_erd_defintions, mqtt_client
-            )
-
+    meta_erd_coordinator = MetaErdCoordinator(
+        data_source, json.loads(await get_meta_erds_json()), hass
+    )
     registry_updater = RegistryUpdater(hass, entry)
-    meta_erd_coordinator = MetaErdCoordinator(data_source, hass)
+
     gea_discovery = GeaDiscovery(registry_updater, data_source, meta_erd_coordinator)
 
     await mqtt.client.async_subscribe(

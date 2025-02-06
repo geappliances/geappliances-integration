@@ -1,0 +1,2841 @@
+{
+  "0": {
+    "1": {
+      "0x4040": {
+        "Available Modes.Hybrid": {
+          "fields": [
+            "{}_4020_Mode"
+          ],
+          "func": "set_allowables"
+        },
+        "Available Modes.Standard electric": {
+          "fields": [
+            "{}_4020_Mode"
+          ],
+          "func": "set_allowables"
+        },
+        "Available Modes.E-heat": {
+          "fields": [
+            "{}_4020_Mode"
+          ],
+          "func": "set_allowables"
+        },
+        "Available Modes.HiDemand": {
+          "fields": [
+            "{}_4020_Mode"
+          ],
+          "func": "set_allowables"
+        },
+        "Available Modes.Vacation": {
+          "fields": [
+            "{}_4020_Mode"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x4047": {
+        "Minimum setpoint": {
+          "fields": [
+            "{}_4024_Temperature"
+          ],
+          "func": "set_min"
+        },
+        "Maximum setpoint": {
+          "fields": [
+            "{}_4024_Temperature"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x4048": {
+        "Minimum setpoint": {
+          "fields": [
+            "{}_4025_Temperature"
+          ],
+          "func": "set_min"
+        },
+        "Maximum setpoint": {
+          "fields": [
+            "{}_4025_Temperature"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "1": {
+    "1": {
+      "0x2052": {
+        "DryerExtendedTumbleOptionAllowables.Dryer Extended Tumble Option Disable Allowed": {
+          "fields": [
+            "{}_2051_Extended Tumble"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerExtendedTumbleOptionAllowables.Dryer Extended Tumble Option Enable Allowed": {
+          "fields": [
+            "{}_2051_Extended Tumble"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x205F": {
+        "DryerReduceStaticOptionAllowables.Dryer Reduce Static Option Disable Allowed": {
+          "fields": [
+            "{}_205D_Dryer Reduce Static Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerReduceStaticOptionAllowables.Dryer Reduce Static Option Enable Allowed": {
+          "fields": [
+            "{}_205D_Dryer Reduce Static Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x206E": {
+        "WasherLinkOptionAllowables.Washer Link Option Disable Allowed": {
+          "fields": [
+            "{}_206D_Washer Link Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "WasherLinkOptionAllowables.Washer Link Option Enable Allowed": {
+          "fields": [
+            "{}_206D_Washer Link Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2045": {
+        "EcoDryOptionAllowables.Eco Dry Option Disable Allowed": {
+          "fields": [
+            "{}_2044_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "EcoDryOptionAllowables.Eco Dry Option Enable Allowed": {
+          "fields": [
+            "{}_2044_Option Status"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2049": {
+        "DampAlertOptionAllowables.Damp Alert Option Disable Allowed": {
+          "fields": [
+            "{}_2048_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "DampAlertOptionAllowables.Damp Alert Option Enable Allowed": {
+          "fields": [
+            "{}_2048_Option Status"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x204C": {
+        "DryerDrynessOptionAllowables.Disabled Allowed": {
+          "fields": [
+            "{}_204B_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerDrynessOptionAllowables.Damp Allowed": {
+          "fields": [
+            "{}_204B_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerDrynessOptionAllowables.Less Dry Allowed": {
+          "fields": [
+            "{}_204B_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerDrynessOptionAllowables.Dry Allowed": {
+          "fields": [
+            "{}_204B_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerDrynessOptionAllowables.More Dry Allowed": {
+          "fields": [
+            "{}_204B_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerDrynessOptionAllowables.Extra Dry Allowed": {
+          "fields": [
+            "{}_204B_Dryness Level"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x204F": {
+        "DryerTemperatureOptionAllowables.Disabled Allowed": {
+          "fields": [
+            "{}_204E_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerTemperatureOptionAllowables.No Heat Allowed": {
+          "fields": [
+            "{}_204E_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerTemperatureOptionAllowables.Extra Low Allowed": {
+          "fields": [
+            "{}_204E_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerTemperatureOptionAllowables.Low Allowed": {
+          "fields": [
+            "{}_204E_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerTemperatureOptionAllowables.Medium Allowed": {
+          "fields": [
+            "{}_204E_Dryness Level"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerTemperatureOptionAllowables.High Allowed": {
+          "fields": [
+            "{}_204E_Dryness Level"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2068": {
+        "DryerSmallLoadOptionAllowables.Dryer Small Load Option Disable Allowed": {
+          "fields": [
+            "{}_2067_Dryer Small Load Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "DryerSmallLoadOptionAllowables.Dryer Small Load Option Enable Allowed": {
+          "fields": [
+            "{}_2067_Dryer Small Load Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2075": {
+        "DetangleOptionAllowables.Detangle Option Disable Allowed": {
+          "fields": [
+            "{}_2074_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "DetangleOptionAllowables.Detangle Option Enable Allowed": {
+          "fields": [
+            "{}_2074_Option Status"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2079": {
+        "TimeLevelOptionAllowables.Disabled Allowed": {
+          "fields": [
+            "{}_2078_Time Level Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "TimeLevelOptionAllowables.Option 1 Allowed": {
+          "fields": [
+            "{}_2078_Time Level Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "TimeLevelOptionAllowables.Option 2 Allowed": {
+          "fields": [
+            "{}_2078_Time Level Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "TimeLevelOptionAllowables.Option 3 Allowed": {
+          "fields": [
+            "{}_2078_Time Level Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "TimeLevelOptionAllowables.Option 4 Allowed": {
+          "fields": [
+            "{}_2078_Time Level Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "TimeLevelOptionAllowables.Option 5 Allowed": {
+          "fields": [
+            "{}_2078_Time Level Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x207C": {
+        "SanitizeOptionAllowables.Sanitize Option Disable Allowed": {
+          "fields": [
+            "{}_207B_Sanitize Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "SanitizeOptionAllowables.Sanitize Option Enable Allowed": {
+          "fields": [
+            "{}_207B_Sanitize Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x207F": {
+        "KeyVolumeAllowables.Off Allowed": {
+          "fields": [
+            "{}_207E_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "KeyVolumeAllowables.Low Allowed": {
+          "fields": [
+            "{}_207E_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "KeyVolumeAllowables.Medium Allowed": {
+          "fields": [
+            "{}_207E_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "KeyVolumeAllowables.High Allowed": {
+          "fields": [
+            "{}_207E_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "KeyVolumeAllowables.High Extended Alert Allowed": {
+          "fields": [
+            "{}_207E_Option Status"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2082": {
+        "AlertVolumeAllowables.Off Allowed": {
+          "fields": [
+            "{}_2081_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "AlertVolumeAllowables.Low Allowed": {
+          "fields": [
+            "{}_2081_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "AlertVolumeAllowables.Medium Allowed": {
+          "fields": [
+            "{}_2081_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "AlertVolumeAllowables.High Allowed": {
+          "fields": [
+            "{}_2081_Option Status"
+          ],
+          "func": "set_allowables"
+        },
+        "AlertVolumeAllowables.High Extended Alert Allowed": {
+          "fields": [
+            "{}_2081_Option Status"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2085": {
+        "ControlLockAllowablesCurrent.Control Lock Option - Disable Allowed": {
+          "fields": [
+            "{}_2084_Control Lock Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "ControlLockAllowablesCurrent.Control Lock Option - Unlock Allowed": {
+          "fields": [
+            "{}_2084_Control Lock Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "ControlLockAllowablesCurrent.Control Lock Option - Lock Allowed": {
+          "fields": [
+            "{}_2084_Control Lock Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2088": {
+        "SteamOptionAllowables.Steam Option Disable Allowed": {
+          "fields": [
+            "{}_2087_Steam Option"
+          ],
+          "func": "set_allowables"
+        },
+        "SteamOptionAllowables.Steam Option Enable Allowed": {
+          "fields": [
+            "{}_2087_Steam Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x208B": {
+        "AirFluffCycleOptionAllowables.Air Fluff Cycle Option Disable Allowed": {
+          "fields": [
+            "{}_208A_Air Fluff Cycle Option"
+          ],
+          "func": "set_allowables"
+        },
+        "AirFluffCycleOptionAllowables.Air Fluff Cycle Option Enable Allowed": {
+          "fields": [
+            "{}_208A_Air Fluff Cycle Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x208E": {
+        "SteamCycleOptionAllowables.Steam Cycle Option Disable Allowed": {
+          "fields": [
+            "{}_208D_Steam Cycle Option"
+          ],
+          "func": "set_allowables"
+        },
+        "SteamCycleOptionAllowables.Steam Cycle Option Refresh Allowed": {
+          "fields": [
+            "{}_208D_Steam Cycle Option"
+          ],
+          "func": "set_allowables"
+        },
+        "SteamCycleOptionAllowables.Steam Cycle Option Dewrinkle Allowed": {
+          "fields": [
+            "{}_208D_Steam Cycle Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2091": {
+        "WarmUpCycleOptionAllowables.Warm Up Cycle Option Disable Allowed": {
+          "fields": [
+            "{}_2090_Warm Up Cycle Option"
+          ],
+          "func": "set_allowables"
+        },
+        "WarmUpCycleOptionAllowables.Warm Up Cycle Option Enable Allowed": {
+          "fields": [
+            "{}_2090_Warm Up Cycle Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2094": {
+        "SmartVentCycleOptionAllowables.Smart Vent Cycle Option Disable Allowed": {
+          "fields": [
+            "{}_2093_Smart Vent Cycle Option"
+          ],
+          "func": "set_allowables"
+        },
+        "SmartVentCycleOptionAllowables.Smart Vent Cycle Option Enable Allowed": {
+          "fields": [
+            "{}_2093_Smart Vent Cycle Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x209C": {
+        "ScentOptionAllowables.Scent Option Off Allowed": {
+          "fields": [
+            "{}_209B_Scent Option"
+          ],
+          "func": "set_allowables"
+        },
+        "ScentOptionAllowables.Scent Option Auto Allowed": {
+          "fields": [
+            "{}_209B_Scent Option"
+          ],
+          "func": "set_allowables"
+        },
+        "ScentOptionAllowables.Scent Option More Allowed": {
+          "fields": [
+            "{}_209B_Scent Option"
+          ],
+          "func": "set_allowables"
+        },
+        "ScentOptionAllowables.Scent Option Less Allowed": {
+          "fields": [
+            "{}_209B_Scent Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x20A8": {},
+      "0x20D2": {},
+      "0x20F3": {
+        "AdaptiveMyCycleOptionAllowables.Adaptive My Cycle Option Disable Allowed": {
+          "fields": [
+            "{}_20F2_Adaptive My Cycle Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "AdaptiveMyCycleOptionAllowables.Adaptive My Cycle Option Enable Allowed": {
+          "fields": [
+            "{}_20F2_Adaptive My Cycle Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      }
+    },
+    "2": {
+      "0x2094": {
+        "SmartVentCycleOptionAllowables.Smart Vent Cycle Option Disable Allowed": {
+          "fields": [
+            "{}_2093_Smart Vent Cycle Option"
+          ],
+          "func": "set_allowables"
+        },
+        "SmartVentCycleOptionAllowables.Smart Vent Cycle Option Enable Allowed": {
+          "fields": [
+            "{}_2093_Smart Vent Cycle Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2110": {
+        "Optimise.Balanced": {
+          "fields": [
+            "{}_2111_Optimise.Balanced"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Optimise.Speed": {
+          "fields": [
+            "{}_2111_Optimise.Speed"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Optimise.Eco": {
+          "fields": [
+            "{}_2111_Optimise.Eco"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Optimise.Quiet": {
+          "fields": [
+            "{}_2111_Optimise.Quiet"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Combined Optimise.Eco + Quiet": {
+          "fields": [
+            "{}_2111_Optimise.Eco",
+            "{}_2111_Optimise.Quiet"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x20DD": {
+        "Cycle Function.Dry": {
+          "fields": [
+            "{}_20DE_Cycle Function.Dry"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Cycle Function.Refresh": {
+          "fields": [
+            "{}_20DE_Cycle Function.Refresh"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Cycle Function.De-odorise": {
+          "fields": [
+            "{}_20DE_Cycle Function.Refresh"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Cycle Function.Speed up": {
+          "fields": [
+            "{}_20DE_Cycle Function.Speed up"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Cycle Function.Sanitize": {
+          "fields": [
+            "{}_20DE_Cycle Function.Sanitize"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Cycle Function.Special Care": {
+          "fields": [
+            "{}_20DE_Cycle Function.Special Care"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Cycle Function.Wash": {
+          "fields": [
+            "{}_20DE_Cycle Function.Wash"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x20C9": {
+        "Dry Time.10min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.15min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.20min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.25min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.30min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.35min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.40min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.45min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.50min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.60min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.70min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.80min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.90min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.100min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.110min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.120min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.130min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.140min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.150min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.160min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.170min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        },
+        "Dry Time.180min": {
+          "fields": [
+            "{}_20CA_Dry Time"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x211C": {
+        "Signal Option.End of cycle signal On enabled": {
+          "fields": [
+            "{}_211D_Signal Option.End of cycle signal On enabled"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x210D": {
+        "Wrinkle Free.1 hour Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.1 hour Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.2 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.2 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.3 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.3 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.4 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.4 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.5 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.5 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.6 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.6 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.7 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.7 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.8 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.8 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.9 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.9 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.10 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.10 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.11 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.11 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.12 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.12 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.24 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.24 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x2121": {
+        "Range Min Minutes": {
+          "fields": [
+            "{}_2120_Requested Minutes"
+          ],
+          "func": "set_min"
+        },
+        "Range Max Minutes": {
+          "fields": [
+            "{}_2120_Requested Minutes"
+          ],
+          "func": "set_max"
+        },
+        "Option Allowed": {
+          "fields": [
+            "{}_2120_Requested Minutes",
+            "{}_2120_Is Requested"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x217E": {
+        "Drum Light Option Allowables.Drum Light Option - Off Allowed": {
+          "fields": [
+            "{}_217D_Drum Light Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "Drum Light Option Allowables.Drum Light Option - On Allowed": {
+          "fields": [
+            "{}_217D_Drum Light Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2181": {
+        "Minimum Delay Duration In Minutes": {
+          "fields": [
+            "{}_2180_Delay Start Duration Request In Minutes"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Delay Duration In Minutes": {
+          "fields": [
+            "{}_2180_Delay Start Duration Request In Minutes"
+          ],
+          "func": "set_max"
+        },
+        "Is Allowed": {
+          "fields": [
+            "{}_2180_Delay Start Duration Request In Minutes",
+            "{}_2180_Delay Start Option Request",
+            "{}_2180_Is Requested"
+          ],
+          "func": "enable_or_disable"
+        }
+      }
+    }
+  },
+  "2": {
+    "1": {
+      "0x2039": {
+        "Remote Status": {
+          "fields": [
+            "{}_2038_Set Delay Start Time (minutes)",
+            "{}_2040_Remote Cycle Stop Request",
+            "{}_2041_Remote Extended Tumble Start Command"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x20A8": {},
+      "0x20D4": {},
+      "0x20C3": {
+        "Smart Dispense Adjustability Allowable.Detergent Flow Rate Bucket One": {
+          "fields": [
+            "{}_20C1_Flow Rate Bucket Selection"
+          ],
+          "func": "set_allowables"
+        },
+        "Smart Dispense Adjustability Allowable.Detergent Flow Rate Bucket Two": {
+          "fields": [
+            "{}_20C1_Flow Rate Bucket Selection"
+          ],
+          "func": "set_allowables"
+        },
+        "Smart Dispense Adjustability Allowable.Detergent Flow Rate Bucket Three": {
+          "fields": [
+            "{}_20C1_Flow Rate Bucket Selection"
+          ],
+          "func": "set_allowables"
+        },
+        "Smart Dispense Adjustability Allowable.Detergent Flow Rate Bucket Four": {
+          "fields": [
+            "{}_20C1_Flow Rate Bucket Selection"
+          ],
+          "func": "set_allowables"
+        },
+        "Smart Dispense Adjustability Allowable.Softener Flow Rate Bucket One": {
+          "fields": [
+            "{}_20C1_Flow Rate Bucket Selection"
+          ],
+          "func": "set_allowables"
+        },
+        "Smart Dispense Adjustability Allowable.Softener Flow Rate Bucket Two": {
+          "fields": [
+            "{}_20C1_Flow Rate Bucket Selection"
+          ],
+          "func": "set_allowables"
+        },
+        "Smart Dispense Adjustability Allowable.Softener Flow Rate Bucket Three": {
+          "fields": [
+            "{}_20C1_Flow Rate Bucket Selection"
+          ],
+          "func": "set_allowables"
+        },
+        "Smart Dispense Adjustability Allowable.Softener Flow Rate Bucket Four": {
+          "fields": [
+            "{}_20C1_Flow Rate Bucket Selection"
+          ],
+          "func": "set_allowables"
+        }
+      }
+    },
+    "2": {
+      "0x20F3": {
+        "AdaptiveMyCycleOptionAllowables.Adaptive My Cycle Option Disable Allowed": {
+          "fields": [
+            "{}_20F2_Adaptive My Cycle Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "AdaptiveMyCycleOptionAllowables.Adaptive My Cycle Option Enable Allowed": {
+          "fields": [
+            "{}_20F2_Adaptive My Cycle Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x2113": {
+        "Auto Dose.Auto Detergent": {
+          "fields": [
+            "{}_2112_Auto Dose.Auto Detergent"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Auto Dose.Auto Softener": {
+          "fields": [
+            "{}_2112_Auto Dose.Auto Softener"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Auto Dose.Manual Detergent": {
+          "fields": [
+            "{}_2112_Auto Dose.Manual Detergent"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Auto Dose.Manual Softener": {
+          "fields": [
+            "{}_2112_Auto Dose.Manual Softener"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Auto Dose.Auto Detergent (Tank 2)": {
+          "fields": [
+            "{}_2112_Auto Dose.Auto Detergent (Tank 2)"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Combined Auto Dose.Auto Detergent + Softener": {
+          "fields": [
+            "{}_2112_Auto Dose.Auto Detergent",
+            "{}_2112_Auto Dose.Auto Softener"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Combined Auto Dose.Manual Detergent + Softener": {
+          "fields": [
+            "{}_2112_Auto Dose.Manual Detergent",
+            "{}_2112_Auto Dose.Manual Softener"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x2117": {},
+      "0x210D": {
+        "Wrinkle Free.1 hour Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.1 hour Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.2 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.2 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.3 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.3 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.4 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.4 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.5 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.5 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.6 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.6 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.7 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.7 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.8 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.8 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.9 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.9 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.10 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.10 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.11 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.11 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.12 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.12 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wrinkle Free.24 hours Wrinkle free": {
+          "fields": [
+            "{}_210E_Wrinkle Free.24 hours Wrinkle free"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x2107": {
+        "Water Level.Low": {
+          "fields": [
+            "{}_2108_Water Level.Low"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Water Level.Med": {
+          "fields": [
+            "{}_2108_Water Level.Med"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Water Level.High": {
+          "fields": [
+            "{}_2108_Water Level.High"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Water Level.Auto": {
+          "fields": [
+            "{}_2108_Water Level.Auto"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x210A": {
+        "Wash Progress.Spin": {
+          "fields": [
+            "{}_210B_Wash Progress.Spin"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wash Progress.Rinse": {
+          "fields": [
+            "{}_210B_Wash Progress.Rinse"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Wash Progress.Wash": {
+          "fields": [
+            "{}_210B_Wash Progress.Wash"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x2110": {
+        "Optimise.Balanced": {
+          "fields": [
+            "{}_2111_Optimise.Balanced"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Optimise.Speed": {
+          "fields": [
+            "{}_2111_Optimise.Speed"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Optimise.Eco": {
+          "fields": [
+            "{}_2111_Optimise.Eco"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Optimise.Quiet": {
+          "fields": [
+            "{}_2111_Optimise.Quiet"
+          ],
+          "func": "enable_or_disable"
+        },
+        "Combined Optimise.Eco + Quiet": {
+          "fields": [
+            "{}_2111_Optimise.Eco",
+            "{}_2111_Optimise.Quiet"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x211A": {},
+      "0x2119": {},
+      "0x2118": {},
+      "0x20C7": {
+        "Spin Level Option.No Spin allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.Low allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.Med allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.High allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.400 allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.500 allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.600 allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.800 allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.1000 allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.1100 allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.1200 allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Spin Level Option.1400 allowed": {
+          "fields": [
+            "{}_20B8_Spin level Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x20C6": {
+        "Water Temperature Option.WaterTemp_Disable allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Water Temperature Option.Cold allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Water Temperature Option.20\u00b0C allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Water Temperature Option.30\u00b0C allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Water Temperature Option.40\u00b0C allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Water Temperature Option.50\u00b0C allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Water Temperature Option.60\u00b0C allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Water Temperature Option.70\u00b0C allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Water Temperature Option.80\u00b0C allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Water Temperature Option.90\u00b0C allowed": {
+          "fields": [
+            "{}_20BC_Water Temperature Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x20C4": {
+        "Soil Level Option.Disable allowed": {
+          "fields": [
+            "{}_20BF_Soil Level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Soil Level Option.Extra light allowed": {
+          "fields": [
+            "{}_20BF_Soil Level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Soil Level Option.Light allowed": {
+          "fields": [
+            "{}_20BF_Soil Level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Soil Level Option.Normal allowed": {
+          "fields": [
+            "{}_20BF_Soil Level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Soil Level Option.Heavy allowed": {
+          "fields": [
+            "{}_20BF_Soil Level Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Soil Level Option.Extra heavy allowed": {
+          "fields": [
+            "{}_20BF_Soil Level Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x20C5": {
+        "Auto Soak Option.Soak off allowed": {
+          "fields": [
+            "{}_20AC_Auto Soak Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Auto Soak Option.Soak 30min allowed": {
+          "fields": [
+            "{}_20AC_Auto Soak Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Auto Soak Option.Soak 60min allowed": {
+          "fields": [
+            "{}_20AC_Auto Soak Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Auto Soak Option.Soak 90min allowed": {
+          "fields": [
+            "{}_20AC_Auto Soak Option"
+          ],
+          "func": "set_allowables"
+        },
+        "Auto Soak Option.Soak 120min allowed": {
+          "fields": [
+            "{}_20AC_Auto Soak Option"
+          ],
+          "func": "set_allowables"
+        }
+      },
+      "0x214E": {
+        "Eco Option Is Client Writeable State": {
+          "fields": [
+            "{}_2125_Eco Option Status"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x214D": {
+        "Soaking Rinse Option Is Client Writeable State": {
+          "fields": [
+            "{}_214C_Soaking Rinse Option Status"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x215E": {
+        "Water Level Is Client Writeable State": {
+          "fields": [
+            "{}_212D_Water Level Status"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x2160": {
+        "Steam Option Is Client Writeable": {
+          "fields": [
+            "{}_2057_Steam Option"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x2161": {
+        "Tumble Care Option Is Client Writeable": {
+          "fields": [
+            "{}_2060_Tumble Care Option"
+          ],
+          "func": "enable_or_disable"
+        }
+      }
+    }
+  },
+  "3": {
+    "1": {
+      "0x100B": {
+        "Fresh Food Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Fresh Food Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Fresh Food Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Fresh Food Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        },
+        "Freezer Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Freezer Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Freezer Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Freezer Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x1023": {
+        "Adjustable Convertible Drawer Mode 1 Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1022_Convertible Drawer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Adjustable Convertible Drawer Mode 1 Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1022_Convertible Drawer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        },
+        "Adjustable Convertible Drawer Mode 2 Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1022_Convertible Drawer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Adjustable Convertible Drawer Mode 2 Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1022_Convertible Drawer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        },
+        "Adjustable Convertible Drawer Mode 3 Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1022_Convertible Drawer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Adjustable Convertible Drawer Mode 3 Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1022_Convertible Drawer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        },
+        "Adjustable Convertible Drawer Mode 4 Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1022_Convertible Drawer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Adjustable Convertible Drawer Mode 4 Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1022_Convertible Drawer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        }
+      }
+    },
+    "2": {
+      "0x1201": {
+        "Fresh Food Setpoint Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1200_Fresh Food Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Fresh Food Setpoint Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1200_Fresh Food Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x1204": {
+        "Freezer Setpoint Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1203_Freezer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Freezer Setpoint Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1203_Freezer Setpoint Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        }
+      }
+    },
+    "3": {
+      "0x125A": {
+        "Door Alarm Timer Maximum Setting in Minutes": {
+          "fields": [
+            "{}_1258_Door Alarm Time in Minutes"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "5": {
+    "1": {
+      "0x5008": {
+        "Maximum (fahrenheit)": {
+          "fields": [
+            "{}_5402_Target Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        },
+        "Minimum (fahrenheit)": {
+          "fields": [
+            "{}_5402_Target Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        }
+      },
+      "0x5407": {
+        "Convection Bake Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Convection Bake Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Broil Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Broil Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Warm Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Warm Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Proof Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Proof Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Toast Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Toast Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Convection Roast Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Convection Roast Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Fast Cook Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Fast Cook Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x5408": {
+        "Express Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Express Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Slow Cook Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Slow Cook Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Defrost Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Defrost Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Microwave Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Microwave Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x5409": {
+        "Precision Cook Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Precision Cook Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Custom Precision Cook 120V Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Custom Precision Cook 120V Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Custom Precision Cook 240V Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Custom Precision Cook 240V Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Air Fry Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Air Fry Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Crisp Reheat Min Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Crisp Reheat Max Allowable Cook Time (seconds)": {
+          "fields": [
+            "{}_5404_Cook time adjustment (seconds)"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "6": {
+    "1": {
+      "0x3087": {
+        "Remote Start Enable": {
+          "fields": [
+            "{}_3204_Remote Control Command"
+          ],
+          "func": "enable_or_disable"
+        }
+      }
+    }
+  },
+  "7": {
+    "1": {
+      "0x5118": {
+        "Upper Oven Door Open Remote Enabled": {
+          "fields": [
+            "{}_510F_Open Door"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x5218": {
+        "Lower Oven Door Open Remote Enabled": {
+          "fields": [
+            "{}_520F_Open Door"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x5025": {
+        "Brightness Min": {
+          "fields": [
+            "{}_5023_Brightness"
+          ],
+          "func": "set_min"
+        },
+        "Brightness Max": {
+          "fields": [
+            "{}_5023_Brightness"
+          ],
+          "func": "set_max"
+        },
+        "Color Temperature Min": {
+          "fields": [
+            "{}_5023_Temperature"
+          ],
+          "func": "set_min"
+        },
+        "Color Temperature Max": {
+          "fields": [
+            "{}_5023_Temperature"
+          ],
+          "func": "set_max"
+        },
+        "Custom Colors Available": {
+          "fields": [
+            "{}_5023_Custom Color Active",
+            "{}_5023_Custom Color Code"
+          ],
+          "func": "enable_or_disable"
+        }
+      }
+    }
+  },
+  "10": {
+    "1": {
+      "0x7B06": {
+        "Minimum Target Temperature": {
+          "fields": [
+            "{}_7002_Target Heating Temperature",
+            "{}_7003_Target Cooling Temperature"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Target Temperature": {
+          "fields": [
+            "{}_7002_Target Heating Temperature",
+            "{}_7003_Target Cooling Temperature"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "14": {
+    "1": {
+      "0x7B06": {
+        "Minimum Target Temperature": {
+          "fields": [
+            "{}_7003_Target Cooling Temperature"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Target Temperature": {
+          "fields": [
+            "{}_7003_Target Cooling Temperature"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x797C": {
+        "Ready to Enter Vacation Mode": {
+          "fields": [
+            "{}_7976_Vacation Mode Status Request"
+          ],
+          "func": "enable_or_disable"
+        }
+      }
+    }
+  },
+  "20": {
+    "1": {
+      "0x0007": {
+        "Temperature Display Units": {
+          "fields": [
+            "{}_7100_Inside ambient temperature",
+            "{}_7101_Inside coil temperature",
+            "{}_7104_Inside ambient temperature"
+          ],
+          "func": "set_unit"
+        }
+      }
+    }
+  },
+  "23": {
+    "2": {
+      "0x20D2": {},
+      "0x214A": {
+        "Remote Start Allowable Status": {
+          "fields": [
+            "{}_2149_Remote Start Selected Cycle"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x20A8": {},
+      "0x2085": {
+        "ControlLockAllowablesCurrent.Control Lock Option - Disable Allowed": {
+          "fields": [
+            "{}_2084_Control Lock Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "ControlLockAllowablesCurrent.Control Lock Option - Unlock Allowed": {
+          "fields": [
+            "{}_2084_Control Lock Option Request"
+          ],
+          "func": "set_allowables"
+        },
+        "ControlLockAllowablesCurrent.Control Lock Option - Lock Allowed": {
+          "fields": [
+            "{}_2084_Control Lock Option Request"
+          ],
+          "func": "set_allowables"
+        }
+      }
+    }
+  },
+  "24": {
+    "1": {
+      "0x100B": {
+        "Fresh Food Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Fresh Food Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Fresh Food Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Fresh Food Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        },
+        "Freezer Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Freezer Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Freezer Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Freezer Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "25": {
+    "1": {
+      "0x100B": {
+        "Fresh Food Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Fresh Food Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Fresh Food Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Fresh Food Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        },
+        "Freezer Minimum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Freezer Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_min"
+        },
+        "Freezer Maximum Temperature (fahrenheit)": {
+          "fields": [
+            "{}_1005_Freezer Desired Temperature (fahrenheit)"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "26": {
+    "1": {
+      "0x9002": {
+        "Minimum Temperature (F)": {
+          "fields": [
+            "{}_9017_Temperature (F)"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Temperature (F)": {
+          "fields": [
+            "{}_9017_Temperature (F)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x9007": {
+        "Minimum Cups": {
+          "fields": [
+            "{}_9018_Cups"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Cups": {
+          "fields": [
+            "{}_9018_Cups"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x900D": {
+        "Minimum Seconds": {
+          "fields": [
+            "{}_9010_Duration (Seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Seconds": {
+          "fields": [
+            "{}_9010_Duration (Seconds)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x900E": {
+        "Minimum Seconds": {
+          "fields": [
+            "{}_9010_Bloom Pump Run Time (Seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Seconds": {
+          "fields": [
+            "{}_9010_Bloom Pump Run Time (Seconds)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x900F": {
+        "Minimum Seconds": {
+          "fields": [
+            "{}_9010_Bloom Dwell Time (Seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Seconds": {
+          "fields": [
+            "{}_9010_Bloom Dwell Time (Seconds)"
+          ],
+          "func": "set_max"
+        }
+      }
+    },
+    "2": {
+      "0x905A": {
+        "Min Strength": {
+          "fields": [
+            "{}_9052_Strength"
+          ],
+          "func": "set_min"
+        },
+        "Max Strength": {
+          "fields": [
+            "{}_9052_Strength"
+          ],
+          "func": "set_max"
+        },
+        "Min Temperature (F)": {
+          "fields": [
+            "{}_9052_Temperature (F)"
+          ],
+          "func": "set_min"
+        },
+        "Max Temperature (F)": {
+          "fields": [
+            "{}_9052_Temperature (F)"
+          ],
+          "func": "set_max"
+        },
+        "Min Single Volume (oz)": {
+          "fields": [
+            "{}_9052_Single Volume (oz)"
+          ],
+          "func": "set_min"
+        },
+        "Max Single Volume (oz)": {
+          "fields": [
+            "{}_9052_Single Volume (oz)"
+          ],
+          "func": "set_max"
+        },
+        "Min Carafe Volume (Cups)": {
+          "fields": [
+            "{}_9052_Carafe Volume (cups)"
+          ],
+          "func": "set_min"
+        },
+        "Max Carafe Volume (Cups)": {
+          "fields": [
+            "{}_9052_Carafe Volume (cups)"
+          ],
+          "func": "set_max"
+        },
+        "Min Grind Time Delta (Seconds)": {
+          "fields": [
+            "{}_9052_Grind Time Delta (Seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Max Grind Time Delta (Seconds)": {
+          "fields": [
+            "{}_9052_Grind Time Delta (Seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Min Bloom Dwell Time (Seconds)": {
+          "fields": [
+            "{}_9052_Bloom Dwell Time (Seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Max Bloom Dwell Time (Seconds)": {
+          "fields": [
+            "{}_9052_Bloom Dwell Time (Seconds)"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "29": {
+    "1": {
+      "0x7B03": {
+        "Minimum Target Humidity": {
+          "fields": [
+            "{}_7B02_Target Humidity"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Target Humidity": {
+          "fields": [
+            "{}_7B02_Target Humidity"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "36": {
+    "1": {
+      "0x7B06": {
+        "Minimum Target Temperature": {
+          "fields": [
+            "{}_7002_Target Heating Temperature",
+            "{}_7003_Target Cooling Temperature"
+          ],
+          "func": "set_min"
+        },
+        "Maximum Target Temperature": {
+          "fields": [
+            "{}_7002_Target Heating Temperature",
+            "{}_7003_Target Cooling Temperature"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x79B9": {
+        "Auto Mode Temperature Deadband minimum allowable in degrees F": {
+          "fields": [
+            "{}_79AA_Auto Mode Temperature Deadband width in degrees F"
+          ],
+          "func": "set_min"
+        },
+        "Auto Mode Temperature Deadband maximum allowable in degrees F": {
+          "fields": [
+            "{}_79AA_Auto Mode Temperature Deadband width in degrees F"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x79BA": {
+        "Minimum Heating Time minimum allowable in minutes": {
+          "fields": [
+            "{}_79CA_Minimum Heat Time in minutes"
+          ],
+          "func": "set_min"
+        },
+        "Minimum Heating Time maximum allowable in minutes": {
+          "fields": [
+            "{}_79CA_Minimum Heat Time in minutes"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x79BB": {
+        "Aux Heat Minimum Temperature Delta minimum allowable setting in degrees F": {
+          "fields": [
+            "{}_79CC_Auxiliary Heat Minimum Temperature Delta in degrees F (X10)"
+          ],
+          "func": "set_min"
+        },
+        "Aux Heat Minimum Temperature Delta maximum allowable setting in degrees F": {
+          "fields": [
+            "{}_79CC_Auxiliary Heat Minimum Temperature Delta in degrees F (X10)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x79BC": {
+        "Indoor Ambient Temperature Sensor Calibration minimum allowable in degrees F": {
+          "fields": [
+            "{}_79CE_Indoor Ambient Temperature Sensor Calibration in degrees F (X10)"
+          ],
+          "func": "set_min"
+        },
+        "Indoor Ambient Temperature Sensor Calibration maximum allowable in degrees F": {
+          "fields": [
+            "{}_79CE_Indoor Ambient Temperature Sensor Calibration in degrees F (X10)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x79B3": {
+        "Compressor Minimum Runtime minimum allowable in minutes": {
+          "fields": [
+            "{}_79AC_Compressor Minimum Runtime in minutes"
+          ],
+          "func": "set_min"
+        },
+        "Compressor Minimum Runtime maximum allowable in minutes": {
+          "fields": [
+            "{}_79AC_Compressor Minimum Runtime in minutes"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x79B4": {
+        "Compressor Minimum Idletime minimum allowable in minutes": {
+          "fields": [
+            "{}_79AE_Compressor Minimum Idle Time in minutes"
+          ],
+          "func": "set_min"
+        },
+        "Compressor Minimum Idletime maximum allowable in minutes": {
+          "fields": [
+            "{}_79AE_Compressor Minimum Idle Time in minutes"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x79B5": {
+        "Compressor Maximum Stage1 Runtime minimum allowable in minutes": {
+          "fields": [
+            "{}_79B0_Compressor Maximum Stage1 Runtime in minutes"
+          ],
+          "func": "set_min"
+        },
+        "Compressor Maximum Stage1 Runtime maximum allowable in minutes": {
+          "fields": [
+            "{}_79B0_Compressor Maximum Stage1 Runtime in minutes"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x79B6": {
+        "Compressor Minimum Stage2 Temperature Delta minimum allowable in degrees F": {
+          "fields": [
+            "{}_79C4_Compressor Minimum Stage2 Temperature Delta in degrees F"
+          ],
+          "func": "set_min"
+        },
+        "Compressor Minimum Stage2 Temperature Delta maximum allowable in degrees F": {
+          "fields": [
+            "{}_79C4_Compressor Minimum Stage2 Temperature Delta in degrees F"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x79B7": {
+        "Indoor Fan Minimum Delay minimum allowable in minutes": {
+          "fields": [
+            "{}_79C8_Indoor Fan Delay in minutes (X10)"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "38": {
+    "1": {
+      "0x9303": {
+        "Min Speed": {
+          "fields": [
+            "{}_9302_Speed"
+          ],
+          "func": "set_min"
+        },
+        "Max Speed": {
+          "fields": [
+            "{}_9302_Speed"
+          ],
+          "func": "set_max"
+        },
+        "Min Timer Set Value (Seconds)": {
+          "fields": [
+            "{}_9302_Timer Set Value (Seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Max Timer Set Value (Seconds)": {
+          "fields": [
+            "{}_9302_Timer Set Value (Seconds)"
+          ],
+          "func": "set_max"
+        },
+        "Torque Profile Min Delta Torque (mN-m)": {
+          "fields": [
+            "{}_9302_Torque Profile Delta Torque (mN-m)"
+          ],
+          "func": "set_min"
+        },
+        "Torque Profile Max Delta Torque (mN-m)": {
+          "fields": [
+            "{}_9302_Torque Profile Delta Torque (mN-m)"
+          ],
+          "func": "set_max"
+        },
+        "Torque Profile Min Baseline Sample Time (Seconds)": {
+          "fields": [
+            "{}_9302_Torque Profile Baseline Sample Time (Seconds)"
+          ],
+          "func": "set_min"
+        },
+        "Torque Profile Max Baseline Sample Time (Seconds)": {
+          "fields": [
+            "{}_9302_Torque Profile Baseline Sample Time (Seconds)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x0051": {}
+    }
+  },
+  "43": {
+    "1": {
+      "0x940C": {
+        "Target Cavity Temperature Min (F)": {
+          "fields": [
+            "{}_9401_Cavity Temperature (F)"
+          ],
+          "func": "set_min"
+        },
+        "Target Cavity Temperature Max (F)": {
+          "fields": [
+            "{}_9401_Cavity Temperature (F)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x940F": {
+        "Smoke Level Min": {
+          "fields": [
+            "{}_9414_Smoke Level",
+            "{}_9416_Smoke Level",
+            "{}_9418_Smoke Level",
+            "{}_941C_Smoke Level",
+            "{}_941E_Smoke Level",
+            "{}_9420_Smoke Level"
+          ],
+          "func": "set_min"
+        },
+        "Smoke Level Max": {
+          "fields": [
+            "{}_9414_Smoke Level",
+            "{}_9416_Smoke Level",
+            "{}_9418_Smoke Level",
+            "{}_941C_Smoke Level",
+            "{}_941E_Smoke Level",
+            "{}_9420_Smoke Level"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x940E": {
+        "Cook Time Min (minutes)": {
+          "fields": [
+            "{}_9401_Cook Time (Minutes)"
+          ],
+          "func": "set_min"
+        },
+        "Cook Time Max (minutes)": {
+          "fields": [
+            "{}_9401_Cook Time (Minutes)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x940D": {
+        "Probe Temperature Min (F)": {
+          "fields": [
+            "{}_9401_Probe Target Temperature (F)"
+          ],
+          "func": "set_min"
+        },
+        "Probe Temperature Max (F)": {
+          "fields": [
+            "{}_9401_Probe Target Temperature (F)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x9427": {
+        "Warm Temperature Min (F)": {
+          "fields": [
+            "{}_9401_Cavity Temperature (F)"
+          ],
+          "func": "set_min"
+        },
+        "Warm Temperature Max (F)": {
+          "fields": [
+            "{}_9401_Cavity Temperature (F)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x9428": {
+        "Warm Time Min (Minutes)": {
+          "fields": [
+            "{}_9401_Cook Time (Minutes)"
+          ],
+          "func": "set_min"
+        },
+        "Warm Time Max (Minutes)": {
+          "fields": [
+            "{}_9401_Cook Time (Minutes)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x942D": {
+        "Early Completion Notification Temperature Min (F)": {
+          "fields": [
+            "{}_942C_Early Completion Notification Temperature (F)"
+          ],
+          "func": "set_min"
+        },
+        "Early Completion Notification Temperature Max (F)": {
+          "fields": [
+            "{}_942C_Early Completion Notification Temperature (F)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x9430": {
+        "Early Completion Notification Time Min (Minutes)": {
+          "fields": [
+            "{}_942F_Early Completion Notification Time (Minutes)"
+          ],
+          "func": "set_min"
+        },
+        "Early Completion Notification Time Max (Minutes)": {
+          "fields": [
+            "{}_942F_Early Completion Notification Time (Minutes)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x9433": {
+        "Igniter Temperature Min (F)": {
+          "fields": [
+            "{}_9432_Igniter Temperature (F)"
+          ],
+          "func": "set_min"
+        },
+        "Igniter Temperature Max (F)": {
+          "fields": [
+            "{}_9432_Igniter Temperature (F)"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x9410": {
+        "Remote Configure Enabled": {
+          "fields": [
+            "{}_9401_Cook Mode"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x0051": {}
+    }
+  },
+  "45": {
+    "1": {
+      "0x20A8": {},
+      "0x20D2": {}
+    }
+  },
+  "259": {
+    "1": {
+      "0x1050": {
+        "Compartment Food Mode Configuration[0].Lower Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[0].Upper Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[1].Lower Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[1].Upper Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[2].Lower Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[2].Upper Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[3].Lower Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[3].Upper Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[4].Lower Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[4].Upper Temperature Limit": {
+          "fields": [
+            "{}_103E_Desired Temperature Setpoint Upper Compartment"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x1051": {
+        "Compartment Food Mode Configuration[0].Lower Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[0].Upper Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[1].Lower Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[1].Upper Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[2].Lower Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[2].Upper Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[3].Lower Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[3].Upper Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[4].Lower Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[4].Upper Temperature Limit": {
+          "fields": [
+            "{}_103F_Desired Temperature Setpoint Lower Compartment"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x1052": {
+        "Compartment Food Mode Configuration[0].Lower Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[0].Upper Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[1].Lower Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[1].Upper Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[2].Lower Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[2].Upper Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[3].Lower Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[3].Upper Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_max"
+        },
+        "Compartment Food Mode Configuration[4].Lower Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_min"
+        },
+        "Compartment Food Mode Configuration[4].Upper Temperature Limit": {
+          "fields": [
+            "{}_1040_Desired Temperature Setpoint Middle Compartment"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "262": {
+    "1": {
+      "0x3087": {
+        "Remote Start Enable": {
+          "fields": [
+            "{}_3204_Remote Control Command"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x3487": {
+        "Remote Start Enable": {
+          "fields": [
+            "{}_3604_Remote Control Command"
+          ],
+          "func": "enable_or_disable"
+        }
+      }
+    }
+  },
+  "263": {
+    "1": {
+      "0x5118": {
+        "Upper Oven Door Open Remote Enabled": {
+          "fields": [
+            "{}_510F_Open Door"
+          ],
+          "func": "enable_or_disable"
+        }
+      },
+      "0x5218": {
+        "Lower Oven Door Open Remote Enabled": {
+          "fields": [
+            "{}_520F_Open Door"
+          ],
+          "func": "enable_or_disable"
+        }
+      }
+    }
+  },
+  "265": {
+    "1": {
+      "0x5B11": {
+        "Min Delay Off Duration": {
+          "fields": [
+            "{}_5B1D_Hood Requested Delay Off Duration"
+          ],
+          "func": "set_min"
+        },
+        "Max Delay Off Duration": {
+          "fields": [
+            "{}_5B1D_Hood Requested Delay Off Duration"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "514": {
+    "1": {
+      "0x7708": {
+        "User Heating Minimum Allowed Setpoint in Fahrenheit x 10": {
+          "fields": [
+            "{}_7707_User Heating Setpoint Temperature in Fahrenheit x 10"
+          ],
+          "func": "set_min"
+        },
+        "User Heating Maximum Allowed Setpoint in Fahrenheit x 10": {
+          "fields": [
+            "{}_7707_User Heating Setpoint Temperature in Fahrenheit x 10"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x770B": {
+        "User Cooling Minimum Allowed Setpoint in Fahrenheit x 10": {
+          "fields": [
+            "{}_770A_User Cooling Setpoint Temperature in Fahrenheit x 10"
+          ],
+          "func": "set_min"
+        },
+        "User Cooling Maximum Allowed Setpoint in Fahrenheit x 10": {
+          "fields": [
+            "{}_770A_User Cooling Setpoint Temperature in Fahrenheit x 10"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x770E": {
+        "User Heating Setpoint Minimum Limit - Minimum Allowed Value in Fahrenheit x 10": {
+          "fields": [
+            "{}_770D_User Heating Setpoint Minimum Limit Request in Fahrenheit x 10"
+          ],
+          "func": "set_min"
+        },
+        "User Heating Setpoint Minimum Limit - Maximum Allowed Value in Fahrenheit x 10": {
+          "fields": [
+            "{}_770D_User Heating Setpoint Minimum Limit Request in Fahrenheit x 10"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x7710": {
+        "User Heating Setpoint Maximum Limit - Minimum Allowed Value in Fahrenheit x 10": {
+          "fields": [
+            "{}_770F_User Heating Setpoint Maximum Limit Request in Fahrenheit x 10"
+          ],
+          "func": "set_min"
+        },
+        "User Heating Setpoint Maximum Limit - Maximum Allowed Value in Fahrenheit x 10": {
+          "fields": [
+            "{}_770F_User Heating Setpoint Maximum Limit Request in Fahrenheit x 10"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x7712": {
+        "User Cooling Setpoint Minimum Limit - Minimum Allowed Value in Fahrenheit x 10": {
+          "fields": [
+            "{}_7711_User Cooling Setpoint Minimum Limit Request in Fahrenheit x 10"
+          ],
+          "func": "set_min"
+        },
+        "User Cooling Setpoint Minimum Limit - Maximum Allowed Value in Fahrenheit x 10": {
+          "fields": [
+            "{}_7711_User Cooling Setpoint Minimum Limit Request in Fahrenheit x 10"
+          ],
+          "func": "set_max"
+        }
+      },
+      "0x7714": {
+        "User Cooling Setpoint Maximum Limit - Minimum Allowed Value in Fahrenheit x 10": {
+          "fields": [
+            "{}_7713_User Cooling Setpoint Maximum Limit Request in Fahrenheit x 10"
+          ],
+          "func": "set_min"
+        },
+        "User Cooling Setpoint Maximum Limit - Maximum Allowed Value in Fahrenheit x 10": {
+          "fields": [
+            "{}_7713_User Cooling Setpoint Maximum Limit Request in Fahrenheit x 10"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  },
+  "771": {
+    "1": {
+      "0x5B4C": {}
+    }
+  },
+  "1280": {
+    "1": {
+      "0x7A21": {
+        "Minimum Cooling Setpoint": {
+          "fields": [
+            "{}_7A24_Occupied Cooling Setpoint Request"
+          ],
+          "func": "set_min"
+        }
+      },
+      "0x7A22": {
+        "Max Cooling Setpoint": {
+          "fields": [
+            "{}_7A24_Occupied Cooling Setpoint Request"
+          ],
+          "func": "set_max"
+        }
+      }
+    }
+  }
+}

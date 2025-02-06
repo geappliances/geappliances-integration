@@ -20,6 +20,8 @@ from .common import (
     when_the_erd_is_set_to,
 )
 
+pytestmark = pytest.mark.parametrize("expected_lingering_timers", [True])
+
 APPLIANCE_API_JSON = """
 {
     "common": {
@@ -54,6 +56,7 @@ APPLIANCE_API_JSON = """
                         { "erd": "0x0008", "name": "Celsius Test", "length": 2 },
                         { "erd": "0x0009", "name": "Battery Test", "length": 1 },
                         { "erd": "0x000a", "name": "Bitfield Test", "length": 1 },
+                        { "erd": "0x000b", "name": "Raw Test", "length": 6 },
                         { "erd": "0x0010", "name": "Energy Test", "length": 1 },
                         { "erd": "0x0011", "name": "Humidity Test", "length": 1 },
                         { "erd": "0x0012", "name": "Pressure Test", "length": 1 },
@@ -231,6 +234,25 @@ APPLIANCE_API_DEFINTION_JSON = """
                     },
                     "offset": 0,
                     "size": 1
+                }
+            ]
+        },
+        {
+            "name": "Raw Test",
+            "id": "0x000b",
+            "operations": ["read"],
+            "data": [
+                {
+                    "name": "Field One",
+                    "type": "raw",
+                    "offset": 0,
+                    "size": 4
+                },
+                {
+                    "name": "Field Two",
+                    "type": "raw",
+                    "offset": 4,
+                    "size": 2
                 }
             ]
         },
@@ -521,7 +543,7 @@ class TestSensor:
         await when_the_erd_is_set_to(0x0006, "01", hass)
         the_sensor_value_should_be("sensor.total_test_total_test", "1", hass)
 
-    async def test_works_with_bitfields(
+    async def test_bitfields(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test sensor retrieves values from bitfields correctly."""
@@ -532,6 +554,15 @@ class TestSensor:
         await when_the_erd_is_set_to(0x000A, "0F", hass)
         the_sensor_value_should_be("sensor.bitfield_test_field_one", "0", hass)
         the_sensor_value_should_be("sensor.bitfield_test_field_two", "15", hass)
+
+    async def test_raw_bytes(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test sensor represents raw bytes as hexadecimal strings."""
+        await when_the_erd_is_set_to(0x000B, "0102 0304 0506", hass)
+
+        the_sensor_value_should_be("sensor.raw_test_field_one", "01020304", hass)
+        the_sensor_value_should_be("sensor.raw_test_field_two", "0506", hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
@@ -650,7 +681,7 @@ class TestSensorDeviceClasses:
         the_device_class_should_be(
             "sensor.pounds_test_pounds_lbs", SensorDeviceClass.WEIGHT, hass
         )
-        the_unit_should_be("sensor.pounds_test_pounds_lbs", "lbs", hass)
+        the_unit_should_be("sensor.pounds_test_pounds_lbs", "lb", hass)
 
     async def test_current_class_and_unit(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient

@@ -27,10 +27,10 @@ class RegistryUpdater:
     ) -> None:
         """Create an entity from the config and add it to the device."""
         _LOGGER.debug("Adding %s to %s", config.platform, device_name)
-        # Fire the correct event based on the type of entity: binary sensor, switch, etc.
-        async_dispatcher_send(
-            self._hass, GEA_ENTITY_NEW.format(config.platform), config
-        )
+        if "reserved" not in config.name and "Reserved" not in config.name:
+            async_dispatcher_send(
+                self._hass, GEA_ENTITY_NEW.format(config.platform), config
+            )
 
     async def create_device(self, device_name: str) -> str:
         """Create a device and add it to the registry."""

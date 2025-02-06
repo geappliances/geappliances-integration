@@ -1,4 +1,4 @@
-# Integration Blueprint
+# GE Appliances Integration
 
 [![GitHub Release][releases-shield]][releases]
 [![License][license-shield]](LICENSE)

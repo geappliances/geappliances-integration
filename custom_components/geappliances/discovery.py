@@ -2,7 +2,14 @@
 
 import logging
 
-from .const import Erd
+from .const import (
+    COMMON_APPLIANCE_API_ERD,
+    FEATURE_API_ERD_HIGH_END,
+    FEATURE_API_ERD_HIGH_START,
+    FEATURE_API_ERD_LOW_END,
+    FEATURE_API_ERD_LOW_START,
+    Erd,
+)
 from .erd_factory import ERDFactory
 from .ha_compatibility.data_source import DataSource
 from .ha_compatibility.meta_erds import MetaErdCoordinator
@@ -44,13 +51,15 @@ class GeaDiscovery:
         if len(split_topic) == 5 and split_topic[4] == "value":
             erd: Erd = int(split_topic[3], base=16)
             if not await self._data_source.erd_is_supported_by_device(device_name, erd):
-                if erd == 0x0092:
+                if erd == COMMON_APPLIANCE_API_ERD:
                     await self._data_source.add_unsupported_erd_to_device(
                         device_name, erd, msg.payload
                     )
                     await self.process_common_appliance_api(msg, device_name)
 
-                elif (0x0093 <= erd <= 0x0097) or (0x0109 <= erd <= 0x010D):
+                elif (FEATURE_API_ERD_LOW_START <= erd <= FEATURE_API_ERD_LOW_END) or (
+                    FEATURE_API_ERD_HIGH_START <= erd <= FEATURE_API_ERD_HIGH_END
+                ):
                     await self._data_source.add_unsupported_erd_to_device(
                         device_name, erd, msg.payload
                     )

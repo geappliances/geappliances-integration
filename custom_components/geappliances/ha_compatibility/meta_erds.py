@@ -14,7 +14,12 @@ from ..const import (
     ATTR_MIN_VAL,
     ATTR_UNIQUE_ID,
     ATTR_UNIT,
+    COMMON_APPLIANCE_API_ERD,
     DOMAIN,
+    FEATURE_API_ERD_HIGH_END,
+    FEATURE_API_ERD_HIGH_START,
+    FEATURE_API_ERD_LOW_END,
+    FEATURE_API_ERD_LOW_START,
     SERVICE_ENABLE_OR_DISABLE,
     SERVICE_SET_ALLOWABLES,
     SERVICE_SET_MAX,
@@ -207,12 +212,19 @@ class MetaErdCoordinator:
     ) -> tuple[str, str] | None:
         """Return a tuple containing the feature type and version associated with the meta ERD on this device."""
         feature_type_and_version = await self._look_for_erd_def_in_appliance_api(
-            device_name, 0x0092, meta_erd
+            device_name, COMMON_APPLIANCE_API_ERD, meta_erd
         )
         if feature_type_and_version is not None:
             return feature_type_and_version
 
-        for api_erd in range(0x0093, 0x0097):
+        for api_erd in range(FEATURE_API_ERD_LOW_START, FEATURE_API_ERD_LOW_END):
+            feature_type_and_version = await self._look_for_erd_def_in_appliance_api(
+                device_name, api_erd, meta_erd
+            )
+            if feature_type_and_version is not None:
+                return feature_type_and_version
+
+        for api_erd in range(FEATURE_API_ERD_HIGH_START, FEATURE_API_ERD_HIGH_END):
             feature_type_and_version = await self._look_for_erd_def_in_appliance_api(
                 device_name, api_erd, meta_erd
             )

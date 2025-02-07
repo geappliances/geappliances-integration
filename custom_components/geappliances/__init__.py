@@ -52,10 +52,10 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def get_appliance_api_json() -> str:
     """Read the appliance API JSON file and return its contents."""
     async with aiofiles.open(
-        "custom_components/geappliances/appliance_api/appliance_api_erd_definitions.json",
+        "custom_components/geappliances/appliance_api/appliance_api.json",
         encoding="utf-8",
-    ) as appliance_api_erd_definitions:
-        return await appliance_api_erd_definitions.read()
+    ) as appliance_api:
+        return await appliance_api.read()
 
 
 async def get_appliance_api_erd_defs_json() -> str:

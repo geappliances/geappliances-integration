@@ -43,7 +43,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if not ok:
         return False
 
-    hass.data[DOMAIN]["unsubscribe"]()
     hass.data.pop(DOMAIN)
 
     return True

@@ -28,14 +28,14 @@ jobs:
       script: tdd
       runs-on: skynet-linux-x64
 
-  email-on-failure:
-    if: ${{ (cancelled() || failure()) && github.event_name != 'pull_request' && github.event_name != 'workflow_dispatch' }}
-    uses: geappliances/skynet.workflow/.github/workflows/email-workflow.yml@v1
-    needs: linux
-    secrets: inherit
-    permissions:
-      id-token: write
-      contents: read
-    with:
-      recipients: CommonCode@geappliances.com
-      status: Failure
+  # email-on-failure:
+  #   if: ${{ (cancelled() || failure()) && github.event_name != 'pull_request' && github.event_name != 'workflow_dispatch' }}
+  #   uses: geappliances/skynet.workflow/.github/workflows/email-workflow.yml@v1
+  #   needs: linux
+  #   secrets: inherit
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   with:
+  #     recipients: CommonCode@geappliances.com
+  #     status: Failure

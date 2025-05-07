@@ -2,8 +2,8 @@
 
 set -e
 
-pyenv install 3.12.1 -s
-pyenv local 3.12.1
+pyenv install 3.13 -s
+pyenv local 3.13
 
 python -m venv venv
 . venv/bin/activate

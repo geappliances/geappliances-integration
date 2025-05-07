@@ -22,16 +22,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: TDD
         run: |
-          python -m pip install --upgrade pip wheel
-          pip install "$(grep '^uv' < requirements_test.txt)"
-          uv pip install -U "pip>=21.3.1" setuptools wheel
-          uv pip install -r requirements_test.txt --prerelease=allow
-
-      - name: Run pytest
-        run: |
-          python3 -m pytest tests
+          ./tdd
 
   # setup:
   #   uses: geappliances/skynet.workflow/.github/workflows/setup-workflow.yml@v1

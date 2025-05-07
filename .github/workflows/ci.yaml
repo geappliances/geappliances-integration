@@ -6,27 +6,51 @@ on:
       - main
 
   pull_request:
-  workflow_dispatch:
 
 jobs:
-  setup:
-    uses: geappliances/skynet.workflow/.github/workflows/setup-workflow.yml@v1
-    secrets: inherit
-    permissions:
-      id-token: write
-      contents: read
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.13]
 
-  linux:
-    uses: geappliances/skynet.workflow/.github/workflows/build-workflow.yml@v1
-    needs: setup
-    secrets: inherit
-    permissions:
-      id-token: write
-      contents: read
-    with:
-      job-name: linux-x64-test
-      script: tdd
-      runs-on: skynet-linux-x64
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip wheel
+          pip install "$(grep '^uv' < requirements_test.txt)"
+          uv pip install -U "pip>=21.3.1" setuptools wheel
+          uv pip install -r requirements_test.txt --prerelease=allow
+
+      - name: Run pytest
+        run: |
+          python3 -m pytest tests
+
+  # setup:
+  #   uses: geappliances/skynet.workflow/.github/workflows/setup-workflow.yml@v1
+  #   secrets: inherit
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+
+  # linux:
+  #   uses: geappliances/skynet.workflow/.github/workflows/build-workflow.yml@v1
+  #   needs: setup
+  #   secrets: inherit
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   with:
+  #     job-name: linux-x64-test
+  #     script: tdd
+  #     runs-on: skynet-linux-x64
 
   # email-on-failure:
   #   if: ${{ (cancelled() || failure()) && github.event_name != 'pull_request' && github.event_name != 'workflow_dispatch' }}

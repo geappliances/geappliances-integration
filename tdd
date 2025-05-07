@@ -2,16 +2,8 @@
 
 set -e
 
-pyenv install 3.13 -s
-pyenv local 3.13
-
-python -m venv venv
-. venv/bin/activate
-
 pip install "$(grep '^uv' < requirements_test.txt)"
+uv venv
 uv pip install -U "pip>=21.3.1" setuptools wheel
-uv pip install -r requirements_test.txt --prerelease=allow
-
-python3 -m pytest tests
-
-deactivate
+uv pip install -r requirements_test.txt
+uv run --no-project -m pytest tests

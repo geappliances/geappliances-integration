@@ -60,46 +60,34 @@ SERVICE_BASE_SCHEMA = {
 
 ATTR_MIN_VAL = "min_val"
 SERVICE_SET_MIN = "set_min"
-SERVICE_SET_MIN_SCHEMA = vol.Schema(
-    SERVICE_BASE_SCHEMA
-    | {
-        vol.Required(ATTR_MIN_VAL): vol.Coerce(float),
-    },
-)
+SERVICE_SET_MIN_SCHEMA = SERVICE_BASE_SCHEMA | {
+    vol.Required(ATTR_MIN_VAL): vol.Coerce(float),
+}
+
 
 ATTR_MAX_VAL = "max_val"
 SERVICE_SET_MAX = "set_max"
-SERVICE_SET_MAX_SCHEMA = vol.Schema(
-    SERVICE_BASE_SCHEMA
-    | {
-        vol.Required(ATTR_MAX_VAL): vol.Coerce(float),
-    }
-)
+SERVICE_SET_MAX_SCHEMA = SERVICE_BASE_SCHEMA | {
+    vol.Required(ATTR_MAX_VAL): vol.Coerce(float),
+}
+
 
 ATTR_UNIT = "unit"
 SERVICE_SET_UNIT = "set_units"
-SERVICE_SET_UNIT_SCHEMA = vol.Schema(
-    SERVICE_BASE_SCHEMA
-    | {
-        vol.Required(ATTR_UNIT): vol.Coerce(str),
-    }
-)
+SERVICE_SET_UNIT_SCHEMA = SERVICE_BASE_SCHEMA | {
+    vol.Required(ATTR_UNIT): vol.Coerce(str),
+}
 
 SERVICE_ENABLE_OR_DISABLE = "disable"
 ATTR_ENABLED = "enabled"
-SERVICE_ENABLE_OR_DISABLE_SCHEMA = vol.Schema(
-    SERVICE_BASE_SCHEMA
-    | {
-        vol.Required(ATTR_ENABLED): vol.Coerce(bool),
-    }
-)
+SERVICE_ENABLE_OR_DISABLE_SCHEMA = SERVICE_BASE_SCHEMA | {
+    vol.Required(ATTR_ENABLED): vol.Coerce(bool),
+}
+
 
 ATTR_ALLOWABLE = "allowable"
 SERVICE_SET_ALLOWABLES = "set_allowables"
-SERVICE_SET_ALLOWABLES_SCHEMA = vol.Schema(
-    SERVICE_BASE_SCHEMA
-    | {
-        vol.Required(ATTR_ALLOWABLE): vol.Coerce(str),
-        vol.Required(ATTR_ENABLED): vol.Coerce(bool),
-    }
-)
+SERVICE_SET_ALLOWABLES_SCHEMA = SERVICE_BASE_SCHEMA | {
+    vol.Required(ATTR_ALLOWABLE): vol.Coerce(str),
+    vol.Required(ATTR_ENABLED): vol.Coerce(bool),
+}

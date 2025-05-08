@@ -1,7 +1,6 @@
 """Common values and helpers for tests."""
 
 import json
-
 from unittest.mock import patch
 
 from custom_components.geappliances.const import DISCOVERY, DOMAIN, Erd

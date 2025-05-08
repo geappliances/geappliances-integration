@@ -1,3 +1,0 @@
-[submodule "custom_components/geappliances/appliance_api"]
-	path = custom_components/geappliances/appliance_api
-	url = https://github.com/geappliances/public-appliance-api-documentation

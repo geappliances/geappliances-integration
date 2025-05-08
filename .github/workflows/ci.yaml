@@ -6,36 +6,22 @@ on:
       - main
 
   pull_request:
-  workflow_dispatch:
 
 jobs:
-  setup:
-    uses: geappliances/skynet.workflow/.github/workflows/setup-workflow.yml@v1
-    secrets: inherit
-    permissions:
-      id-token: write
-      contents: read
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.13]
 
-  linux:
-    uses: geappliances/skynet.workflow/.github/workflows/build-workflow.yml@v1
-    needs: setup
-    secrets: inherit
-    permissions:
-      id-token: write
-      contents: read
-    with:
-      job-name: linux-x64-test
-      script: tdd
-      runs-on: skynet-linux-x64
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-  email-on-failure:
-    if: ${{ (cancelled() || failure()) && github.event_name != 'pull_request' && github.event_name != 'workflow_dispatch' }}
-    uses: geappliances/skynet.workflow/.github/workflows/email-workflow.yml@v1
-    needs: linux
-    secrets: inherit
-    permissions:
-      id-token: write
-      contents: read
-    with:
-      recipients: CommonCode@geappliances.com
-      status: Failure
+      - name: TDD
+        run: |
+          ./tdd

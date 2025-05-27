@@ -62,6 +62,11 @@ class ConfigFactory:
             r"Voltage": "V",
             r"Hz": "Hz",
         }
+        self._scale_mapping: dict[str, int] = {
+            r"\bx10\b|\bx 10\b": 10,
+            r"\bx100\b|\bx 100\b": 100,
+            r"\bx1000\b|\bx 1000\b": 1000,
+        }
 
     async def get_units(self, field: dict[str, Any]) -> str | None:
         """Determine the appropriate unit of measurement for the given field."""
@@ -71,6 +76,17 @@ class ConfigFactory:
         for name_substring, unit in self._units_mapping.items():
             if re.search(name_substring, field["name"]) is not None:
                 return unit
+
+        return None
+
+    async def get_scale(self, field: dict[str, Any]) -> int | None:
+        """Determine the appropriate scale for the given field."""
+        if field["type"] == "string" or field["type"] == "enum":
+            return None
+
+        for name_substring, scale in self._scale_mapping.items():
+            if re.search(name_substring, field["name"]) is not None:
+                return scale
 
         return None
 
@@ -142,6 +158,11 @@ class ConfigFactory:
             device_name, erd, erd_name, field, Platform.NUMBER
         )
         device_class = await NumberConfigAttributes.get_device_class(field)
+        scale = await self.get_scale(field)
+
+        if scale is not None:
+            for scale_pattern in self._scale_mapping:
+                base.name = re.sub(scale_pattern, "", base.name).strip()
 
         return GeaNumberConfig(
             base.unique_identifier,
@@ -155,6 +176,7 @@ class ConfigFactory:
             base.size,
             device_class,
             await self.get_units(field),
+            await self.get_scale(field),
             await NumberConfigAttributes.get_min(field),
             await NumberConfigAttributes.get_max(field),
             await NumberConfigAttributes.get_value_function(field),

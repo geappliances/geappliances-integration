@@ -38,6 +38,7 @@ class GeaNumberConfig(GeaEntityConfig):
 
     device_class: NumberDeviceClass | None
     unit: str | None
+    scale: int | None
     min: float
     max: float
     value_func: Callable

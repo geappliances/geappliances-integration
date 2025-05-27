@@ -203,6 +203,7 @@ class GeaNumber(NumberEntity, GeaEntity):
         self._attr_suggested_unit_of_measurement = config.unit
         self._attr_native_min_value = config.min
         self._attr_native_max_value = config.max
+        self._attr_scale = config.scale
         self._erd = config.erd
         self._device_name = config.device_name
         self._data_source = config.data_source
@@ -257,7 +258,9 @@ class GeaNumber(NumberEntity, GeaEntity):
         """Update the value."""
         erd_value = await self._data_source.erd_read(self._device_name, self._erd)
         if erd_value is not None:
-            value_bytes = await self._get_bytes_from_value(value)
+            value_bytes = await self._get_bytes_from_value(
+                value * (self._attr_scale or 1)
+            )
 
             if self._bit_mask is not None:
                 cur_field_bytes = await self.get_field_bytes(erd_value)
@@ -279,11 +282,12 @@ class GeaNumber(NumberEntity, GeaEntity):
             return None
 
         if self._bit_mask is not None:
-            return (self._value_fn(self._field_bytes) & self._bit_mask) >> (
-                (self._size * 8) - self._bit_size - self._bit_offset
-            )
+            return (
+                (self._value_fn(self._field_bytes) & self._bit_mask)
+                >> ((self._size * 8) - self._bit_size - self._bit_offset)
+            ) / (self._attr_scale or 1)
 
-        return self._value_fn(self._field_bytes)
+        return self._value_fn(self._field_bytes) / (self._attr_scale or 1)
 
     async def set_min(self, min_val: float) -> None:
         """Set the minimum value."""

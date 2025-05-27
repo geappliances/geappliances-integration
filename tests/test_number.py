@@ -10,6 +10,8 @@ from homeassistant.const import ATTR_ENTITY_ID, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
+from tests.doubles import MqttClientMock
+
 from .common import (
     given_integration_is_initialized,
     given_the_appliance_api_erd_defs_are,
@@ -65,7 +67,8 @@ APPLIANCE_API_JSON = """
                         { "erd": "0x0017", "name": "Days Test", "length": 1 },
                         { "erd": "0x0018", "name": "Power Test", "length": 1 },
                         { "erd": "0x0019", "name": "Voltage Test", "length": 1 },
-                        { "erd": "0x0020", "name": "Frequency Test", "length": 1 }
+                        { "erd": "0x0020", "name": "Frequency Test", "length": 1 },
+                        { "erd": "0x0021", "name": "Scale Factor Test", "length": 8 }
                     ],
                     "features": []
                 }
@@ -369,6 +372,49 @@ APPLIANCE_API_DEFINTION_JSON = """
                     "size": 1
                 }
             ]
+        },
+        {
+            "name": "Scale Factor Test",
+            "id": "0x0021",
+            "operations": ["read", "write"],
+            "data": [
+                {
+                    "name": "Field 1 x10",
+                    "type": "u8",
+                    "offset": 0,
+                    "size": 1
+                },
+                {
+                    "name": "Field 2 x 10",
+                    "type": "u8",
+                    "offset": 1,
+                    "size": 1
+                },
+                {
+                    "name": "Field 3 x100",
+                    "type": "u8",
+                    "offset": 2,
+                    "size": 1
+                },
+                {
+                    "name": "Field 4 x 100",
+                    "type": "u8",
+                    "offset": 3,
+                    "size": 1
+                },
+                {
+                    "name": "Field 5 x1000",
+                    "type": "u8",
+                    "offset": 4,
+                    "size": 2
+                },
+                {
+                    "name": "Field 6 x 1000",
+                    "type": "u8",
+                    "offset": 6,
+                    "size": 2
+                }
+            ]
         }
     ]
 }"""
@@ -415,22 +461,22 @@ class TestNumber:
     ) -> None:
         """Test number updates state."""
         await when_the_erd_is_set_to(0x0001, "00", hass)
-        the_number_value_should_be("number.test_test", "0", hass)
+        the_number_value_should_be("number.test_test", "0.0", hass)
 
         await when_the_erd_is_set_to(0x0001, "01", hass)
-        the_number_value_should_be("number.test_test", "1", hass)
+        the_number_value_should_be("number.test_test", "1.0", hass)
 
     async def test_gets_correct_byte(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number only updates based on the associated byte."""
         await when_the_erd_is_set_to(0x0002, "FF00", hass)
-        the_number_value_should_be("number.multi_field_test_field_one", "255", hass)
-        the_number_value_should_be("number.multi_field_test_field_two", "0", hass)
+        the_number_value_should_be("number.multi_field_test_field_one", "255.0", hass)
+        the_number_value_should_be("number.multi_field_test_field_two", "0.0", hass)
 
         await when_the_erd_is_set_to(0x0002, "010F", hass)
-        the_number_value_should_be("number.multi_field_test_field_one", "1", hass)
-        the_number_value_should_be("number.multi_field_test_field_two", "15", hass)
+        the_number_value_should_be("number.multi_field_test_field_one", "1.0", hass)
+        the_number_value_should_be("number.multi_field_test_field_two", "15.0", hass)
 
     async def test_sets_correct_byte(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
@@ -441,26 +487,26 @@ class TestNumber:
             "number.multi_field_test_field_one", 255.0, hass
         )
         the_mqtt_topic_value_should_be(0x0002, "FF00", mqtt_mock)
-        the_number_value_should_be("number.multi_field_test_field_one", "255", hass)
-        the_number_value_should_be("number.multi_field_test_field_two", "0", hass)
+        the_number_value_should_be("number.multi_field_test_field_one", "255.0", hass)
+        the_number_value_should_be("number.multi_field_test_field_two", "0.0", hass)
 
         await when_the_number_is_set_to(
             "number.multi_field_test_field_two", 100.0, hass
         )
-        the_number_value_should_be("number.multi_field_test_field_one", "255", hass)
-        the_number_value_should_be("number.multi_field_test_field_two", "100", hass)
+        the_number_value_should_be("number.multi_field_test_field_one", "255.0", hass)
+        the_number_value_should_be("number.multi_field_test_field_two", "100.0", hass)
 
     async def test_reads_from_bitfields(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test number retrieves values from bitfields correctly."""
         await when_the_erd_is_set_to(0x000A, "F0", hass)
-        the_number_value_should_be("number.bitfield_test_field_one", "15", hass)
-        the_number_value_should_be("number.bitfield_test_field_two", "0", hass)
+        the_number_value_should_be("number.bitfield_test_field_one", "15.0", hass)
+        the_number_value_should_be("number.bitfield_test_field_two", "0.0", hass)
 
         await when_the_erd_is_set_to(0x000A, "0F", hass)
-        the_number_value_should_be("number.bitfield_test_field_one", "0", hass)
-        the_number_value_should_be("number.bitfield_test_field_two", "15", hass)
+        the_number_value_should_be("number.bitfield_test_field_one", "0.0", hass)
+        the_number_value_should_be("number.bitfield_test_field_two", "15.0", hass)
 
     async def test_writes_to_bitfields(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
@@ -469,12 +515,12 @@ class TestNumber:
         await given_the_erd_is_set_to(0x000A, "00", hass)
 
         await when_the_number_is_set_to("number.bitfield_test_field_one", 15, hass)
-        the_number_value_should_be("number.bitfield_test_field_one", "15", hass)
-        the_number_value_should_be("number.bitfield_test_field_two", "0", hass)
+        the_number_value_should_be("number.bitfield_test_field_one", "15.0", hass)
+        the_number_value_should_be("number.bitfield_test_field_two", "0.0", hass)
 
         await when_the_number_is_set_to("number.bitfield_test_field_two", 7, hass)
-        the_number_value_should_be("number.bitfield_test_field_one", "15", hass)
-        the_number_value_should_be("number.bitfield_test_field_two", "7", hass)
+        the_number_value_should_be("number.bitfield_test_field_one", "15.0", hass)
+        the_number_value_should_be("number.bitfield_test_field_two", "7.0", hass)
 
     async def test_shows_unknown_when_unsupported(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
@@ -484,6 +530,43 @@ class TestNumber:
         the_number_value_should_be(
             "number.removal_test_removal_test", STATE_UNKNOWN, hass
         )
+
+    async def test_reads_correct_scaled_value(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test number shows the correct scaled value."""
+        await when_the_erd_is_set_to(0x0021, "64 64 64 64 07D0 07D0", hass)
+
+        the_number_value_should_be("number.scale_factor_test_field_1", "10.0", hass)
+        the_number_value_should_be("number.scale_factor_test_field_2", "10.0", hass)
+        the_number_value_should_be("number.scale_factor_test_field_3", "1.0", hass)
+        the_number_value_should_be("number.scale_factor_test_field_4", "1.0", hass)
+        the_number_value_should_be("number.scale_factor_test_field_5", "2.0", hass)
+        the_number_value_should_be("number.scale_factor_test_field_6", "2.0", hass)
+
+    async def test_sets_correct_scaled_value(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test number sets the correct scaled value."""
+        await given_the_erd_is_set_to(0x0021, "00 00 00 00 0000 0000", hass)
+
+        await when_the_number_is_set_to("number.scale_factor_test_field_1", 10, hass)
+        the_number_value_should_be("number.scale_factor_test_field_1", "10.0", hass)
+
+        await when_the_number_is_set_to("number.scale_factor_test_field_2", 10, hass)
+        the_number_value_should_be("number.scale_factor_test_field_2", "10.0", hass)
+
+        await when_the_number_is_set_to("number.scale_factor_test_field_3", 1, hass)
+        the_number_value_should_be("number.scale_factor_test_field_3", "1.0", hass)
+
+        await when_the_number_is_set_to("number.scale_factor_test_field_4", 1, hass)
+        the_number_value_should_be("number.scale_factor_test_field_4", "1.0", hass)
+
+        await when_the_number_is_set_to("number.scale_factor_test_field_5", 1, hass)
+        the_number_value_should_be("number.scale_factor_test_field_5", "1.0", hass)
+
+        await when_the_number_is_set_to("number.scale_factor_test_field_6", 1, hass)
+        the_number_value_should_be("number.scale_factor_test_field_6", "1.0", hass)
 
 
 def the_device_class_should_be(

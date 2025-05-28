@@ -10,8 +10,6 @@ from homeassistant.const import ATTR_ENTITY_ID, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
-from tests.doubles import MqttClientMock
-
 from .common import (
     given_integration_is_initialized,
     given_the_appliance_api_erd_defs_are,
@@ -568,6 +566,23 @@ class TestNumber:
 
         await when_the_number_is_set_to("number.scale_factor_test_field_6", 1, hass)
         the_number_value_should_be("number.scale_factor_test_field_6", "1.0", hass)
+
+    async def test_sets_erd_with_correct_scaled_value(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test setting ERD with the correct scaled value."""
+        await given_the_erd_is_set_to(0x0021, "00 00 00 00 0000 0000", hass)
+        await when_the_number_is_set_to("number.scale_factor_test_field_1", 25.5, hass)
+        the_mqtt_topic_value_should_be(0x0021, "FF00000000000000", mqtt_mock)
+        the_number_value_should_be("number.scale_factor_test_field_1", "25.5", hass)
+
+        await when_the_number_is_set_to("number.scale_factor_test_field_3", 2.55, hass)
+        the_mqtt_topic_value_should_be(0x0021, "FF00FE0000000000", mqtt_mock)
+        the_number_value_should_be("number.scale_factor_test_field_3", "2.54", hass)
+
+        await when_the_number_is_set_to("number.scale_factor_test_field_5", 0.255, hass)
+        the_mqtt_topic_value_should_be(0x0021, "FF00FE0000FF0000", mqtt_mock)
+        the_number_value_should_be("number.scale_factor_test_field_5", "0.255", hass)
 
 
 def the_device_class_should_be(

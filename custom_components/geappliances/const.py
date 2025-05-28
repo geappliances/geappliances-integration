@@ -91,3 +91,9 @@ SERVICE_SET_ALLOWABLES_SCHEMA = SERVICE_BASE_SCHEMA | {
     vol.Required(ATTR_ALLOWABLE): vol.Coerce(str),
     vol.Required(ATTR_ENABLED): vol.Coerce(bool),
 }
+
+SCALE_MAPPING: dict[str, int] = {
+    r"\bx10\b|\bx 10\b|\bX10\b|\bX 10": 10,
+    r"\bx100\b|\bx 100\b|\bX100\b|\bX 100": 100,
+    r"\bx1000\b|\bx 1000\b|\bX1000\b|\bX 1000": 1000,
+}

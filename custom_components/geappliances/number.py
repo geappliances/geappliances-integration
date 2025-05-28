@@ -21,6 +21,7 @@ from .const import (
     ATTR_UNIQUE_ID,
     ATTR_UNIT,
     GEA_ENTITY_NEW,
+    SCALE_MAPPING,
     SERVICE_ENABLE_OR_DISABLE,
     SERVICE_ENABLE_OR_DISABLE_SCHEMA,
     SERVICE_SET_MAX,
@@ -52,11 +53,6 @@ class NumberConfigAttributes:
         r"Watts": NumberDeviceClass.POWER,
         r"Voltage": NumberDeviceClass.VOLTAGE,
         r"Hz": NumberDeviceClass.FREQUENCY,
-    }
-    scale_mapping: dict[str, int] = {
-        r"\bx10\b|\bx 10\b": 10,
-        r"\bx100\b|\bx 100\b": 100,
-        r"\bx1000\b|\bx 1000\b": 1000,
     }
 
     @classmethod
@@ -125,7 +121,7 @@ class NumberConfigAttributes:
         if field["type"] == "string" or field["type"] == "enum":
             return None
 
-        for name_substring, scale in cls.scale_mapping.items():
+        for name_substring, scale in SCALE_MAPPING.items():
             if re.search(name_substring, field["name"]) is not None:
                 return scale
 

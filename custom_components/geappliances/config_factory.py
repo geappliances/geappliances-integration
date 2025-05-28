@@ -6,7 +6,7 @@ from typing import Any
 from homeassistant.const import Platform
 
 from .binary_sensor import GeaBinarySensor
-from .const import CONF_DEVICE_ID, CONF_NAME, Erd
+from .const import CONF_DEVICE_ID, CONF_NAME, SCALE_MAPPING, Erd
 from .ha_compatibility.data_source import DataSource
 from .models import (
     GeaBinarySensorConfig,
@@ -61,11 +61,6 @@ class ConfigFactory:
             r"Watts": "W",
             r"Voltage": "V",
             r"Hz": "Hz",
-        }
-        self._scale_mapping: dict[str, int] = {
-            r"\bx10\b|\bx 10\b": 10,
-            r"\bx100\b|\bx 100\b": 100,
-            r"\bx1000\b|\bx 1000\b": 1000,
         }
 
     async def get_units(self, field: dict[str, Any]) -> str | None:
@@ -150,7 +145,7 @@ class ConfigFactory:
         scale = await NumberConfigAttributes.get_scale(field)
 
         if scale is not None:
-            for scale_pattern in self._scale_mapping:
+            for scale_pattern in SCALE_MAPPING:
                 base.name = re.sub(scale_pattern, "", base.name).strip()
 
         return GeaNumberConfig(
@@ -213,7 +208,7 @@ class ConfigFactory:
         scale = await SensorConfigAttributes.get_scale(field)
 
         if scale is not None:
-            for scale_pattern in self._scale_mapping:
+            for scale_pattern in SCALE_MAPPING:
                 base.name = re.sub(scale_pattern, "", base.name).strip()
 
         return GeaSensorConfig(

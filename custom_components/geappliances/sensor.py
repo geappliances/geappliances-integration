@@ -10,11 +10,7 @@ from typing import TYPE_CHECKING, Any
 
 from homeassistant.components import sensor
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.components.sensor.const import (
-    NON_NUMERIC_DEVICE_CLASSES,
-    SensorDeviceClass,
-    SensorStateClass,
-)
+from homeassistant.components.sensor.const import SensorDeviceClass, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall, callback
 from homeassistant.helpers import entity_platform, entity_registry as er
@@ -25,7 +21,6 @@ from .const import (
     ATTR_ENABLED,
     ATTR_UNIQUE_ID,
     GEA_ENTITY_NEW,
-    SCALE_MAPPING,
     SERVICE_ENABLE_OR_DISABLE,
     SERVICE_ENABLE_OR_DISABLE_SCHEMA,
 )
@@ -66,18 +61,6 @@ class SensorConfigAttributes:
         for name_substring, device_class in cls.device_class_mapping.items():
             if re.search(name_substring, field["name"]) is not None:
                 return device_class
-
-        return None
-
-    @classmethod
-    async def get_scale(cls, field: dict[str, Any]) -> int | None:
-        """Return the appropriate scale for the given field."""
-        if field["type"] == "string" or field["type"] == "enum":
-            return None
-
-        for name_substring, scale in SCALE_MAPPING.items():
-            if re.search(name_substring, field["name"]) is not None:
-                return scale
 
         return None
 
@@ -183,7 +166,7 @@ class GeaSensor(SensorEntity, GeaEntity):
         ]:
             self._attr_suggested_unit_of_measurement = config.unit
         self._attr_suggested_display_precision = (
-            int(math.log10(config.scale)) if config.scale else None
+            int(math.log10(config.scale)) if config.scale > 1 else None
         )
         self._scale = config.scale
         self._enum_vals = config.enum_vals
@@ -196,6 +179,7 @@ class GeaSensor(SensorEntity, GeaEntity):
         self._bit_mask = config.bit_mask
         self._bit_size = config.bit_size
         self._bit_offset = config.bit_offset
+        self._type = config.type
 
     @classmethod
     async def is_correct_platform_for_field(
@@ -260,6 +244,7 @@ class GeaSensor(SensorEntity, GeaEntity):
             shift = (self._size * 8) - self._bit_size - self._bit_offset
             val = (val & self._bit_mask) >> shift
 
-        if self._scale and self._attr_device_class not in NON_NUMERIC_DEVICE_CLASSES:
-            return val / self._scale
+        if self._type not in ("string", "raw", "enum"):
+            return (val / self._scale) if self._scale > 1 else val
+
         return val

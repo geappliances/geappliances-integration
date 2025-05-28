@@ -38,7 +38,7 @@ class GeaNumberConfig(GeaEntityConfig):
 
     device_class: NumberDeviceClass | None
     unit: str | None
-    scale: int | None
+    scale: int
     min: float
     max: float
     value_func: Callable
@@ -61,12 +61,13 @@ class GeaSensorConfig(GeaEntityConfig):
     device_class: SensorDeviceClass | None
     state_class: SensorStateClass | None
     unit: str | None
-    scale: int | None
+    scale: int
     value_func: Callable
     enum_vals: dict[int, str] | None
     bit_mask: int | None
     bit_size: int
     bit_offset: int
+    type: str
 
 
 @dataclass

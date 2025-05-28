@@ -6,7 +6,7 @@ from typing import Any
 from homeassistant.const import Platform
 
 from .binary_sensor import GeaBinarySensor
-from .const import CONF_DEVICE_ID, CONF_NAME, SCALE_MAPPING, Erd
+from .const import CONF_DEVICE_ID, CONF_NAME, Erd
 from .ha_compatibility.data_source import DataSource
 from .models import (
     GeaBinarySensorConfig,
@@ -62,6 +62,19 @@ class ConfigFactory:
             r"Voltage": "V",
             r"Hz": "Hz",
         }
+        self._scale_mapping: dict[str, int] = {
+            r"\bx10\b|\bx 10\b|\bX10\b|\bX 10": 10,
+            r"\bx100\b|\bx 100\b|\bX100\b|\bX 100": 100,
+            r"\bx1000\b|\bx 1000\b|\bX1000\b|\bX 1000": 1000,
+        }
+
+    async def get_scale(self, field: dict[str, Any]) -> int:
+        """Return the appropriate scale for the given field."""
+        for name_substring, scale in self._scale_mapping.items():
+            if re.search(name_substring, field["name"]) is not None:
+                return scale
+
+        return 1
 
     async def get_units(self, field: dict[str, Any]) -> str | None:
         """Determine the appropriate unit of measurement for the given field."""
@@ -142,11 +155,10 @@ class ConfigFactory:
             device_name, erd, erd_name, field, Platform.NUMBER
         )
         device_class = await NumberConfigAttributes.get_device_class(field)
-        scale = await NumberConfigAttributes.get_scale(field)
+        scale = await self.get_scale(field)
 
-        if scale is not None:
-            for scale_pattern in SCALE_MAPPING:
-                base.name = re.sub(scale_pattern, "", base.name).strip()
+        for scale_pattern in self._scale_mapping:
+            base.name = re.sub(scale_pattern, "", base.name).strip()
 
         return GeaNumberConfig(
             base.unique_identifier,
@@ -161,8 +173,8 @@ class ConfigFactory:
             device_class,
             await self.get_units(field),
             scale,
-            await NumberConfigAttributes.get_min(field),
-            await NumberConfigAttributes.get_max(field),
+            await NumberConfigAttributes.get_min(field) / scale,
+            await NumberConfigAttributes.get_max(field) / scale,
             await NumberConfigAttributes.get_value_function(field),
             bit_mask,
             bit_size,
@@ -205,11 +217,9 @@ class ConfigFactory:
             device_name, erd, erd_name, field, Platform.SENSOR
         )
         device_class = await SensorConfigAttributes.get_device_class(field)
-        scale = await SensorConfigAttributes.get_scale(field)
 
-        if scale is not None:
-            for scale_pattern in SCALE_MAPPING:
-                base.name = re.sub(scale_pattern, "", base.name).strip()
+        for scale_pattern in self._scale_mapping:
+            base.name = re.sub(scale_pattern, "", base.name).strip()
 
         return GeaSensorConfig(
             base.unique_identifier,
@@ -224,12 +234,13 @@ class ConfigFactory:
             device_class,
             await SensorConfigAttributes.get_state_class(field),
             await self.get_units(field),
-            scale,
+            await self.get_scale(field),
             await SensorConfigAttributes.get_value_function(field),
             await SensorConfigAttributes.get_enum_values(field),
             bit_mask,
             bit_size,
             bit_offset,
+            field["type"],
         )
 
     async def build_switch(

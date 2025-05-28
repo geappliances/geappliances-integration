@@ -79,17 +79,6 @@ class ConfigFactory:
 
         return None
 
-    async def get_scale(self, field: dict[str, Any]) -> int | None:
-        """Determine the appropriate scale for the given field."""
-        if field["type"] == "string" or field["type"] == "enum":
-            return None
-
-        for name_substring, scale in self._scale_mapping.items():
-            if re.search(name_substring, field["name"]) is not None:
-                return scale
-
-        return None
-
     async def get_unique_id(
         self, device_name: str, erd: Erd, field: dict[str, Any]
     ) -> str:
@@ -158,7 +147,7 @@ class ConfigFactory:
             device_name, erd, erd_name, field, Platform.NUMBER
         )
         device_class = await NumberConfigAttributes.get_device_class(field)
-        scale = await self.get_scale(field)
+        scale = await NumberConfigAttributes.get_scale(field)
 
         if scale is not None:
             for scale_pattern in self._scale_mapping:
@@ -176,7 +165,7 @@ class ConfigFactory:
             base.size,
             device_class,
             await self.get_units(field),
-            await self.get_scale(field),
+            scale,
             await NumberConfigAttributes.get_min(field),
             await NumberConfigAttributes.get_max(field),
             await NumberConfigAttributes.get_value_function(field),
@@ -221,6 +210,11 @@ class ConfigFactory:
             device_name, erd, erd_name, field, Platform.SENSOR
         )
         device_class = await SensorConfigAttributes.get_device_class(field)
+        scale = await SensorConfigAttributes.get_scale(field)
+
+        if scale is not None:
+            for scale_pattern in self._scale_mapping:
+                base.name = re.sub(scale_pattern, "", base.name).strip()
 
         return GeaSensorConfig(
             base.unique_identifier,
@@ -235,6 +229,7 @@ class ConfigFactory:
             device_class,
             await SensorConfigAttributes.get_state_class(field),
             await self.get_units(field),
+            scale,
             await SensorConfigAttributes.get_value_function(field),
             await SensorConfigAttributes.get_enum_values(field),
             bit_mask,

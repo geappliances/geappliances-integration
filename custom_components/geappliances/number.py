@@ -53,6 +53,11 @@ class NumberConfigAttributes:
         r"Voltage": NumberDeviceClass.VOLTAGE,
         r"Hz": NumberDeviceClass.FREQUENCY,
     }
+    scale_mapping: dict[str, int] = {
+        r"\bx10\b|\bx 10\b": 10,
+        r"\bx100\b|\bx 100\b": 100,
+        r"\bx1000\b|\bx 1000\b": 1000,
+    }
 
     @classmethod
     async def get_device_class(cls, field: dict[str, Any]) -> NumberDeviceClass | None:
@@ -66,48 +71,65 @@ class NumberConfigAttributes:
     @classmethod
     async def get_min(cls, field: dict[str, Any]) -> float:
         """Return the correct minimum value for the data type."""
+        scale = await cls.get_scale(field) or 1
+
         if field["type"] == "i8":
-            return -128.0
+            return -128.0 / scale
 
         if field["type"] == "i16":
-            return -32_768.0
+            return -32_768.0 / scale
 
         if field["type"] == "i32":
-            return -2_147_483_648.0
+            return -2_147_483_648.0 / scale
 
         if field["type"] == "i64":
-            return -9_223_372_036_854_775_808.0
+            return -9_223_372_036_854_775_808.0 / scale
 
         return 0.0
 
     @classmethod
     async def get_max(cls, field: dict[str, Any]) -> float:
         """Return the correct maximum value for the data type."""
+
+        scale = await cls.get_scale(field) or 1
+
         if field["type"] == "i8":
-            return 127.0
+            return 127.0 / scale
 
         if field["type"] == "i16":
-            return 32_767.0
+            return 32_767.0 / scale
 
         if field["type"] == "i32":
-            return 214_7483_647.0
+            return 214_7483_647.0 / scale
 
         if field["type"] == "i64":
-            return 9_223_372_036_854_775_807.0
+            return 9_223_372_036_854_775_807.0 / scale
 
         if field["type"] == "u8":
-            return 255.0
+            return 255.0 / scale
 
         if field["type"] == "u16":
-            return 65_535.0
+            return 65_535.0 / scale
 
         if field["type"] == "u32":
-            return 4_294_967_296.0
+            return 4_294_967_296.0 / scale
 
         if field["type"] == "u64":
-            return 18_446_744_073_709_551_615.0
+            return 18_446_744_073_709_551_615.0 / scale
 
         return 0.0
+
+    @classmethod
+    async def get_scale(cls, field: dict[str, Any]) -> int | None:
+        """Return the appropriate scale for the given field."""
+        if field["type"] == "string" or field["type"] == "enum":
+            return None
+
+        for name_substring, scale in cls.scale_mapping.items():
+            if re.search(name_substring, field["name"]) is not None:
+                return scale
+
+        return None
 
     @classmethod
     async def is_value_signed(cls, field: dict[str, Any]) -> bool:
@@ -203,7 +225,8 @@ class GeaNumber(NumberEntity, GeaEntity):
         self._attr_suggested_unit_of_measurement = config.unit
         self._attr_native_min_value = config.min
         self._attr_native_max_value = config.max
-        self._attr_scale = config.scale
+        self._attr_native_step = 1 / (config.scale or 1)
+        self._scale = config.scale
         self._erd = config.erd
         self._device_name = config.device_name
         self._data_source = config.data_source
@@ -258,9 +281,7 @@ class GeaNumber(NumberEntity, GeaEntity):
         """Update the value."""
         erd_value = await self._data_source.erd_read(self._device_name, self._erd)
         if erd_value is not None:
-            value_bytes = await self._get_bytes_from_value(
-                value * (self._attr_scale or 1)
-            )
+            value_bytes = await self._get_bytes_from_value(value * (self._scale or 1))
 
             if self._bit_mask is not None:
                 cur_field_bytes = await self.get_field_bytes(erd_value)
@@ -281,13 +302,15 @@ class GeaNumber(NumberEntity, GeaEntity):
         if self._field_bytes is None:
             return None
 
-        if self._bit_mask is not None:
-            return (
-                (self._value_fn(self._field_bytes) & self._bit_mask)
-                >> ((self._size * 8) - self._bit_size - self._bit_offset)
-            ) / (self._attr_scale or 1)
+        val = self._value_fn(self._field_bytes)
 
-        return self._value_fn(self._field_bytes) / (self._attr_scale or 1)
+        if self._bit_mask is not None:
+            shift = (self._size * 8) - self._bit_size - self._bit_offset
+            val = (val & self._bit_mask) >> shift
+
+        if self._scale:
+            return val / self._scale
+        return val
 
     async def set_min(self, min_val: float) -> None:
         """Set the minimum value."""

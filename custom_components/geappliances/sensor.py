@@ -4,12 +4,17 @@ from collections.abc import Callable
 from datetime import date, datetime
 from decimal import Decimal
 import logging
+import math
 import re
 from typing import TYPE_CHECKING, Any
 
 from homeassistant.components import sensor
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.components.sensor.const import SensorDeviceClass, SensorStateClass
+from homeassistant.components.sensor.const import (
+    NON_NUMERIC_DEVICE_CLASSES,
+    SensorDeviceClass,
+    SensorStateClass,
+)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall, callback
 from homeassistant.helpers import entity_platform, entity_registry as er
@@ -47,6 +52,11 @@ class SensorConfigAttributes:
         r"Voltage": SensorDeviceClass.VOLTAGE,
         r"Hz": SensorDeviceClass.FREQUENCY,
     }
+    scale_mapping: dict[str, int] = {
+        r"\bx10\b|\bx 10\b": 10,
+        r"\bx100\b|\bx 100\b": 100,
+        r"\bx1000\b|\bx 1000\b": 1000,
+    }
 
     @classmethod
     async def get_device_class(cls, field: dict[str, Any]) -> SensorDeviceClass | None:
@@ -60,6 +70,18 @@ class SensorConfigAttributes:
         for name_substring, device_class in cls.device_class_mapping.items():
             if re.search(name_substring, field["name"]) is not None:
                 return device_class
+
+        return None
+
+    @classmethod
+    async def get_scale(cls, field: dict[str, Any]) -> int | None:
+        """Return the appropriate scale for the given field."""
+        if field["type"] == "string" or field["type"] == "enum":
+            return None
+
+        for name_substring, scale in cls.scale_mapping.items():
+            if re.search(name_substring, field["name"]) is not None:
+                return scale
 
         return None
 
@@ -164,6 +186,10 @@ class GeaSensor(SensorEntity, GeaEntity):
             SensorDeviceClass.FREQUENCY,
         ]:
             self._attr_suggested_unit_of_measurement = config.unit
+        self._attr_suggested_display_precision = (
+            int(math.log10(config.scale)) if config.scale else None
+        )
+        self._scale = config.scale
         self._enum_vals = config.enum_vals
         self._erd = config.erd
         self._device_name = config.device_name
@@ -232,9 +258,12 @@ class GeaSensor(SensorEntity, GeaEntity):
                 assert self._enum_vals is not None
             return self._enum_vals.get(self._value_fn(self._field_bytes))
 
-        if self._bit_mask is not None:
-            return (self._value_fn(self._field_bytes) & self._bit_mask) >> (
-                (self._size * 8) - self._bit_size - self._bit_offset
-            )
+        val = self._value_fn(self._field_bytes)
 
-        return self._value_fn(self._field_bytes)
+        if self._bit_mask is not None:
+            shift = (self._size * 8) - self._bit_size - self._bit_offset
+            val = (val & self._bit_mask) >> shift
+
+        if self._scale and self._attr_device_class not in NON_NUMERIC_DEVICE_CLASSES:
+            return val / self._scale
+        return val

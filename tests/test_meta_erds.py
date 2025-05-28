@@ -352,7 +352,7 @@ class TestMetaErds:
             "number.test_number_test_number", 1.0, hass
         )
         mqtt_client_should_not_publish(mqtt_mock)
-        the_entity_value_should_be("number.test_number_test_number", "0.0", hass)
+        the_entity_value_should_be("number.test_number_test_number", "0", hass)
 
     async def test_number_max_is_set_by_erd(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
@@ -365,7 +365,7 @@ class TestMetaErds:
             "number.test_number_test_number", 10.0, hass
         )
         mqtt_client_should_not_publish(mqtt_mock)
-        the_entity_value_should_be("number.test_number_test_number", "0.0", hass)
+        the_entity_value_should_be("number.test_number_test_number", "0", hass)
 
     async def test_number_units_are_set_by_erd(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient

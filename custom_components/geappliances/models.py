@@ -61,6 +61,7 @@ class GeaSensorConfig(GeaEntityConfig):
     device_class: SensorDeviceClass | None
     state_class: SensorStateClass | None
     unit: str | None
+    scale: int | None
     value_func: Callable
     enum_vals: dict[int, str] | None
     bit_mask: int | None

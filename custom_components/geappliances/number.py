@@ -274,8 +274,8 @@ class GeaNumber(NumberEntity, GeaEntity):
     async def _get_bytes_from_value(self, value: float) -> bytes:
         """Cast the value to bytes depending on whether the number is signed or unsigned."""
         if self._attr_native_min_value < 0:
-            return int(value).to_bytes(length=self._size, signed=True)
-        return int(value).to_bytes(length=self._size)
+            return round(value).to_bytes(length=self._size, signed=True)
+        return round(value).to_bytes(length=self._size)
 
     async def async_set_native_value(self, value: float) -> None:
         """Update the value."""

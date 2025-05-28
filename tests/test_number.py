@@ -577,11 +577,11 @@ class TestNumber:
         the_number_value_should_be("number.scale_factor_test_field_1", "25.5", hass)
 
         await when_the_number_is_set_to("number.scale_factor_test_field_3", 2.55, hass)
-        the_mqtt_topic_value_should_be(0x0021, "FF00FE0000000000", mqtt_mock)
-        the_number_value_should_be("number.scale_factor_test_field_3", "2.54", hass)
+        the_mqtt_topic_value_should_be(0x0021, "FF00FF0000000000", mqtt_mock)
+        the_number_value_should_be("number.scale_factor_test_field_3", "2.55", hass)
 
         await when_the_number_is_set_to("number.scale_factor_test_field_5", 0.255, hass)
-        the_mqtt_topic_value_should_be(0x0021, "FF00FE0000FF0000", mqtt_mock)
+        the_mqtt_topic_value_should_be(0x0021, "FF00FF0000FF0000", mqtt_mock)
         the_number_value_should_be("number.scale_factor_test_field_5", "0.255", hass)
 
 

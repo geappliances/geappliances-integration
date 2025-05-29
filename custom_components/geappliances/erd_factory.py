@@ -46,6 +46,7 @@ class ERDFactory:
                     device_name,
                     erd,
                     erd_def["name"],
+                    erd_def.get("description", ""),
                     field,
                     "write" in erd_def["operations"],
                 )

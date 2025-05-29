@@ -290,12 +290,12 @@ class GeaNumber(NumberEntity, GeaEntity):
 
     async def set_min(self, min_val: float) -> None:
         """Set the minimum value."""
-        self._attr_native_min_value = min_val
+        self._attr_native_min_value = min_val / self._scale
         self.async_schedule_update_ha_state(True)
 
     async def set_max(self, max_val: float) -> None:
         """Set the minimum value."""
-        self._attr_native_max_value = max_val
+        self._attr_native_max_value = max_val / self._scale
         self.async_schedule_update_ha_state(True)
 
     async def set_unit(self, unit: str) -> None:

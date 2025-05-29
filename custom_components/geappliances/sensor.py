@@ -4,6 +4,7 @@ from collections.abc import Callable
 from datetime import date, datetime
 from decimal import Decimal
 import logging
+import math
 import re
 from typing import TYPE_CHECKING, Any
 
@@ -164,6 +165,10 @@ class GeaSensor(SensorEntity, GeaEntity):
             SensorDeviceClass.FREQUENCY,
         ]:
             self._attr_suggested_unit_of_measurement = config.unit
+        self._attr_suggested_display_precision = (
+            int(math.log10(config.scale)) if config.scale > 1 else None
+        )
+        self._scale = config.scale
         self._enum_vals = config.enum_vals
         self._erd = config.erd
         self._device_name = config.device_name
@@ -174,6 +179,7 @@ class GeaSensor(SensorEntity, GeaEntity):
         self._bit_mask = config.bit_mask
         self._bit_size = config.bit_size
         self._bit_offset = config.bit_offset
+        self._type = config.type
 
     @classmethod
     async def is_correct_platform_for_field(
@@ -232,9 +238,13 @@ class GeaSensor(SensorEntity, GeaEntity):
                 assert self._enum_vals is not None
             return self._enum_vals.get(self._value_fn(self._field_bytes))
 
-        if self._bit_mask is not None:
-            return (self._value_fn(self._field_bytes) & self._bit_mask) >> (
-                (self._size * 8) - self._bit_size - self._bit_offset
-            )
+        val = self._value_fn(self._field_bytes)
 
-        return self._value_fn(self._field_bytes)
+        if self._bit_mask is not None:
+            shift = (self._size * 8) - self._bit_size - self._bit_offset
+            val = (val & self._bit_mask) >> shift
+
+        if self._type not in ("string", "raw", "enum"):
+            return (val / self._scale) if self._scale > 1 else val
+
+        return val

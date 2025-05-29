@@ -203,6 +203,8 @@ class GeaNumber(NumberEntity, GeaEntity):
         self._attr_suggested_unit_of_measurement = config.unit
         self._attr_native_min_value = config.min
         self._attr_native_max_value = config.max
+        self._attr_native_step = 1 / config.scale
+        self._scale = config.scale
         self._erd = config.erd
         self._device_name = config.device_name
         self._data_source = config.data_source
@@ -250,14 +252,14 @@ class GeaNumber(NumberEntity, GeaEntity):
     async def _get_bytes_from_value(self, value: float) -> bytes:
         """Cast the value to bytes depending on whether the number is signed or unsigned."""
         if self._attr_native_min_value < 0:
-            return int(value).to_bytes(length=self._size, signed=True)
-        return int(value).to_bytes(length=self._size)
+            return round(value).to_bytes(length=self._size, signed=True)
+        return round(value).to_bytes(length=self._size)
 
     async def async_set_native_value(self, value: float) -> None:
         """Update the value."""
         erd_value = await self._data_source.erd_read(self._device_name, self._erd)
         if erd_value is not None:
-            value_bytes = await self._get_bytes_from_value(value)
+            value_bytes = await self._get_bytes_from_value(value * (self._scale or 1))
 
             if self._bit_mask is not None:
                 cur_field_bytes = await self.get_field_bytes(erd_value)
@@ -278,21 +280,22 @@ class GeaNumber(NumberEntity, GeaEntity):
         if self._field_bytes is None:
             return None
 
-        if self._bit_mask is not None:
-            return (self._value_fn(self._field_bytes) & self._bit_mask) >> (
-                (self._size * 8) - self._bit_size - self._bit_offset
-            )
+        val = self._value_fn(self._field_bytes)
 
-        return self._value_fn(self._field_bytes)
+        if self._bit_mask is not None:
+            shift = (self._size * 8) - self._bit_size - self._bit_offset
+            val = (val & self._bit_mask) >> shift
+
+        return (val / self._scale) if self._scale > 1 else val
 
     async def set_min(self, min_val: float) -> None:
         """Set the minimum value."""
-        self._attr_native_min_value = min_val
+        self._attr_native_min_value = min_val / self._scale
         self.async_schedule_update_ha_state(True)
 
     async def set_max(self, max_val: float) -> None:
         """Set the minimum value."""
-        self._attr_native_max_value = max_val
+        self._attr_native_max_value = max_val / self._scale
         self.async_schedule_update_ha_state(True)
 
     async def set_unit(self, unit: str) -> None:

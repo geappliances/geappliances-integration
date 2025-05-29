@@ -70,7 +70,9 @@ APPLIANCE_API_JSON = """
                         { "erd": "0x0020", "name": "Days Test", "length": 1 },
                         { "erd": "0x0021", "name": "Power Test", "length": 1 },
                         { "erd": "0x0022", "name": "Voltage Test", "length": 1 },
-                        { "erd": "0x0023", "name": "Frequency Test", "length": 1 }
+                        { "erd": "0x0023", "name": "Frequency Test", "length": 1 },
+                        { "erd": "0x0024", "name": "Scale Factor Test", "length": 8 },
+                        { "erd": "0x0025", "name": "Scale Factor Description Test", "length": 1 }
                     ],
                     "features": []
                 }
@@ -437,6 +439,63 @@ APPLIANCE_API_DEFINTION_JSON = """
                     "size": 1
                 }
             ]
+        },
+        {
+            "name": "Scale Factor Test",
+            "id": "0x0024",
+            "operations": ["read"],
+            "data": [
+                {
+                    "name": "Field 1 x10",
+                    "type": "u8",
+                    "offset": 0,
+                    "size": 1
+                },
+                {
+                    "name": "Field 2 x 10",
+                    "type": "u8",
+                    "offset": 1,
+                    "size": 1
+                },
+                {
+                    "name": "Field 3 x100",
+                    "type": "u8",
+                    "offset": 2,
+                    "size": 1
+                },
+                {
+                    "name": "Field 4 x 100",
+                    "type": "u8",
+                    "offset": 3,
+                    "size": 1
+                },
+                {
+                    "name": "Field 5 x1000",
+                    "type": "u16",
+                    "offset": 4,
+                    "size": 2
+                },
+                {
+                    "name": "Field 6 x 1000",
+                    "type": "u16",
+                    "offset": 6,
+                    "size": 2
+                }
+            ]
+        },
+        {
+            "name": "Scale Factor Description Test",
+            "id": "0x0025",
+            "operations": ["read"],
+            "description": "Test ERD with x 10 scale factor",
+            "data": [
+                {
+                    "name": "Scaled By 10",
+                    "type": "u8",
+                    "offset": 0,
+                    "size": 1
+                }
+            ]
         }
     ]
 }"""
@@ -572,6 +631,30 @@ class TestSensor:
         the_sensor_value_should_be(
             "sensor.removal_test_removal_test", STATE_UNKNOWN, hass
         )
+
+    async def test_reads_correct_scaled_value(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test sensor shows the correct scaled value."""
+        """64 -> 100, 07D0 -> 2000"""
+        await when_the_erd_is_set_to(0x0024, "64 64 64 64 07D0 07D0", hass)
+
+        the_sensor_value_should_be("sensor.scale_factor_test_field_1", "10.0", hass)
+        the_sensor_value_should_be("sensor.scale_factor_test_field_2", "10.0", hass)
+        the_sensor_value_should_be("sensor.scale_factor_test_field_3", "1.0", hass)
+        the_sensor_value_should_be("sensor.scale_factor_test_field_4", "1.0", hass)
+        the_sensor_value_should_be("sensor.scale_factor_test_field_5", "2.0", hass)
+        the_sensor_value_should_be("sensor.scale_factor_test_field_6", "2.0", hass)
+
+
+async def test_reads_erd_with_correct_scaled_value_description(
+    hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+) -> None:
+    """Test setting ERD with the correct scaled value description."""
+    await given_the_erd_is_set_to(0x0025, "FF", hass)
+    the_sensor_value_should_be(
+        "sensor.scale_factor_description_test_scaled_by_10", "25.5", hass
+    )
 
 
 def the_device_class_should_be(

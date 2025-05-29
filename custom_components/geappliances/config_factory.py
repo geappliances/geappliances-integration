@@ -62,6 +62,21 @@ class ConfigFactory:
             r"Voltage": "V",
             r"Hz": "Hz",
         }
+        self._scale_mapping: dict[str, int] = {
+            r"\bx10\b|\bx 10\b|\bX10\b|\bX 10": 10,
+            r"\bx100\b|\bx 100\b|\bX100\b|\bX 100": 100,
+            r"\bx1000\b|\bx 1000\b|\bX1000\b|\bX 1000": 1000,
+        }
+
+    async def get_scale(self, field: dict[str, Any], erd_description) -> int:
+        """Return the appropriate scale for the given field."""
+        for name_substring, scale in self._scale_mapping.items():
+            if re.search(name_substring, field["name"]) is not None:
+                return scale
+            if re.search(name_substring, erd_description) is not None:
+                return scale
+
+        return 1
 
     async def get_units(self, field: dict[str, Any]) -> str | None:
         """Determine the appropriate unit of measurement for the given field."""
@@ -132,6 +147,7 @@ class ConfigFactory:
         device_name: str,
         erd: Erd,
         erd_name: str,
+        erd_description: str,
         field: dict[str, Any],
         bit_mask=None,
         bit_size=0,
@@ -142,6 +158,10 @@ class ConfigFactory:
             device_name, erd, erd_name, field, Platform.NUMBER
         )
         device_class = await NumberConfigAttributes.get_device_class(field)
+        scale = await self.get_scale(field, erd_description)
+
+        for scale_pattern in self._scale_mapping:
+            base.name = re.sub(scale_pattern, "", base.name).strip()
 
         return GeaNumberConfig(
             base.unique_identifier,
@@ -155,8 +175,9 @@ class ConfigFactory:
             base.size,
             device_class,
             await self.get_units(field),
-            await NumberConfigAttributes.get_min(field),
-            await NumberConfigAttributes.get_max(field),
+            scale,
+            await NumberConfigAttributes.get_min(field) / scale,
+            await NumberConfigAttributes.get_max(field) / scale,
             await NumberConfigAttributes.get_value_function(field),
             bit_mask,
             bit_size,
@@ -189,6 +210,7 @@ class ConfigFactory:
         device_name: str,
         erd: Erd,
         erd_name: str,
+        erd_description: str,
         field: dict[str, Any],
         bit_mask=None,
         bit_size=0,
@@ -199,6 +221,9 @@ class ConfigFactory:
             device_name, erd, erd_name, field, Platform.SENSOR
         )
         device_class = await SensorConfigAttributes.get_device_class(field)
+
+        for scale_pattern in self._scale_mapping:
+            base.name = re.sub(scale_pattern, "", base.name).strip()
 
         return GeaSensorConfig(
             base.unique_identifier,
@@ -213,11 +238,13 @@ class ConfigFactory:
             device_class,
             await SensorConfigAttributes.get_state_class(field),
             await self.get_units(field),
+            await self.get_scale(field, erd_description),
             await SensorConfigAttributes.get_value_function(field),
             await SensorConfigAttributes.get_enum_values(field),
             bit_mask,
             bit_size,
             bit_offset,
+            field["type"],
         )
 
     async def build_switch(
@@ -293,6 +320,7 @@ class ConfigFactory:
         device_name: str,
         erd: Erd,
         erd_name: str,
+        erd_description: str,
         field: dict[str, Any],
         writeable: bool,
     ) -> GeaEntityConfig:
@@ -316,10 +344,17 @@ class ConfigFactory:
 
             if writeable:
                 return await self.build_number(
-                    device_name, erd, erd_name, field, mask, size, offset
+                    device_name,
+                    erd,
+                    erd_name,
+                    erd_description,
+                    field,
+                    mask,
+                    size,
+                    offset,
                 )
             return await self.build_sensor(
-                device_name, erd, erd_name, field, mask, size, offset
+                device_name, erd, erd_name, erd_description, field, mask, size, offset
             )
 
         for platform_type in PLATFORM_TYPE_LIST:
@@ -331,13 +366,17 @@ class ConfigFactory:
             return await self.build_binary_sensor(device_name, erd, erd_name, field)
 
         if platform == GeaNumber:
-            return await self.build_number(device_name, erd, erd_name, field)
+            return await self.build_number(
+                device_name, erd, erd_name, erd_description, field
+            )
 
         if platform == GeaSelect:
             return await self.build_select(device_name, erd, erd_name, field)
 
         if platform == GeaSensor:
-            return await self.build_sensor(device_name, erd, erd_name, field)
+            return await self.build_sensor(
+                device_name, erd, erd_name, erd_description, field
+            )
 
         if platform == GeaSwitch:
             return await self.build_switch(device_name, erd, erd_name, field)

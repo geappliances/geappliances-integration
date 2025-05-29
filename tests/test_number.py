@@ -66,7 +66,8 @@ APPLIANCE_API_JSON = """
                         { "erd": "0x0018", "name": "Power Test", "length": 1 },
                         { "erd": "0x0019", "name": "Voltage Test", "length": 1 },
                         { "erd": "0x0020", "name": "Frequency Test", "length": 1 },
-                        { "erd": "0x0021", "name": "Scale Factor Test", "length": 8 }
+                        { "erd": "0x0021", "name": "Scale Factor Test", "length": 8 },
+                        { "erd": "0x0022", "name": "Scale Factor Description Test", "length": 1 }
                     ],
                     "features": []
                 }
@@ -413,6 +414,20 @@ APPLIANCE_API_DEFINTION_JSON = """
                     "size": 2
                 }
             ]
+        },
+        {
+            "name": "Scale Factor Description Test",
+            "id": "0x0022",
+            "operations": ["read", "write"],
+            "description": "Test ERD with x 10 scale factor",
+            "data": [
+                {
+                    "name": "Scaled By 10",
+                    "type": "u8",
+                    "offset": 0,
+                    "size": 1
+                }
+            ]
         }
     ]
 }"""
@@ -583,6 +598,23 @@ class TestNumber:
         await when_the_number_is_set_to("number.scale_factor_test_field_5", 0.255, hass)
         the_mqtt_topic_value_should_be(0x0021, "FF00FF0000FF0000", mqtt_mock)
         the_number_value_should_be("number.scale_factor_test_field_5", "0.255", hass)
+
+
+async def test_sets_erd_with_correct_scaled_value_description(
+    hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+) -> None:
+    """Test setting ERD with the correct scaled value description."""
+    await given_the_erd_is_set_to(0x0022, "FF", hass)
+    the_number_value_should_be(
+        "number.scale_factor_description_test_scaled_by_10", "25.5", hass
+    )
+
+    await when_the_number_is_set_to(
+        "number.scale_factor_description_test_scaled_by_10", 20.0, hass
+    )
+    the_number_value_should_be(
+        "number.scale_factor_description_test_scaled_by_10", "20.0", hass
+    )
 
 
 def the_device_class_should_be(

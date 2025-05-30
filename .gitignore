@@ -12,6 +12,7 @@ __pycache__
 coverage.xml
 .ruff_cache
 .venv
+!.vscode/launch.json
 
 
 # Home Assistant configuration

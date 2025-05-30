@@ -4,31 +4,31 @@
       "0x4040": {
         "Available Modes.Hybrid": {
           "fields": [
-            "{}_4020_Mode"
+            "{}_4020_Mode.Hybrid"
           ],
           "func": "set_allowables"
         },
         "Available Modes.Standard electric": {
           "fields": [
-            "{}_4020_Mode"
+            "{}_4020_Mode.Standard electric"
           ],
           "func": "set_allowables"
         },
         "Available Modes.E-heat": {
           "fields": [
-            "{}_4020_Mode"
+            "{}_4020_Mode.E-heat"
           ],
           "func": "set_allowables"
         },
         "Available Modes.HiDemand": {
           "fields": [
-            "{}_4020_Mode"
+            "{}_4020_Mode.HiDemand"
           ],
           "func": "set_allowables"
         },
         "Available Modes.Vacation": {
           "fields": [
-            "{}_4020_Mode"
+            "{}_4020_Mode.Vacation"
           ],
           "func": "set_allowables"
         }
@@ -68,13 +68,13 @@
       "0x2052": {
         "DryerExtendedTumbleOptionAllowables.Dryer Extended Tumble Option Disable Allowed": {
           "fields": [
-            "{}_2051_Extended Tumble"
+            "{}_2051_Extended Tumble.Dryer Extended Tumble Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerExtendedTumbleOptionAllowables.Dryer Extended Tumble Option Enable Allowed": {
           "fields": [
-            "{}_2051_Extended Tumble"
+            "{}_2051_Extended Tumble.Dryer Extended Tumble Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -82,13 +82,13 @@
       "0x205F": {
         "DryerReduceStaticOptionAllowables.Dryer Reduce Static Option Disable Allowed": {
           "fields": [
-            "{}_205D_Dryer Reduce Static Option Request"
+            "{}_205D_Dryer Reduce Static Option Request.Dryer Reduce Static Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerReduceStaticOptionAllowables.Dryer Reduce Static Option Enable Allowed": {
           "fields": [
-            "{}_205D_Dryer Reduce Static Option Request"
+            "{}_205D_Dryer Reduce Static Option Request.Dryer Reduce Static Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -96,13 +96,13 @@
       "0x206E": {
         "WasherLinkOptionAllowables.Washer Link Option Disable Allowed": {
           "fields": [
-            "{}_206D_Washer Link Option Request"
+            "{}_206D_Washer Link Option Request.Washer Link Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "WasherLinkOptionAllowables.Washer Link Option Enable Allowed": {
           "fields": [
-            "{}_206D_Washer Link Option Request"
+            "{}_206D_Washer Link Option Request.Washer Link Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -110,13 +110,13 @@
       "0x2045": {
         "EcoDryOptionAllowables.Eco Dry Option Disable Allowed": {
           "fields": [
-            "{}_2044_Option Status"
+            "{}_2044_Option Status.Eco Dry Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "EcoDryOptionAllowables.Eco Dry Option Enable Allowed": {
           "fields": [
-            "{}_2044_Option Status"
+            "{}_2044_Option Status.Eco Dry Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -124,13 +124,13 @@
       "0x2049": {
         "DampAlertOptionAllowables.Damp Alert Option Disable Allowed": {
           "fields": [
-            "{}_2048_Option Status"
+            "{}_2048_Option Status.Damp Alert Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "DampAlertOptionAllowables.Damp Alert Option Enable Allowed": {
           "fields": [
-            "{}_2048_Option Status"
+            "{}_2048_Option Status.Damp Alert Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -138,37 +138,37 @@
       "0x204C": {
         "DryerDrynessOptionAllowables.Disabled Allowed": {
           "fields": [
-            "{}_204B_Dryness Level"
+            "{}_204B_Dryness Level.Disabled Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerDrynessOptionAllowables.Damp Allowed": {
           "fields": [
-            "{}_204B_Dryness Level"
+            "{}_204B_Dryness Level.Damp Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerDrynessOptionAllowables.Less Dry Allowed": {
           "fields": [
-            "{}_204B_Dryness Level"
+            "{}_204B_Dryness Level.Less Dry Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerDrynessOptionAllowables.Dry Allowed": {
           "fields": [
-            "{}_204B_Dryness Level"
+            "{}_204B_Dryness Level.Dry Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerDrynessOptionAllowables.More Dry Allowed": {
           "fields": [
-            "{}_204B_Dryness Level"
+            "{}_204B_Dryness Level.More Dry Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerDrynessOptionAllowables.Extra Dry Allowed": {
           "fields": [
-            "{}_204B_Dryness Level"
+            "{}_204B_Dryness Level.Extra Dry Allowed"
           ],
           "func": "set_allowables"
         }
@@ -176,37 +176,37 @@
       "0x204F": {
         "DryerTemperatureOptionAllowables.Disabled Allowed": {
           "fields": [
-            "{}_204E_Dryness Level"
+            "{}_204E_Dryness Level.Disabled Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerTemperatureOptionAllowables.No Heat Allowed": {
           "fields": [
-            "{}_204E_Dryness Level"
+            "{}_204E_Dryness Level.No Heat Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerTemperatureOptionAllowables.Extra Low Allowed": {
           "fields": [
-            "{}_204E_Dryness Level"
+            "{}_204E_Dryness Level.Extra Low Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerTemperatureOptionAllowables.Low Allowed": {
           "fields": [
-            "{}_204E_Dryness Level"
+            "{}_204E_Dryness Level.Low Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerTemperatureOptionAllowables.Medium Allowed": {
           "fields": [
-            "{}_204E_Dryness Level"
+            "{}_204E_Dryness Level.Medium Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerTemperatureOptionAllowables.High Allowed": {
           "fields": [
-            "{}_204E_Dryness Level"
+            "{}_204E_Dryness Level.High Allowed"
           ],
           "func": "set_allowables"
         }
@@ -214,13 +214,13 @@
       "0x2068": {
         "DryerSmallLoadOptionAllowables.Dryer Small Load Option Disable Allowed": {
           "fields": [
-            "{}_2067_Dryer Small Load Option Request"
+            "{}_2067_Dryer Small Load Option Request.Dryer Small Load Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "DryerSmallLoadOptionAllowables.Dryer Small Load Option Enable Allowed": {
           "fields": [
-            "{}_2067_Dryer Small Load Option Request"
+            "{}_2067_Dryer Small Load Option Request.Dryer Small Load Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -228,13 +228,13 @@
       "0x2075": {
         "DetangleOptionAllowables.Detangle Option Disable Allowed": {
           "fields": [
-            "{}_2074_Option Status"
+            "{}_2074_Option Status.Detangle Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "DetangleOptionAllowables.Detangle Option Enable Allowed": {
           "fields": [
-            "{}_2074_Option Status"
+            "{}_2074_Option Status.Detangle Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -242,37 +242,37 @@
       "0x2079": {
         "TimeLevelOptionAllowables.Disabled Allowed": {
           "fields": [
-            "{}_2078_Time Level Option Request"
+            "{}_2078_Time Level Option Request.Disabled Allowed"
           ],
           "func": "set_allowables"
         },
         "TimeLevelOptionAllowables.Option 1 Allowed": {
           "fields": [
-            "{}_2078_Time Level Option Request"
+            "{}_2078_Time Level Option Request.Option 1 Allowed"
           ],
           "func": "set_allowables"
         },
         "TimeLevelOptionAllowables.Option 2 Allowed": {
           "fields": [
-            "{}_2078_Time Level Option Request"
+            "{}_2078_Time Level Option Request.Option 2 Allowed"
           ],
           "func": "set_allowables"
         },
         "TimeLevelOptionAllowables.Option 3 Allowed": {
           "fields": [
-            "{}_2078_Time Level Option Request"
+            "{}_2078_Time Level Option Request.Option 3 Allowed"
           ],
           "func": "set_allowables"
         },
         "TimeLevelOptionAllowables.Option 4 Allowed": {
           "fields": [
-            "{}_2078_Time Level Option Request"
+            "{}_2078_Time Level Option Request.Option 4 Allowed"
           ],
           "func": "set_allowables"
         },
         "TimeLevelOptionAllowables.Option 5 Allowed": {
           "fields": [
-            "{}_2078_Time Level Option Request"
+            "{}_2078_Time Level Option Request.Option 5 Allowed"
           ],
           "func": "set_allowables"
         }
@@ -280,13 +280,13 @@
       "0x207C": {
         "SanitizeOptionAllowables.Sanitize Option Disable Allowed": {
           "fields": [
-            "{}_207B_Sanitize Option Request"
+            "{}_207B_Sanitize Option Request.Sanitize Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "SanitizeOptionAllowables.Sanitize Option Enable Allowed": {
           "fields": [
-            "{}_207B_Sanitize Option Request"
+            "{}_207B_Sanitize Option Request.Sanitize Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -294,31 +294,31 @@
       "0x207F": {
         "KeyVolumeAllowables.Off Allowed": {
           "fields": [
-            "{}_207E_Option Status"
+            "{}_207E_Option Status.Off Allowed"
           ],
           "func": "set_allowables"
         },
         "KeyVolumeAllowables.Low Allowed": {
           "fields": [
-            "{}_207E_Option Status"
+            "{}_207E_Option Status.Low Allowed"
           ],
           "func": "set_allowables"
         },
         "KeyVolumeAllowables.Medium Allowed": {
           "fields": [
-            "{}_207E_Option Status"
+            "{}_207E_Option Status.Medium Allowed"
           ],
           "func": "set_allowables"
         },
         "KeyVolumeAllowables.High Allowed": {
           "fields": [
-            "{}_207E_Option Status"
+            "{}_207E_Option Status.High Allowed"
           ],
           "func": "set_allowables"
         },
         "KeyVolumeAllowables.High Extended Alert Allowed": {
           "fields": [
-            "{}_207E_Option Status"
+            "{}_207E_Option Status.High Extended Alert Allowed"
           ],
           "func": "set_allowables"
         }
@@ -326,31 +326,31 @@
       "0x2082": {
         "AlertVolumeAllowables.Off Allowed": {
           "fields": [
-            "{}_2081_Option Status"
+            "{}_2081_Option Status.Off Allowed"
           ],
           "func": "set_allowables"
         },
         "AlertVolumeAllowables.Low Allowed": {
           "fields": [
-            "{}_2081_Option Status"
+            "{}_2081_Option Status.Low Allowed"
           ],
           "func": "set_allowables"
         },
         "AlertVolumeAllowables.Medium Allowed": {
           "fields": [
-            "{}_2081_Option Status"
+            "{}_2081_Option Status.Medium Allowed"
           ],
           "func": "set_allowables"
         },
         "AlertVolumeAllowables.High Allowed": {
           "fields": [
-            "{}_2081_Option Status"
+            "{}_2081_Option Status.High Allowed"
           ],
           "func": "set_allowables"
         },
         "AlertVolumeAllowables.High Extended Alert Allowed": {
           "fields": [
-            "{}_2081_Option Status"
+            "{}_2081_Option Status.High Extended Alert Allowed"
           ],
           "func": "set_allowables"
         }
@@ -358,19 +358,19 @@
       "0x2085": {
         "ControlLockAllowablesCurrent.Control Lock Option - Disable Allowed": {
           "fields": [
-            "{}_2084_Control Lock Option Request"
+            "{}_2084_Control Lock Option Request.Control Lock Option - Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "ControlLockAllowablesCurrent.Control Lock Option - Unlock Allowed": {
           "fields": [
-            "{}_2084_Control Lock Option Request"
+            "{}_2084_Control Lock Option Request.Control Lock Option - Unlock Allowed"
           ],
           "func": "set_allowables"
         },
         "ControlLockAllowablesCurrent.Control Lock Option - Lock Allowed": {
           "fields": [
-            "{}_2084_Control Lock Option Request"
+            "{}_2084_Control Lock Option Request.Control Lock Option - Lock Allowed"
           ],
           "func": "set_allowables"
         }
@@ -378,13 +378,13 @@
       "0x2088": {
         "SteamOptionAllowables.Steam Option Disable Allowed": {
           "fields": [
-            "{}_2087_Steam Option"
+            "{}_2087_Steam Option.Steam Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "SteamOptionAllowables.Steam Option Enable Allowed": {
           "fields": [
-            "{}_2087_Steam Option"
+            "{}_2087_Steam Option.Steam Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -392,13 +392,13 @@
       "0x208B": {
         "AirFluffCycleOptionAllowables.Air Fluff Cycle Option Disable Allowed": {
           "fields": [
-            "{}_208A_Air Fluff Cycle Option"
+            "{}_208A_Air Fluff Cycle Option.Air Fluff Cycle Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "AirFluffCycleOptionAllowables.Air Fluff Cycle Option Enable Allowed": {
           "fields": [
-            "{}_208A_Air Fluff Cycle Option"
+            "{}_208A_Air Fluff Cycle Option.Air Fluff Cycle Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -406,19 +406,19 @@
       "0x208E": {
         "SteamCycleOptionAllowables.Steam Cycle Option Disable Allowed": {
           "fields": [
-            "{}_208D_Steam Cycle Option"
+            "{}_208D_Steam Cycle Option.Steam Cycle Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "SteamCycleOptionAllowables.Steam Cycle Option Refresh Allowed": {
           "fields": [
-            "{}_208D_Steam Cycle Option"
+            "{}_208D_Steam Cycle Option.Steam Cycle Option Refresh Allowed"
           ],
           "func": "set_allowables"
         },
         "SteamCycleOptionAllowables.Steam Cycle Option Dewrinkle Allowed": {
           "fields": [
-            "{}_208D_Steam Cycle Option"
+            "{}_208D_Steam Cycle Option.Steam Cycle Option Dewrinkle Allowed"
           ],
           "func": "set_allowables"
         }
@@ -426,13 +426,13 @@
       "0x2091": {
         "WarmUpCycleOptionAllowables.Warm Up Cycle Option Disable Allowed": {
           "fields": [
-            "{}_2090_Warm Up Cycle Option"
+            "{}_2090_Warm Up Cycle Option.Warm Up Cycle Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "WarmUpCycleOptionAllowables.Warm Up Cycle Option Enable Allowed": {
           "fields": [
-            "{}_2090_Warm Up Cycle Option"
+            "{}_2090_Warm Up Cycle Option.Warm Up Cycle Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -440,13 +440,13 @@
       "0x2094": {
         "SmartVentCycleOptionAllowables.Smart Vent Cycle Option Disable Allowed": {
           "fields": [
-            "{}_2093_Smart Vent Cycle Option"
+            "{}_2093_Smart Vent Cycle Option.Smart Vent Cycle Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "SmartVentCycleOptionAllowables.Smart Vent Cycle Option Enable Allowed": {
           "fields": [
-            "{}_2093_Smart Vent Cycle Option"
+            "{}_2093_Smart Vent Cycle Option.Smart Vent Cycle Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -454,25 +454,25 @@
       "0x209C": {
         "ScentOptionAllowables.Scent Option Off Allowed": {
           "fields": [
-            "{}_209B_Scent Option"
+            "{}_209B_Scent Option.Scent Option Off Allowed"
           ],
           "func": "set_allowables"
         },
         "ScentOptionAllowables.Scent Option Auto Allowed": {
           "fields": [
-            "{}_209B_Scent Option"
+            "{}_209B_Scent Option.Scent Option Auto Allowed"
           ],
           "func": "set_allowables"
         },
         "ScentOptionAllowables.Scent Option More Allowed": {
           "fields": [
-            "{}_209B_Scent Option"
+            "{}_209B_Scent Option.Scent Option More Allowed"
           ],
           "func": "set_allowables"
         },
         "ScentOptionAllowables.Scent Option Less Allowed": {
           "fields": [
-            "{}_209B_Scent Option"
+            "{}_209B_Scent Option.Scent Option Less Allowed"
           ],
           "func": "set_allowables"
         }
@@ -482,13 +482,13 @@
       "0x20F3": {
         "AdaptiveMyCycleOptionAllowables.Adaptive My Cycle Option Disable Allowed": {
           "fields": [
-            "{}_20F2_Adaptive My Cycle Option Request"
+            "{}_20F2_Adaptive My Cycle Option Request.Adaptive My Cycle Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "AdaptiveMyCycleOptionAllowables.Adaptive My Cycle Option Enable Allowed": {
           "fields": [
-            "{}_20F2_Adaptive My Cycle Option Request"
+            "{}_20F2_Adaptive My Cycle Option Request.Adaptive My Cycle Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -498,13 +498,13 @@
       "0x2094": {
         "SmartVentCycleOptionAllowables.Smart Vent Cycle Option Disable Allowed": {
           "fields": [
-            "{}_2093_Smart Vent Cycle Option"
+            "{}_2093_Smart Vent Cycle Option.Smart Vent Cycle Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "SmartVentCycleOptionAllowables.Smart Vent Cycle Option Enable Allowed": {
           "fields": [
-            "{}_2093_Smart Vent Cycle Option"
+            "{}_2093_Smart Vent Cycle Option.Smart Vent Cycle Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -589,133 +589,133 @@
       "0x20C9": {
         "Dry Time.10min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.10min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.15min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.15min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.20min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.20min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.25min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.25min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.30min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.30min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.35min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.35min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.40min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.40min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.45min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.45min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.50min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.50min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.60min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.60min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.70min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.70min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.80min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.80min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.90min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.90min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.100min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.100min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.110min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.110min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.120min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.120min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.130min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.130min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.140min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.140min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.150min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.150min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.160min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.160min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.170min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.170min"
           ],
           "func": "set_allowables"
         },
         "Dry Time.180min": {
           "fields": [
-            "{}_20CA_Dry Time"
+            "{}_20CA_Dry Time.180min"
           ],
           "func": "set_allowables"
         }
@@ -723,7 +723,7 @@
       "0x211C": {
         "Signal Option.End of cycle signal On enabled": {
           "fields": [
-            "{}_211D_Signal Option.End of cycle signal On enabled"
+            "{}_211D_Signal Option.End of cycle signal On enabled.End of cycle signal On enabled"
           ],
           "func": "set_allowables"
         }
@@ -832,13 +832,13 @@
       "0x217E": {
         "Drum Light Option Allowables.Drum Light Option - Off Allowed": {
           "fields": [
-            "{}_217D_Drum Light Option Request"
+            "{}_217D_Drum Light Option Request.Drum Light Option - Off Allowed"
           ],
           "func": "set_allowables"
         },
         "Drum Light Option Allowables.Drum Light Option - On Allowed": {
           "fields": [
-            "{}_217D_Drum Light Option Request"
+            "{}_217D_Drum Light Option Request.Drum Light Option - On Allowed"
           ],
           "func": "set_allowables"
         }
@@ -884,49 +884,49 @@
       "0x20C3": {
         "Smart Dispense Adjustability Allowable.Detergent Flow Rate Bucket One": {
           "fields": [
-            "{}_20C1_Flow Rate Bucket Selection"
+            "{}_20C1_Flow Rate Bucket Selection.Detergent Flow Rate Bucket One"
           ],
           "func": "set_allowables"
         },
         "Smart Dispense Adjustability Allowable.Detergent Flow Rate Bucket Two": {
           "fields": [
-            "{}_20C1_Flow Rate Bucket Selection"
+            "{}_20C1_Flow Rate Bucket Selection.Detergent Flow Rate Bucket Two"
           ],
           "func": "set_allowables"
         },
         "Smart Dispense Adjustability Allowable.Detergent Flow Rate Bucket Three": {
           "fields": [
-            "{}_20C1_Flow Rate Bucket Selection"
+            "{}_20C1_Flow Rate Bucket Selection.Detergent Flow Rate Bucket Three"
           ],
           "func": "set_allowables"
         },
         "Smart Dispense Adjustability Allowable.Detergent Flow Rate Bucket Four": {
           "fields": [
-            "{}_20C1_Flow Rate Bucket Selection"
+            "{}_20C1_Flow Rate Bucket Selection.Detergent Flow Rate Bucket Four"
           ],
           "func": "set_allowables"
         },
         "Smart Dispense Adjustability Allowable.Softener Flow Rate Bucket One": {
           "fields": [
-            "{}_20C1_Flow Rate Bucket Selection"
+            "{}_20C1_Flow Rate Bucket Selection.Softener Flow Rate Bucket One"
           ],
           "func": "set_allowables"
         },
         "Smart Dispense Adjustability Allowable.Softener Flow Rate Bucket Two": {
           "fields": [
-            "{}_20C1_Flow Rate Bucket Selection"
+            "{}_20C1_Flow Rate Bucket Selection.Softener Flow Rate Bucket Two"
           ],
           "func": "set_allowables"
         },
         "Smart Dispense Adjustability Allowable.Softener Flow Rate Bucket Three": {
           "fields": [
-            "{}_20C1_Flow Rate Bucket Selection"
+            "{}_20C1_Flow Rate Bucket Selection.Softener Flow Rate Bucket Three"
           ],
           "func": "set_allowables"
         },
         "Smart Dispense Adjustability Allowable.Softener Flow Rate Bucket Four": {
           "fields": [
-            "{}_20C1_Flow Rate Bucket Selection"
+            "{}_20C1_Flow Rate Bucket Selection.Softener Flow Rate Bucket Four"
           ],
           "func": "set_allowables"
         }
@@ -936,13 +936,13 @@
       "0x20F3": {
         "AdaptiveMyCycleOptionAllowables.Adaptive My Cycle Option Disable Allowed": {
           "fields": [
-            "{}_20F2_Adaptive My Cycle Option Request"
+            "{}_20F2_Adaptive My Cycle Option Request.Adaptive My Cycle Option Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "AdaptiveMyCycleOptionAllowables.Adaptive My Cycle Option Enable Allowed": {
           "fields": [
-            "{}_20F2_Adaptive My Cycle Option Request"
+            "{}_20F2_Adaptive My Cycle Option Request.Adaptive My Cycle Option Enable Allowed"
           ],
           "func": "set_allowables"
         }
@@ -1159,73 +1159,73 @@
       "0x20C7": {
         "Spin Level Option.No Spin allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.No Spin allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.Low allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.Low allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.Med allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.Med allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.High allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.High allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.400 allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.400 allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.500 allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.500 allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.600 allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.600 allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.800 allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.800 allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.1000 allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.1000 allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.1100 allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.1100 allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.1200 allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.1200 allowed"
           ],
           "func": "set_allowables"
         },
         "Spin Level Option.1400 allowed": {
           "fields": [
-            "{}_20B8_Spin level Option"
+            "{}_20B8_Spin level Option.1400 allowed"
           ],
           "func": "set_allowables"
         }
@@ -1233,61 +1233,61 @@
       "0x20C6": {
         "Water Temperature Option.WaterTemp_Disable allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.WaterTemp_Disable allowed"
           ],
           "func": "set_allowables"
         },
         "Water Temperature Option.Cold allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.Cold allowed"
           ],
           "func": "set_allowables"
         },
         "Water Temperature Option.20\u00b0C allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.20\u00b0C allowed"
           ],
           "func": "set_allowables"
         },
         "Water Temperature Option.30\u00b0C allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.30\u00b0C allowed"
           ],
           "func": "set_allowables"
         },
         "Water Temperature Option.40\u00b0C allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.40\u00b0C allowed"
           ],
           "func": "set_allowables"
         },
         "Water Temperature Option.50\u00b0C allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.50\u00b0C allowed"
           ],
           "func": "set_allowables"
         },
         "Water Temperature Option.60\u00b0C allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.60\u00b0C allowed"
           ],
           "func": "set_allowables"
         },
         "Water Temperature Option.70\u00b0C allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.70\u00b0C allowed"
           ],
           "func": "set_allowables"
         },
         "Water Temperature Option.80\u00b0C allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.80\u00b0C allowed"
           ],
           "func": "set_allowables"
         },
         "Water Temperature Option.90\u00b0C allowed": {
           "fields": [
-            "{}_20BC_Water Temperature Option"
+            "{}_20BC_Water Temperature Option.90\u00b0C allowed"
           ],
           "func": "set_allowables"
         }
@@ -1295,37 +1295,37 @@
       "0x20C4": {
         "Soil Level Option.Disable allowed": {
           "fields": [
-            "{}_20BF_Soil Level Option"
+            "{}_20BF_Soil Level Option.Disable allowed"
           ],
           "func": "set_allowables"
         },
         "Soil Level Option.Extra light allowed": {
           "fields": [
-            "{}_20BF_Soil Level Option"
+            "{}_20BF_Soil Level Option.Extra light allowed"
           ],
           "func": "set_allowables"
         },
         "Soil Level Option.Light allowed": {
           "fields": [
-            "{}_20BF_Soil Level Option"
+            "{}_20BF_Soil Level Option.Light allowed"
           ],
           "func": "set_allowables"
         },
         "Soil Level Option.Normal allowed": {
           "fields": [
-            "{}_20BF_Soil Level Option"
+            "{}_20BF_Soil Level Option.Normal allowed"
           ],
           "func": "set_allowables"
         },
         "Soil Level Option.Heavy allowed": {
           "fields": [
-            "{}_20BF_Soil Level Option"
+            "{}_20BF_Soil Level Option.Heavy allowed"
           ],
           "func": "set_allowables"
         },
         "Soil Level Option.Extra heavy allowed": {
           "fields": [
-            "{}_20BF_Soil Level Option"
+            "{}_20BF_Soil Level Option.Extra heavy allowed"
           ],
           "func": "set_allowables"
         }
@@ -1333,31 +1333,31 @@
       "0x20C5": {
         "Auto Soak Option.Soak off allowed": {
           "fields": [
-            "{}_20AC_Auto Soak Option"
+            "{}_20AC_Auto Soak Option.Soak off allowed"
           ],
           "func": "set_allowables"
         },
         "Auto Soak Option.Soak 30min allowed": {
           "fields": [
-            "{}_20AC_Auto Soak Option"
+            "{}_20AC_Auto Soak Option.Soak 30min allowed"
           ],
           "func": "set_allowables"
         },
         "Auto Soak Option.Soak 60min allowed": {
           "fields": [
-            "{}_20AC_Auto Soak Option"
+            "{}_20AC_Auto Soak Option.Soak 60min allowed"
           ],
           "func": "set_allowables"
         },
         "Auto Soak Option.Soak 90min allowed": {
           "fields": [
-            "{}_20AC_Auto Soak Option"
+            "{}_20AC_Auto Soak Option.Soak 90min allowed"
           ],
           "func": "set_allowables"
         },
         "Auto Soak Option.Soak 120min allowed": {
           "fields": [
-            "{}_20AC_Auto Soak Option"
+            "{}_20AC_Auto Soak Option.Soak 120min allowed"
           ],
           "func": "set_allowables"
         }
@@ -1880,19 +1880,19 @@
       "0x2085": {
         "ControlLockAllowablesCurrent.Control Lock Option - Disable Allowed": {
           "fields": [
-            "{}_2084_Control Lock Option Request"
+            "{}_2084_Control Lock Option Request.Control Lock Option - Disable Allowed"
           ],
           "func": "set_allowables"
         },
         "ControlLockAllowablesCurrent.Control Lock Option - Unlock Allowed": {
           "fields": [
-            "{}_2084_Control Lock Option Request"
+            "{}_2084_Control Lock Option Request.Control Lock Option - Unlock Allowed"
           ],
           "func": "set_allowables"
         },
         "ControlLockAllowablesCurrent.Control Lock Option - Lock Allowed": {
           "fields": [
-            "{}_2084_Control Lock Option Request"
+            "{}_2084_Control Lock Option Request.Control Lock Option - Lock Allowed"
           ],
           "func": "set_allowables"
         }

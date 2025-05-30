@@ -173,6 +173,6 @@ class GeaSelect(SelectEntity, GeaEntity):
         if enabled:
             if allowable not in self._attr_options:
                 self._attr_options.append(allowable)
-        else:
+        elif allowable in self._attr_options:
             self._attr_options.remove(allowable)
         self.async_schedule_update_ha_state(True)

@@ -21,7 +21,7 @@ from .const import (
     ATTR_ENABLED,
     ATTR_UNIQUE_ID,
     GEA_ENTITY_NEW,
-    SERVICE_ENABLE_OR_DISABLE,
+    SERVICE_ENABLE_OR_DISABLE_BASE,
     SERVICE_ENABLE_OR_DISABLE_SCHEMA,
 )
 from .entity import GeaEntity
@@ -112,6 +112,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up GE Appliances sensor dynamically through discovery."""
     platform = entity_platform.async_get_current_platform()
+    SERVICE_ENABLE_OR_DISABLE = SERVICE_ENABLE_OR_DISABLE_BASE + "_sensor"
 
     async def handle_service_call(entity: GeaSensor, service_call: ServiceCall) -> None:
         if entity.unique_id == service_call.data[ATTR_UNIQUE_ID]:

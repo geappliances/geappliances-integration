@@ -17,7 +17,7 @@ from .const import (
     ATTR_ENABLED,
     ATTR_UNIQUE_ID,
     GEA_ENTITY_NEW,
-    SERVICE_ENABLE_OR_DISABLE,
+    SERVICE_ENABLE_OR_DISABLE_BASE,
     SERVICE_ENABLE_OR_DISABLE_SCHEMA,
     SERVICE_SET_ALLOWABLES,
     SERVICE_SET_ALLOWABLES_SCHEMA,
@@ -48,6 +48,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up GE Appliances select dropdown dynamically through discovery."""
     platform = entity_platform.async_get_current_platform()
+    SERVICE_ENABLE_OR_DISABLE = SERVICE_ENABLE_OR_DISABLE_BASE + "_select"
 
     async def handle_service_call(entity: GeaSelect, service_call: ServiceCall) -> None:
         if entity.unique_id == service_call.data[ATTR_UNIQUE_ID]:
@@ -173,6 +174,6 @@ class GeaSelect(SelectEntity, GeaEntity):
         if enabled:
             if allowable not in self._attr_options:
                 self._attr_options.append(allowable)
-        else:
+        elif allowable in self._attr_options:
             self._attr_options.remove(allowable)
         self.async_schedule_update_ha_state(True)

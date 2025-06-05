@@ -10,3 +10,7 @@ logger:
   default: info
   logs:
     custom_components.integration_blueprint: debug
+
+debugpy:
+  start: false
+  wait: false

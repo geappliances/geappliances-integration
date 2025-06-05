@@ -21,7 +21,7 @@ from .const import (
     ATTR_UNIQUE_ID,
     ATTR_UNIT,
     GEA_ENTITY_NEW,
-    SERVICE_ENABLE_OR_DISABLE,
+    SERVICE_ENABLE_OR_DISABLE_BASE,
     SERVICE_ENABLE_OR_DISABLE_SCHEMA,
     SERVICE_SET_MAX,
     SERVICE_SET_MAX_SCHEMA,
@@ -130,6 +130,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up GE Appliances number input dynamically through discovery."""
     platform = entity_platform.async_get_current_platform()
+    SERVICE_ENABLE_OR_DISABLE = SERVICE_ENABLE_OR_DISABLE_BASE + "_number"
 
     async def handle_service_call(entity: GeaNumber, service_call: ServiceCall):
         if entity.unique_id == service_call.data[ATTR_UNIQUE_ID]:
@@ -300,7 +301,6 @@ class GeaNumber(NumberEntity, GeaEntity):
 
     async def set_unit(self, unit: str) -> None:
         "Set the unit."
-        _LOGGER.info("Set unit to %s", unit)
         self._attr_native_unit_of_measurement = unit
         self._attr_suggested_unit_of_measurement = unit
         self.async_schedule_update_ha_state(True)

@@ -1,7 +1,6 @@
 """Support for GE Appliances text inputs."""
 
 import logging
-from tkinter import SE
 from typing import Any
 
 from homeassistant.components import text

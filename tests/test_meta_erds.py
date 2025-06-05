@@ -373,7 +373,7 @@ class TestMetaErds:
 
         the_unit_should_be("number.test_number_test_number", "psi", hass)
 
-    async def test_entity_is_disabled_by_erd(
+    async def test_entity_is_disabled_and_enabled_by_erd(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test the entity is disabled by the associated ERD."""
@@ -402,6 +402,16 @@ class TestMetaErds:
         the_entity_value_should_be(
             "select.test_select_test_select", STATE_UNKNOWN, hass
         )
+
+        await given_the_erd_is_set_to(0x0008, "01", hass)
+
+        await given_the_erd_is_set_to(0x0001, "00", hass)
+        await given_the_erd_is_set_to(0x0002, "00", hass)
+        await given_the_erd_is_set_to(0x0003, "00", hass)
+
+        the_entity_value_should_be("number.test_number_test_number", "0", hass)
+        the_entity_value_should_be("sensor.test_sensor_test_sensor", "0", hass)
+        the_entity_value_should_be("select.test_select_test_select", "Zero", hass)
 
     async def test_allowables_are_set_by_erd(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient

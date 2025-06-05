@@ -269,7 +269,7 @@ META_TABLE = """
             },
             "0x0008": {
                 "Temp Supported": {
-                    "fields": ["{}_0001_Test_Number"],
+                    "fields": ["{}_0001_Test_Number", "{}_0002_Test_Sensor", "{}_0003_Test_Select"],
                     "func": "enable_or_disable"
                 }
             },
@@ -378,13 +378,29 @@ class TestMetaErds:
     ) -> None:
         """Test the entity is disabled by the associated ERD."""
         await given_the_erd_is_set_to(0x0001, "00", hass)
+        await given_the_erd_is_set_to(0x0002, "00", hass)
+        await given_the_erd_is_set_to(0x0003, "00", hass)
+
         await given_the_erd_is_set_to(0x0008, "00", hass)
 
         await the_device_should_not_support_erd(
             "test", 0x0001, hass.data[DOMAIN][DISCOVERY]._data_source
         )
+        await the_device_should_not_support_erd(
+            "test", 0x0002, hass.data[DOMAIN][DISCOVERY]._data_source
+        )
+        await the_device_should_not_support_erd(
+            "test", 0x0003, hass.data[DOMAIN][DISCOVERY]._data_source
+        )
+
         the_entity_value_should_be(
             "number.test_number_test_number", STATE_UNKNOWN, hass
+        )
+        the_entity_value_should_be(
+            "sensor.test_sensor_test_sensor", STATE_UNKNOWN, hass
+        )
+        the_entity_value_should_be(
+            "select.test_select_test_select", STATE_UNKNOWN, hass
         )
 
     async def test_allowables_are_set_by_erd(

@@ -74,16 +74,18 @@ class DataSource:
 
     async def move_erd_to_supported(self, device_name: str, erd: Erd) -> None:
         """Move the given ERD to the supported list."""
-        self._data[device_name][SUPPORTED_ERDS][erd] = self._data[device_name][
-            UNSUPPORTED_ERDS
-        ].pop(erd)
+        if erd not in self._data[device_name][SUPPORTED_ERDS]:
+            self._data[device_name][SUPPORTED_ERDS][erd] = self._data[device_name][
+                UNSUPPORTED_ERDS
+            ].pop(erd)
 
     async def move_erd_to_unsupported(self, device_name: str, erd: Erd) -> None:
         """Move the given ERD to the unsupported list and set associated entities to STATE_UNKNOWN."""
-        self._data[device_name][UNSUPPORTED_ERDS][erd] = self._data[device_name][
-            SUPPORTED_ERDS
-        ].pop(erd)
-        await self._data[device_name][UNSUPPORTED_ERDS][erd][EVENT].publish(None)
+        if erd not in self._data[device_name][UNSUPPORTED_ERDS]:
+            self._data[device_name][UNSUPPORTED_ERDS][erd] = self._data[device_name][
+                SUPPORTED_ERDS
+            ].pop(erd)
+            await self._data[device_name][UNSUPPORTED_ERDS][erd][EVENT].publish(None)
 
     async def move_all_erds_to_unsupported_for_api_erd(
         self, device_name: str, feature_type: str | None, version: str
@@ -199,11 +201,13 @@ class DataSource:
         return None
 
     async def get_entity_id_for_unique_id(
-        self, device_name: str, erd: Erd, unique_id: str
+        self, device_name: str, erd: Erd, unique_id: str, unique_id_with_option: str
     ) -> str | None:
         """Return the entity ID of the entity associated with the given unique ID."""
         erd_val = await self._get_erd_or_none_from_either_list(device_name, erd)
         if erd_val is not None:
-            return await erd_val[EVENT].get_subscriber_with_unique_id(unique_id)
+            return await erd_val[EVENT].get_subscriber_with_unique_id(
+                unique_id, unique_id_with_option
+            )
 
         return None

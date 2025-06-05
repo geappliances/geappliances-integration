@@ -78,7 +78,7 @@ SERVICE_SET_UNIT_SCHEMA = SERVICE_BASE_SCHEMA | {
     vol.Required(ATTR_UNIT): vol.Coerce(str),
 }
 
-SERVICE_ENABLE_OR_DISABLE = "disable"
+SERVICE_ENABLE_OR_DISABLE_BASE = "disable"
 ATTR_ENABLED = "enabled"
 SERVICE_ENABLE_OR_DISABLE_SCHEMA = SERVICE_BASE_SCHEMA | {
     vol.Required(ATTR_ENABLED): vol.Coerce(bool),

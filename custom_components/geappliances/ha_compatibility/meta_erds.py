@@ -20,7 +20,7 @@ from ..const import (
     FEATURE_API_ERD_HIGH_START,
     FEATURE_API_ERD_LOW_END,
     FEATURE_API_ERD_LOW_START,
-    SERVICE_ENABLE_OR_DISABLE,
+    SERVICE_ENABLE_OR_DISABLE_BASE,
     SERVICE_SET_ALLOWABLES,
     SERVICE_SET_MAX,
     SERVICE_SET_MIN,
@@ -95,15 +95,16 @@ async def enable_or_disable(
     unique_id: str,
 ) -> None:
     """Enable or disable the entity."""
-    await hass.services.async_call(
-        DOMAIN,
-        SERVICE_ENABLE_OR_DISABLE,
-        {
-            ATTR_ENTITY_ID: entity_id,
-            ATTR_UNIQUE_ID: unique_id,
-            ATTR_ENABLED: enabled_bytes != b"\x00",
-        },
-    )
+    if entity_id:
+        await hass.services.async_call(
+            DOMAIN,
+            f"{SERVICE_ENABLE_OR_DISABLE_BASE}_{entity_id.split(".")[0]}",
+            {
+                ATTR_ENTITY_ID: entity_id,
+                ATTR_UNIQUE_ID: unique_id,
+                ATTR_ENABLED: enabled_bytes != b"\x00",
+            },
+        )
 
 
 async def set_allowables(
@@ -283,6 +284,7 @@ class MetaErdCoordinator:
                             device_name,
                             int(erd_str, base=16),
                             select_option_removed.format(device_name),
+                            target_entity.format(device_name),
                         ),
                         target_entity.format(device_name),
                     )

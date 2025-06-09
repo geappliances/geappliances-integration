@@ -41,17 +41,19 @@ class ERDFactory:
         """Generate an entity configuration based on the ERD and appliance type."""
         config_list = []
         if (erd_def := await self._data_source.get_erd_def(erd)) is not None:
-            config_list = [
-                await self._config_factory.build_config(
-                    device_name,
-                    erd,
-                    erd_def["name"],
-                    erd_def.get("description", ""),
-                    field,
-                    "write" in erd_def["operations"],
-                )
-                for field in erd_def["data"]
-            ]
+            status_erd = await self._data_source.get_erd_status_pair(erd)
+            if status_erd is None or status_erd["request"] == f"{erd:#06x}":
+                config_list = [
+                    await self._config_factory.build_config(
+                        device_name,
+                        erd,
+                        status_erd["name"] if status_erd else erd_def["name"],
+                        erd_def.get("description", ""),
+                        field,
+                        "write" in erd_def["operations"],
+                    )
+                    for field in erd_def["data"]
+                ]
         else:
             _LOGGER.error("Could not find ERD %s", f"{erd:#06x}")
 

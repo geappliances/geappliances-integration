@@ -37,7 +37,7 @@ class DataSource:
     def _create_status_pair_dict(self):
         """Create a mapping of status/request ERD pairs based on their names and data fields."""
 
-        def strip_names(data):
+        def strip_name_field(data):
             """Return a list of dicts with 'name' key removed from each dict."""
             return [{k: v for k, v in item.items() if k != "name"} for item in data]
 
@@ -65,8 +65,8 @@ class DataSource:
 
         for base_name, pair in temp_dict.items():
             if "status" in pair and "request" in pair:
-                status_data = strip_names(pair["status"]["data"])
-                request_data = strip_names(pair["request"]["data"])
+                status_data = strip_name_field(pair["status"]["data"])
+                request_data = strip_name_field(pair["request"]["data"])
                 if status_data == request_data:
                     self._status_pair_dict[base_name] = {
                         "name": base_name,

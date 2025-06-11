@@ -76,11 +76,6 @@ class GeaDiscovery:
                     await self._meta_erd_coordinator.apply_transforms_for_meta_erd(
                         device_name, erd
                     )
-                status_erd = await self._data_source.get_erd_status_pair(erd)
-                if status_erd and status_erd["status"] == f"{erd:#06x}":
-                    await self._data_source.erd_write(
-                        device_name, int(status_erd["request"], 16), msg.payload
-                    )
 
         elif await self.should_log_error(split_topic):
             _LOGGER.error(

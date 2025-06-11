@@ -45,17 +45,21 @@ class DataSource:
         temp_dict = {}
 
         status_pair_mapping = {
-            "status": re.compile(r"\bStatus\b|\bActual\b|\bState\b"),
-            "request": re.compile(r"\bRequest\b|\bRequested\b|\bDesired\b"),
+            "status": re.compile(
+                r"\bStatus\b|\bActual\b|\bState\b|\bCurrent\b", re.IGNORECASE
+            ),
+            "request": re.compile(
+                r"\bRequest\b|\bRequested\b|\bDesired\b", re.IGNORECASE
+            ),
         }
 
         for erd in self._appliance_api_erd_definitions:
             name = erd["name"]
             for key, pattern in status_pair_mapping.items():
                 if pattern.search(name):
-                    base_name = pattern.sub("", name).strip()
+                    base_name = pattern.sub("", name)
                     base_name = re.sub(r"[^\w\s]", "", base_name)
-                    base_name = re.sub(r"  ", " ", base_name)
+                    base_name = re.sub(r"  ", " ", base_name).strip()
                     if base_name not in temp_dict:
                         temp_dict[base_name] = {}
                     temp_dict[base_name][key] = {
@@ -255,7 +259,7 @@ class DataSource:
 
         return None
 
-    async def get_erd_status_pair(self, erd: Erd) -> dict | None:
+    async def get_erd_status_pair(self, erd: Erd) -> dict[str, Any] | None:
         """Return the status/request pair dict if the given ERD is part of a status/request pair, otherwise None."""
         for pair in self._status_pair_dict.values():
             if erd == pair["status"] or erd == pair["request"]:

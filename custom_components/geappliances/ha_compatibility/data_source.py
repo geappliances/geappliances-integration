@@ -70,8 +70,8 @@ class DataSource:
                 if status_data == request_data:
                     self._status_pair_dict[base_name] = {
                         "name": base_name,
-                        "status": pair["status"]["id"],
-                        "request": pair["request"]["id"],
+                        "status": int(pair["status"]["id"], 16),
+                        "request": int(pair["request"]["id"], 16),
                     }
 
     async def add_device(self, device_name: str, device_id: str) -> None:
@@ -255,11 +255,9 @@ class DataSource:
 
         return None
 
-    async def get_erd_status_pair(self, erd: Erd) -> dict[str, str] | None:
+    async def get_erd_status_pair(self, erd: Erd) -> dict | None:
         """Return the status/request pair dict if the given ERD is part of a status/request pair, otherwise None."""
         for pair in self._status_pair_dict.values():
-            if erd == int(pair["status"], base=16) or erd == int(
-                pair["request"], base=16
-            ):
+            if erd == pair["status"] or erd == pair["request"]:
                 return pair
         return None

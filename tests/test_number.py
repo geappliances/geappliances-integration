@@ -463,7 +463,12 @@ APPLIANCE_API_DEFINTION_JSON = """
 
 STATUS_PAIR_DICT = """
 {
-    "Test Pair": {
+    "0x0023": {
+        "name": "Test Pair",
+        "status": 35,
+        "request": 36
+    },
+    "0x0024": {
         "name": "Test Pair",
         "status": 35,
         "request": 36

@@ -104,7 +104,11 @@ APPLIANCE_API_JSON = """
                 "1": {
                     "required": [
                         { "erd": "0x0006", "name": "Test Request", "length": 1 },
-                        { "erd": "0x0007", "name": "Test Status", "length": 1 }
+                        { "erd": "0x0007", "name": "Test Status", "length": 1 },
+                        { "erd": "0x0008", "name": "Test Two Requested", "length": 1 },
+                        { "erd": "0x0009", "name": "Test Two Actual", "length": 1 },
+                        { "erd": "0x000A", "name": "Test Three Desired", "length": 1 },
+                        { "erd": "0x000B", "name": "Test Three State", "length": 1 }
                     ],
                     "features": []
                 }
@@ -227,16 +231,93 @@ APPLIANCE_API_DEFINTION_JSON = """
                     "size": 1
                 }
             ]
+        },
+        {
+            "name": "Test Two Requested",
+            "id": "0x0008",
+            "operations": ["read", "write"],
+            "data": [
+                {
+                    "name": "Test Two",
+                    "type": "bool",
+                    "offset": 0,
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "Test Two Actual",
+            "id": "0x0009",
+            "operations": ["read"],
+            "data": [
+                {
+                    "name": "Test Two",
+                    "type": "bool",
+                    "offset": 0,
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "Test Three Desired",
+            "id": "0x000A",
+            "operations": ["read", "write"],
+            "data": [
+                {
+                    "name": "Test Three",
+                    "type": "bool",
+                    "offset": 0,
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "Test Three State",
+            "id": "0x000B",
+            "operations": ["read"],
+            "data": [
+                {
+                    "name": "Test Three",
+                    "type": "bool",
+                    "offset": 0,
+                    "size": 1
+                }
+            ]
         }
     ]
 }"""
 
 STATUS_PAIR_DICT = """
 {
-    "Test": {
+    "0x0006": {
         "name": "Test",
         "request": 6,
         "status": 7
+    },
+    "0x0007": {
+        "name": "Test",
+        "request": 6,
+        "status": 7
+    },
+    "0x0008": {
+        "name": "Test Two",
+        "request": 8,
+        "status": 9
+    },
+    "0x0009": {
+        "name": "Test Two",
+        "request": 8,
+        "status": 9
+    },
+    "0x000A": {
+        "name": "Test Three",
+        "request": 10,
+        "status": 11
+    },
+    "0x000B": {
+        "name": "Test Three",
+        "request": 10,
+        "status": 11
     }
 }
 """

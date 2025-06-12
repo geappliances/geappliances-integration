@@ -72,7 +72,12 @@ class DataSource:
                 status_data = strip_name_field(pair["status"]["data"])
                 request_data = strip_name_field(pair["request"]["data"])
                 if status_data == request_data:
-                    self._status_pair_dict[base_name] = {
+                    self._status_pair_dict[pair["status"]["id"]] = {
+                        "name": base_name,
+                        "status": int(pair["status"]["id"], 16),
+                        "request": int(pair["request"]["id"], 16),
+                    }
+                    self._status_pair_dict[pair["request"]["id"]] = {
                         "name": base_name,
                         "status": int(pair["status"]["id"], 16),
                         "request": int(pair["request"]["id"], 16),
@@ -261,7 +266,4 @@ class DataSource:
 
     async def get_erd_status_pair(self, erd: Erd) -> dict[str, Any] | None:
         """Return the status/request pair dict if the given ERD is part of a status/request pair, otherwise None."""
-        for pair in self._status_pair_dict.values():
-            if erd == pair["status"] or erd == pair["request"]:
-                return pair
-        return None
+        return self._status_pair_dict.get(f"{erd:#06x}", None)

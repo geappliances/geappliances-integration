@@ -159,7 +159,7 @@ APPLIANCE_API_DEFINTION_JSON = """
                 }
             ]
         },
-                {
+        {
             "name": "Test Pair Request",
             "id": "0x0006",
             "operations": ["read", "write"],
@@ -181,7 +181,12 @@ APPLIANCE_API_DEFINTION_JSON = """
 
 STATUS_PAIR_DICT = """
 {
-    "Test Pair": {
+    "0x0005": {
+        "name": "Test Pair",
+        "status": 5,
+        "request": 6
+    },
+    "0x0006": {
         "name": "Test Pair",
         "status": 5,
         "request": 6

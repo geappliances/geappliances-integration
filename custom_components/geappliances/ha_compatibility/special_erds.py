@@ -26,6 +26,7 @@ async def build_clock_time(
             Platform.TIME,
             data_source,
             0x0005,
+            None,
             0,
             3,
             True,

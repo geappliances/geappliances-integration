@@ -18,20 +18,6 @@
                     "remoteRoot": "."
                 }
             ]
-        },
-        // {
-        //     "name": "Python: Debug Tests",
-        //     "type": "debugpy",
-        //     "request": "launch",
-        //     "program": "${file}",
-        //     "purpose": [
-        //         "debug-test"
-        //     ],
-        //     "console": "integratedTerminal",
-        //     "justMyCode": false,
-        //     "presentation": {
-        //         "hidden": true,
-        //     }
-        // }
+        }
     ]
 }

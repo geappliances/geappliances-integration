@@ -16,6 +16,7 @@ from .common import (
     given_the_appliance_api_erd_defs_are,
     given_the_appliance_api_is,
     given_the_erd_is_set_to,
+    given_the_status_pair_dict_is,
     the_mqtt_topic_value_should_be,
     when_the_erd_is_set_to,
 )
@@ -49,7 +50,9 @@ APPLIANCE_API_JSON = """
                 "1": {
                     "required": [
                         { "erd": "0x0002", "name": "Multi Field Test", "length": 11 },
-                        { "erd": "0x0004", "name": "Raw Test", "length": 6 }
+                        { "erd": "0x0004", "name": "Raw Test", "length": 6 },
+                        { "erd": "0x0005", "name": "Test Pair Status", "length": 2 },
+                        { "erd": "0x0006", "name": "Test Pair Request", "length": 2 }
 
                     ],
                     "features": []
@@ -125,9 +128,50 @@ APPLIANCE_API_DEFINTION_JSON = """
                     "size": 2
                 }
             ]
+        },
+        {
+            "name": "Test Pair Status",
+            "id": "0x0005",
+            "operations": ["read", "write"],
+            "data": [
+                {
+                    "name": "Test Text",
+                    "type": "string",
+                    "offset": 0,
+                    "size": 2
+                }
+            ]
+        },
+        {
+            "name": "Test Pair Request",
+            "id": "0x0006",
+            "operations": ["read", "write"],
+            "data": [
+                {
+                    "name": "Test Text",
+                    "type": "string",
+                    "offset": 0,
+                    "size": 2
+                }
+            ]
         }
     ]
 }"""
+
+STATUS_PAIR_DICT = """
+{
+    "0x0005": {
+        "name": "Test Pair",
+        "status": 5,
+        "request": 6
+    },
+    "0x0006": {
+        "name": "Test Pair",
+        "status": 5,
+        "request": 6
+    }
+}
+"""
 
 
 @pytest.fixture(autouse=True)
@@ -136,6 +180,7 @@ async def initialize(hass: HomeAssistant, mqtt_mock: MqttMockHAClient) -> None:
     await given_integration_is_initialized(hass, mqtt_mock)
     given_the_appliance_api_is(APPLIANCE_API_JSON, hass)
     given_the_appliance_api_erd_defs_are(APPLIANCE_API_DEFINTION_JSON, hass)
+    given_the_status_pair_dict_is(STATUS_PAIR_DICT, hass)
     await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0001", hass)
     await when_the_erd_is_set_to(0x0093, "0000 0001 0000 0000", hass)
 
@@ -253,3 +298,30 @@ class TestText:
         """Test text shows STATE_UNKNOWN when the associated ERD is no longer supported."""
         await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0000", hass)
         the_text_value_should_be("text.removal_test_removal_test", STATE_UNKNOWN, hass)
+
+    async def test_publishes_to_request_erd_and_does_not_update_paired_text(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test paired text, when set, updates the request ERD, but not the status ERD or text itself."""
+        await given_the_erd_string_is_set_to(0x0005, "yo", hass)
+        await given_the_erd_string_is_set_to(0x0006, "yo", hass)
+        the_text_value_should_be("text.test_pair_test_text", "yo", hass)
+
+        await when_the_text_is_set_to("text.test_pair_test_text", "hi", hass)
+        the_mqtt_topic_value_should_be(0x0006, b"hi".hex(), mqtt_mock)
+        the_text_value_should_be("text.test_pair_test_text", "yo", hass)
+
+        await when_the_text_is_set_to("text.test_pair_test_text", "yo", hass)
+        the_mqtt_topic_value_should_be(0x0006, b"yo".hex(), mqtt_mock)
+        the_text_value_should_be("text.test_pair_test_text", "yo", hass)
+
+    async def test_status_erd_updates_paired_text(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test text updates paired text on status ERD update."""
+        await given_the_erd_string_is_set_to(0x0005, "", hass)
+        await given_the_erd_string_is_set_to(0x0006, "", hass)
+        the_text_value_should_be("text.test_pair_test_text", "", hass)
+
+        await when_the_erd_string_is_set_to(0x0005, "hi", hass)
+        the_text_value_should_be("text.test_pair_test_text", "hi", hass)

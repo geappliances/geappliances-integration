@@ -18,6 +18,8 @@ from .common import (
     given_the_appliance_api_erd_defs_are,
     given_the_appliance_api_is,
     given_the_special_erd_map_is,
+    given_the_status_pair_dict_is,
+    the_mqtt_topic_value_should_be,
     when_the_erd_is_set_to,
 )
 
@@ -49,7 +51,9 @@ APPLIANCE_API_JSON = """
             "versions": {
                 "1": {
                     "required": [
-                        { "erd": "0x0003", "name": "Removal Test", "length": 3 }
+                        { "erd": "0x0003", "name": "Removal Test", "length": 3 },
+                        { "erd": "0x0004", "name": "Test Pair Status", "length": 3 },
+                        { "erd": "0x0005", "name": "Test Pair Request", "length": 3 }
                     ],
                     "features": []
                 }
@@ -135,9 +139,75 @@ APPLIANCE_API_DEFINTION_JSON = """
                     "size": 1
                 }
             ]
+        },
+        {
+            "name": "Test Pair Status",
+            "id": "0x0004",
+            "operations": ["read"],
+            "data": [
+                {
+                    "name": "Hours",
+                    "type": "u8",
+                    "offset": 0,
+                    "size": 1
+                },
+                {
+                    "name": "Minutes",
+                    "type": "u8",
+                    "offset": 1,
+                    "size": 1
+                },
+                {
+                    "name": "Seconds",
+                    "type": "u8",
+                    "offset": 2,
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "Test Pair Request",
+            "id": "0x0005",
+            "operations": ["read", "write"],
+            "data": [
+                {
+                    "name": "Hours",
+                    "type": "u8",
+                    "offset": 0,
+                    "size": 1
+                },
+                {
+                    "name": "Minutes",
+                    "type": "u8",
+                    "offset": 1,
+                    "size": 1
+                },
+                {
+                    "name": "Seconds",
+                    "type": "u8",
+                    "offset": 2,
+                    "size": 1
+                }
+            ]
         }
     ]
 }"""
+
+
+STATUS_PAIR_DICT = """
+{
+    "0x0004": {
+        "name": "Test Pair",
+        "status": 4,
+        "request": 5
+    },
+    "0x0005": {
+        "name": "Test Pair",
+        "status": 4,
+        "request": 5
+    }
+}
+"""
 
 
 async def build_time_test_config(
@@ -153,6 +223,7 @@ async def build_time_test_config(
             "time",
             data_source,
             0x0001,
+            None,
             0,
             3,
             False,
@@ -173,6 +244,7 @@ async def build_read_only_time_test_config(
             "time",
             data_source,
             0x0002,
+            None,
             0,
             3,
             True,
@@ -193,6 +265,28 @@ async def build_time_removal_test_config(
             "time",
             data_source,
             0x0003,
+            None,
+            0,
+            3,
+            False,
+        )
+    ]
+
+
+async def build_test_pair_config(
+    device_name: str, data_source: DataSource
+) -> list[GeaTimeConfig]:
+    """Build config for test pair."""
+    return [
+        GeaTimeConfig(
+            f"{device_name}_0005_Test_Pair",
+            (await data_source.get_device(device_name))[CONF_DEVICE_ID],
+            device_name,
+            "Test Pair: Test Pair",
+            "time",
+            data_source,
+            0x0005,
+            0x0004,
             0,
             3,
             False,
@@ -204,6 +298,7 @@ _SPECIAL_ERDS = {
     0x0001: build_time_test_config,
     0x0002: build_read_only_time_test_config,
     0x0003: build_time_removal_test_config,
+    0x0005: build_test_pair_config,
 }
 
 
@@ -214,6 +309,7 @@ async def initialize(hass: HomeAssistant, mqtt_mock: MqttMockHAClient) -> None:
     given_the_appliance_api_is(APPLIANCE_API_JSON, hass)
     given_the_appliance_api_erd_defs_are(APPLIANCE_API_DEFINTION_JSON, hass)
     given_the_special_erd_map_is(_SPECIAL_ERDS, hass)
+    given_the_status_pair_dict_is(STATUS_PAIR_DICT, hass)
     await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0001", hass)
     await when_the_erd_is_set_to(0x0093, "0000 0001 0000 0000", hass)
 
@@ -276,3 +372,30 @@ class TestTime:
         await when_the_erd_is_set_to(0x0003, "000000", hass)
         await when_the_erd_is_set_to(0x0093, "0000 0001 0000 0000", hass)
         the_time_value_should_be("time.removal_test_removal_test", STATE_UNKNOWN, hass)
+
+    async def test_publishes_to_request_erd_and_does_not_update_paired_number(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test paired time, when set, updates the request ERD, but not the status ERD or time itself."""
+        await when_the_erd_is_set_to(0x0004, "000000", hass)
+        await when_the_erd_is_set_to(0x0005, "000000", hass)
+        the_time_value_should_be("time.test_pair_test_pair", "00:00:00", hass)
+
+        await when_the_time_is_set_to("time.test_pair_test_pair", time(1, 1, 1), hass)
+        the_mqtt_topic_value_should_be(0x0005, "010101", mqtt_mock)
+        the_time_value_should_be("time.test_pair_test_pair", "00:00:00", hass)
+
+        await when_the_time_is_set_to("time.test_pair_test_pair", time(0, 0, 0), hass)
+        the_mqtt_topic_value_should_be(0x0005, "000000", mqtt_mock)
+        the_time_value_should_be("time.test_pair_test_pair", "00:00:00", hass)
+
+    async def test_status_erd_updates_paired_number(
+        self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
+    ) -> None:
+        """Test number updates paired number on status ERD update."""
+        await when_the_erd_is_set_to(0x0004, "000000", hass)
+        await when_the_erd_is_set_to(0x0005, "000000", hass)
+        the_time_value_should_be("time.test_pair_test_pair", "00:00:00", hass)
+
+        await when_the_erd_is_set_to(0x0004, "010101", hass)
+        the_time_value_should_be("time.test_pair_test_pair", "01:01:01", hass)

@@ -7,8 +7,8 @@
     "mqtt"
   ],
   "documentation": "https://github.com/geappliances/hacs-integration",
-  "issue_tracker": "https://github.com/geappliances/hacs-integration/issues",
   "iot_class": "local_push",
+  "issue_tracker": "https://github.com/geappliances/hacs-integration/issues",
   "requirements": [
     "aiofiles==24.1.0"
   ],

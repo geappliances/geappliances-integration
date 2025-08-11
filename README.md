@@ -4,7 +4,7 @@
 [![License][license-shield]](LICENSE)
 [![Community Forum][forum-shield]][forum]
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=GE+Appliances&category=Integration&repository=https%3A%2F%2Fgithub.com%2Fgeappliances%2Fhacs-integration)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=GE+Appliances&category=Integration&repository=https%3A%2F%2Fgithub.com%2Fgeappliances%2Fgeappliances-integration)
 
 _Integration to integrate with [GE Appliances](https://www.geappliances.com/)._
 
@@ -31,7 +31,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
-[license-shield]: https://img.shields.io/github/license/geappliances/hacs-integration.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/geappliances/hacs-integration.svg?style=for-the-badge
-[releases]: https://github.com/geappliances/hacs-integration/releases
+[license-shield]: https://img.shields.io/github/license/geappliances/geappliances-integration.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/geappliances/geappliances-integration.svg?style=for-the-badge
+[releases]: https://github.com/geappliances/geappliances-integration/releases
 [hacs]: https://www.hacs.xyz

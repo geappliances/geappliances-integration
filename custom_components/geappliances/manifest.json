@@ -8,9 +8,9 @@
   "dependencies": [
     "mqtt"
   ],
-  "documentation": "https://github.com/geappliances/hacs-integration",
+  "documentation": "https://github.com/geappliances/geappliances-integration",
   "iot_class": "local_push",
-  "issue_tracker": "https://github.com/geappliances/hacs-integration/issues",
+  "issue_tracker": "https://github.com/geappliances/geappliances-integration/issues",
   "requirements": [
     "aiofiles==24.1.0"
   ],

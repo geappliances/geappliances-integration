@@ -1,7 +1,9 @@
 {
   "domain": "geappliances",
   "name": "GE Appliances",
-  "codeowners": [],
+  "codeowners": [
+    "@geappliances/home-assistant"
+  ],
   "config_flow": true,
   "dependencies": [
     "mqtt"

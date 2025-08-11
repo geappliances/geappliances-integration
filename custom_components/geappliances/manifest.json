@@ -1,14 +1,16 @@
 {
   "domain": "geappliances",
   "name": "GE Appliances",
-  "codeowners": [],
+  "codeowners": [
+    "@geappliances/home-assistant"
+  ],
   "config_flow": true,
   "dependencies": [
     "mqtt"
   ],
-  "documentation": "https://github.com/geappliances/applcommon.ge-appliances-integration",
-  "issue_tracker": "https://github.com/geappliances/applcommon.ge-appliances-integration/issues",
+  "documentation": "https://github.com/geappliances/hacs-integration",
   "iot_class": "local_push",
+  "issue_tracker": "https://github.com/geappliances/hacs-integration/issues",
   "requirements": [
     "aiofiles==24.1.0"
   ],

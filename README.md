@@ -6,15 +6,15 @@
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=GE+Appliances&category=Integration&repository=https%3A%2F%2Fgithub.com%2Fgeappliances%2Fgeappliances-integration)
 
-_Integration to integrate with [GE Appliances](https://www.geappliances.com/)._
+_Integration to integrate with [GE Appliances](https://www.geappliances.com/) using the [GE Appliances/FirstBuild Home Assistant adapter](https://firstbuild.com/inventions/home-assistant-adapter/)._
 
-This integration will automatically use the [Appliance API](https://github.com/geappliances/public-appliance-api-documentation) to find public ERDs on an appliance and set up corresponding entities in Home Assistant. It is designed to be a "batteries-included" option for users who want to quickly and easily get their appliances talking to Home Assistant. Users wanting a more customized experience might be interested in [using YAML with the MQTT integration](https://github.com/geappliances/home-assistant-examples) to communicate with their appliances.
+This integration works with the [Home Assistant adapter](https://firstbuild.com/inventions/home-assistant-adapter/) (see [here](https://github.com/geappliances/home-assistant-adapter) for firmware) to automatically configure entities in Home Assistant by using [Appliance API](https://github.com/geappliances/public-appliance-api-documentation) to find public ERDs on an appliance. It is designed to be a "batteries-included" option for users who want to quickly and easily get their appliances talking to Home Assistant with the Home Assistant adapter. Users wanting a more customized experience might be interested in [using YAML with the MQTT integration](https://github.com/geappliances/home-assistant-examples) to communicate with their appliances.
 
 ## Installation
 
-1. The preferred method of installing this integration is through the [Home Assistant Community Store][hacs].
+The preferred method of installing this integration is through the [Home Assistant Community Store][hacs].
 
-<!---->
+### Manual Installation
 
 1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
 1. If you do not have a `custom_components` directory (folder) there, you need to create it.

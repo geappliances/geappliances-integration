@@ -267,7 +267,7 @@ class GeaNumber(NumberEntity, GeaEntity):
                 cur_field_bytes = await self.get_field_bytes(erd_value)
                 value_bytes = (
                     int.from_bytes(cur_field_bytes)
-                    | (int(value) << (self._bit_size - self._bit_offset))
+                    | (int(value) << (self._bit_offset))
                 ).to_bytes()
 
             await self._data_source.erd_publish(
@@ -285,7 +285,7 @@ class GeaNumber(NumberEntity, GeaEntity):
         val = self._value_fn(self._field_bytes)
 
         if self._bit_mask is not None:
-            shift = (self._size * 8) - self._bit_size - self._bit_offset
+            shift = (self._offset * 8) + self._bit_offset
             val = (val & self._bit_mask) >> shift
 
         return (val / self._scale) if self._scale > 1 else val

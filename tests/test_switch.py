@@ -318,15 +318,17 @@ class TestSwitch:
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test switch works with writeable bitfields."""
-        await when_the_erd_is_set_to(0x0004, "80", hass)
+        await when_the_erd_is_set_to(0x0004, "01", hass)
         the_switch_state_should_be("switch.bitfield_test_bit_one", STATE_ON, hass)
         the_switch_state_should_be("switch.bitfield_test_bit_two", STATE_OFF, hass)
 
         await when_the_switch_is_turned_on("switch.bitfield_test_bit_two", hass)
+        the_mqtt_topic_value_should_be(0x0004, "03", mqtt_mock)
         the_switch_state_should_be("switch.bitfield_test_bit_one", STATE_ON, hass)
         the_switch_state_should_be("switch.bitfield_test_bit_two", STATE_ON, hass)
 
         await when_the_switch_is_turned_off("switch.bitfield_test_bit_one", hass)
+        the_mqtt_topic_value_should_be(0x0004, "02", mqtt_mock)
         the_switch_state_should_be("switch.bitfield_test_bit_one", STATE_OFF, hass)
         the_switch_state_should_be("switch.bitfield_test_bit_two", STATE_ON, hass)
 

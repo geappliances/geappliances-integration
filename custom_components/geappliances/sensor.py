@@ -242,7 +242,7 @@ class GeaSensor(SensorEntity, GeaEntity):
         val = self._value_fn(self._field_bytes)
 
         if self._bit_mask is not None:
-            shift = (self._size * 8) - self._bit_size - self._bit_offset
+            shift = (self._offset * 8) + self._bit_offset
             val = (val & self._bit_mask) >> shift
 
         if self._type not in ("string", "raw", "enum"):

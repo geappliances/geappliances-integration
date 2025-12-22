@@ -1,5 +1,5 @@
 -r requirements.txt
 
 paho-mqtt==2.1.0
-pytest-homeassistant-custom-component==0.13.289
-uv==0.8.9
+pytest-homeassistant-custom-component==0.13.295
+uv==0.9.6

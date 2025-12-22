@@ -1,6 +1,6 @@
 {
     "name": "GE Appliances",
     "hide_default_branch": false,
-    "homeassistant": "2025.10.4",
+    "homeassistant": "2025.11.1",
     "render_readme": true
 }

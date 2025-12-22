@@ -198,7 +198,7 @@ class TestBinarySensor:
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient
     ) -> None:
         """Test binary sensor works with read-only bitfields."""
-        await when_the_erd_is_set_to(0x0004, "80", hass)
+        await when_the_erd_is_set_to(0x0004, "01", hass)
 
         the_binary_sensor_state_should_be(
             "binary_sensor.bitfield_test_bit_one", STATE_ON, hass

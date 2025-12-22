@@ -341,7 +341,7 @@ class ConfigFactory:
             size = field["bits"]["size"]
 
             mask = (1 << size) - 1  # Mask for the lowest `size` bytes
-            mask = mask << ((field["size"] * 8) - offset - size)
+            mask = mask << ((field["offset"] * 8) + offset)
             if size == 1:
                 if writeable:
                     return await self.build_switch(

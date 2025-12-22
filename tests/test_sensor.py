@@ -607,12 +607,12 @@ class TestSensor:
     ) -> None:
         """Test sensor retrieves values from bitfields correctly."""
         await when_the_erd_is_set_to(0x000A, "F0", hass)
-        the_sensor_value_should_be("sensor.bitfield_test_field_one", "15", hass)
-        the_sensor_value_should_be("sensor.bitfield_test_field_two", "0", hass)
-
-        await when_the_erd_is_set_to(0x000A, "0F", hass)
         the_sensor_value_should_be("sensor.bitfield_test_field_one", "0", hass)
         the_sensor_value_should_be("sensor.bitfield_test_field_two", "15", hass)
+
+        await when_the_erd_is_set_to(0x000A, "0F", hass)
+        the_sensor_value_should_be("sensor.bitfield_test_field_one", "15", hass)
+        the_sensor_value_should_be("sensor.bitfield_test_field_two", "0", hass)
 
     async def test_raw_bytes(
         self, hass: HomeAssistant, mqtt_mock: MqttMockHAClient

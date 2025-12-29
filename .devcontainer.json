@@ -3,16 +3,11 @@
     "image": "mcr.microsoft.com/devcontainers/python:3.13",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [
-        8123,
-        5678
+        8123
     ],
     "portsAttributes": {
         "8123": {
             "label": "Home Assistant",
-            "onAutoForward": "notify"
-        },
-        "5678": {
-            "label": "Python Debugger",
             "onAutoForward": "notify"
         }
     },
@@ -42,5 +37,9 @@
         }
     },
     "remoteUser": "vscode",
-    "features": {}
+    "features": {
+        "ghcr.io/devcontainers-extra/features/apt-packages:1": {
+            "packages": "ffmpeg,libturbojpeg0,libpcap-dev"
+        }
+    }
 }

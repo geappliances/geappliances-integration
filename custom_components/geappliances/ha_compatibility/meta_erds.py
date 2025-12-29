@@ -336,10 +336,9 @@ class MetaErdCoordinator:
         """Return the bits from the bitfield for the specified ERD field."""
         offset = field_def["bits"]["offset"]
         size = field_def["bits"]["size"]
-        field_size = field_def["size"]
 
-        mask = (1 << size) - 1  # Mask for the lowest `size` bytes
-        mask = mask << ((field_size * 8) - offset - size)  # Move mask to match offset
-        masked = int.from_bytes(field_bytes) & mask
+        mask = (1 << size) - 1 # Mask for the lowest `size` bytes
+        mask = mask << offset # Move mask to match offset
+        masked = (int.from_bytes(field_bytes) & mask) >> offset
 
         return masked.to_bytes()

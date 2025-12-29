@@ -418,7 +418,7 @@ class TestMetaErds:
     ) -> None:
         """Test the allowables are set by the associated ERD."""
         await given_the_erd_is_set_to(0x0003, "00", hass)
-        await given_the_erd_is_set_to(0x0009, "80", hass)
+        await given_the_erd_is_set_to(0x0009, "01", hass)
 
         await setting_the_select_should_raise_error(
             "select.test_select_test_select", "One", hass

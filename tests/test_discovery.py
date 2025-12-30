@@ -13,7 +13,6 @@ from custom_components.geappliances.ha_compatibility.registry_updater import (
 )
 import pytest
 
-from .common import ERD_VALUE_TOPIC
 from .doubles import (
     AnyConfigWithName,
     MetaErdCoordinatorMock,

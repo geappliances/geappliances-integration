@@ -3,8 +3,6 @@
 import logging
 from unittest.mock import MagicMock
 
-from numpy import empty
-
 from custom_components.geappliances.const import Erd
 from custom_components.geappliances.erd_factory import ERDFactory
 from custom_components.geappliances.ha_compatibility.data_source import DataSource

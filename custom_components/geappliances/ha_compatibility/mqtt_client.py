@@ -18,15 +18,12 @@ ERD_WRITE_TOPIC = "geappliances/{}/erd/{}/write"
 
 
 @dataclass
-class MQTTMessage:
+class GeaMQTTMessage:
     """Message received from MQTT integration."""
 
-    topic: str
+    device: str
+    erd: str
     payload: bytes
-    qos: int
-    retain: bool
-    subscribed_topic: str
-    timestamp: float
 
 
 class GeaMQTTClient:
@@ -55,18 +52,41 @@ class GeaMQTTClient:
 
     async def handle_message(self, msg: ReceiveMessage):
         """Convert MQTT message to our message type and pass it on to discovery."""
-        casted_msg = MQTTMessage(
-            msg.topic,
-            bytes.fromhex(cast(str, msg.payload)),
-            msg.qos,
-            msg.retain,
-            msg.subscribed_topic,
-            msg.timestamp,
-        )
-        await self._event.publish(casted_msg)
+        split_topic = msg.topic.split("/")
+
+        if await self.should_log_bad_topic(split_topic):
+            _LOGGER.info("Bad GE Appliances MQTT topic: %s", msg.topic)
+        else:
+            device_name = split_topic[1]
+
+            if len(split_topic) == 5:
+                erd = split_topic[3]
+                await self._event.publish(
+                    GeaMQTTMessage(
+                        device_name, erd, bytes.fromhex(cast(str, msg.payload))
+                    )
+                )
+
+            else:
+                await self._event.publish(
+                    GeaMQTTMessage(device_name, "", bytes.fromhex(""))
+                )
 
     async def async_subscribe(
-        self, handler: Callable[[MQTTMessage], Coroutine[Any, Any, None]]
+        self, handler: Callable[[GeaMQTTMessage], Coroutine[Any, Any, None]]
     ) -> None:
         """Add function to handler list."""
         await self._event.subscribe(handler)
+
+    async def should_log_bad_topic(self, split_topic: list[str]) -> bool:
+        """Return true if the MQTT topic is bad."""
+        if len(split_topic) not in [2, 3, 5]:
+            return True
+
+        if len(split_topic) == 5 and split_topic[4] not in ["write", "value"]:
+            return True
+
+        if len(split_topic) == 3 and split_topic[2] != "uptime":
+            return True
+
+        return False

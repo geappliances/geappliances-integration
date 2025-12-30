@@ -7,7 +7,7 @@ from custom_components.geappliances.const import Erd
 from custom_components.geappliances.discovery import GeaDiscovery
 from custom_components.geappliances.ha_compatibility.data_source import DataSource
 from custom_components.geappliances.ha_compatibility.meta_erds import MetaErdCoordinator
-from custom_components.geappliances.ha_compatibility.mqtt_client import MQTTMessage
+from custom_components.geappliances.ha_compatibility.mqtt_client import GeaMQTTMessage
 from custom_components.geappliances.ha_compatibility.registry_updater import (
     RegistryUpdater,
 )
@@ -204,22 +204,13 @@ async def given_the_erd_is_set_to(
 ) -> None:
     """Fake an MQTT message."""
     await discovery.handle_message(
-        MQTTMessage(
-            ERD_VALUE_TOPIC.format(f"{erd:#06x}"),
-            payload,
-            0,
-            False,
-            "geappliances/#",
-            0.0,
-        )
+        GeaMQTTMessage("test", "{}".format(f"{erd:#06x}"), payload)
     )
 
 
 async def when_the_device_is_discovered(discovery: GeaDiscovery) -> None:
     """Fire device discovery message."""
-    await discovery.handle_message(
-        MQTTMessage(DEVICE_TOPIC, b"", 0, False, "geappliances/#", 0.0)
-    )
+    await discovery.handle_message(GeaMQTTMessage("test", "", b""))
 
 
 async def when_the_erd_is_set_to(
@@ -237,16 +228,10 @@ async def when_an_mqtt_message_is_received_on_topic(
     discovery: GeaDiscovery,
 ) -> None:
     """Fake an MQTT message."""
-    await discovery.handle_message(
-        MQTTMessage(
-            topic,
-            payload,
-            0,
-            False,
-            "geappliances/#",
-            0.0,
-        )
-    )
+    split_topic = topic.split("/")
+    device_name = split_topic[1]
+    erd = split_topic[3]
+    await discovery.handle_message(GeaMQTTMessage(device_name, erd, payload))
 
 
 def the_device_should_exist(registry_updater_mock: RegistryUpdaterMock) -> None:
@@ -399,15 +384,6 @@ class TestDiscovery:
         )
         the_erd_should_be_supported(0x0001, data_source)
         the_erd_should_be_unsupported(0x0002, data_source)
-
-    async def test_logs_when_mqtt_topic_is_bad(self, capture_errors, discovery) -> None:
-        """Test discovery logs an error for a bad MQTT topic."""
-        await when_an_mqtt_message_is_received_on_topic(
-            "geappliances/test/bad", bytes.fromhex("00"), discovery
-        )
-        the_error_log_should_be(
-            "Bad GE Appliances MQTT topic: geappliances/test/bad", capture_errors
-        )
 
     async def test_logs_when_common_appliance_api_is_bad(
         self, capture_errors, discovery

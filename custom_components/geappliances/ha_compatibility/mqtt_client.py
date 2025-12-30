@@ -54,7 +54,7 @@ class GeaMQTTClient:
         """Convert MQTT message to our message type and pass it on to discovery."""
         split_topic = msg.topic.split("/")
 
-        if await self.should_log_bad_topic(split_topic):
+        if await self._should_log_bad_topic(split_topic):
             _LOGGER.info("Bad GE Appliances MQTT topic: %s", msg.topic)
         else:
             device_name = split_topic[1]
@@ -78,7 +78,7 @@ class GeaMQTTClient:
         """Add function to handler list."""
         await self._event.subscribe(handler)
 
-    async def should_log_bad_topic(self, split_topic: list[str]) -> bool:
+    async def _should_log_bad_topic(self, split_topic: list[str]) -> bool:
         """Return true if the MQTT topic is bad."""
         if len(split_topic) not in [2, 3, 5]:
             return True

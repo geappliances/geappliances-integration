@@ -36,12 +36,6 @@ class GeaDiscovery:
         self._data_source = data_source
         self._meta_erd_coordinator = meta_erd_coordinator
 
-    async def should_log_error(self, split_topic: list[str]) -> bool:
-        """Return true if the MQTT topic is bad."""
-        return len(split_topic) != 2 and (
-            len(split_topic) != 5 or split_topic[4] != "write"
-        )
-
     async def handle_message(self, msg: GeaMQTTMessage) -> None:
         """Handle an MQTT message."""
         await self.add_device_if_not_already_exists(msg.device)

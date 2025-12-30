@@ -4,3 +4,8 @@ default_config:
 
 homeassistant:
   debug: true
+
+logger:
+  default: warning
+  logs:
+    custom_components.geappliances: info

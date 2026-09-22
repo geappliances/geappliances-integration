@@ -40,6 +40,13 @@ APPLIANCE_API_JSON = """
                         "required": [
                             { "erd": "0x0002", "name": "Read Only Test", "length": 3 }
                         ]
+                    },
+                    {
+                        "mask": "0x00000002",
+                        "name": "Removal",
+                        "required": [
+                            {"erd": "0x0003", "name": "Removal Test", "length": 3 }
+                        ]
                     }
                 ]
             }
@@ -51,7 +58,6 @@ APPLIANCE_API_JSON = """
             "versions": {
                 "1": {
                     "required": [
-                        { "erd": "0x0003", "name": "Removal Test", "length": 3 },
                         { "erd": "0x0004", "name": "Test Pair Status", "length": 3 },
                         { "erd": "0x0005", "name": "Test Pair Request", "length": 3 }
                     ],
@@ -310,7 +316,7 @@ async def initialize(hass: HomeAssistant, mqtt_mock: MqttMockHAClient) -> None:
     given_the_appliance_api_erd_defs_are(APPLIANCE_API_DEFINTION_JSON, hass)
     given_the_special_erd_map_is(_SPECIAL_ERDS, hass)
     given_the_status_pair_dict_is(STATUS_PAIR_DICT, hass)
-    await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0001", hass)
+    await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0003", hass)
     await when_the_erd_is_set_to(0x0093, "0000 0001 0000 0000", hass)
 
 
@@ -370,7 +376,7 @@ class TestTime:
     ) -> None:
         """Test time shows STATE_UNKNOWN when the associated ERD is no longer supported."""
         await when_the_erd_is_set_to(0x0003, "000000", hass)
-        await when_the_erd_is_set_to(0x0093, "0000 0001 0000 0000", hass)
+        await when_the_erd_is_set_to(0x0092, "0000 0001 0000 0001", hass)
         the_time_value_should_be("time.removal_test_removal_test", STATE_UNKNOWN, hass)
 
     async def test_publishes_to_request_erd_and_does_not_update_paired_number(
